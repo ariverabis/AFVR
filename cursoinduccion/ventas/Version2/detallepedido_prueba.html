@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVF - Detalle Pedido</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+            position: relative;
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title img {
+            height: 25px;
+            margin-right: 10px;
+        }
+        .options {
+            display: flex;
+            align-items: center;
+        }
+        .options button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        .top-info {
+            background-color: #d3d3d3;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-info p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .top-info .back-arrow {
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #555;
+            text-decoration: none;
+        }
+        .product-list-container {
+            padding: 10px;
+            min-height: 200px;
+            border-bottom: 1px solid #ccc;
+        }
+        .product-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        .product-list-header h4 {
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+            font-size: 1em;
+        }
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        .product-item.selected {
+            background-color: #e6f2ff;
+        }
+        .product-item .item-details {
+            flex-grow: 1;
+            padding-left: 10px;
+        }
+        .summary-info {
+            padding: 15px;
+        }
+        .summary-info .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .summary-info label {
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .summary-info input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: right;
+            background-color: #f9f9f9;
+            width: 120px;
+            font-size: 0.9em;
+        }
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .action-buttons button {
+            padding: 10px;
+            font-size: 0.8em;
+            border: none;
+            border-radius: 5px;
+            background-color: #d3d3d3;
+            cursor: pointer;
+        }
+        .action-buttons .fin-button {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+        }
+        .action-buttons .search-button {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Estilos del submenú */
+        .submenu-button {
+            background: transparent;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            border: none;
+        }
+        .submenu-container {
+            position: absolute;
+            top: 50px;
+            right: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+        .submenu-container a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+            font-size: 0.9em;
+            border-bottom: 1px solid #eee;
+        }
+        .submenu-container a:hover {
+            background-color: #f0f0f0;
+        }
+        .submenu-container a:last-child {
+            border-bottom: none;
+        }
+
+        /* Estilos del tooltip */
+        [data-tooltip] {
+            position: relative;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            pointer-events: none;
+            top: var(--tooltip-top);
+            left: var(--tooltip-left);
+        }
+        [data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <img src="logofebeca.png" alt="Logo">
+            <span>021 - Detalle Pedido</span>
+        </div>
+        <div class="options">
+            <button onclick="finalizarPedido()" class="fin-button" data-tooltip="Finalizar y guardar el pedido.">Fin</button>
+            <button onclick="eliminarArticuloSeleccionado()" style="background-color: #dc3545; color: white;" data-tooltip="Elimina el artículo seleccionado de la lista.">X</button>
+            <button class="submenu-button" onclick="toggleSubmenu()">&#8942;</button>
+        </div>
+        <div id="submenu" class="submenu-container">
+            <a href="#" data-tooltip="Ir a la pantalla de Pedido.">Pedido</a>
+            <a href="#" data-tooltip="Generar un recibo del pedido.">Recibo</a>
+            <a href="#" data-tooltip="Ver el estado de cuenta del cliente.">Estado de Cuenta</a>
+            <a href="#" data-tooltip="Cerrar la sesión o salir de la aplicación.">Salir</a>
+        </div>
+    </div>
+    
+    <div class="top-info">
+        <p>A-40, C.A - 2565065</p>
+        <a href="productos_prueba.html" class="back-arrow" data-tooltip="Regresar a la pantalla de búsqueda de productos">&#8617;</a>
+    </div>
+
+    <div class="product-list-container">
+        <div class="product-list-header">
+            <h4>Producto</h4>
+        </div>
+        <div id="lista-articulos">
+            </div>
+    </div>
+    
+    <div class="summary-info">
+        <div class="form-group">
+            <label for="subtotal" data-tooltip="Total de los precios de los productos en el pedido antes de impuestos.">Subtotal (USD):</label>
+            <input type="text" id="subtotal" value="0,00" readonly>
+        </div>
+        <div class="form-group">
+            <label for="renglones" data-tooltip="Cantidad de artículos distintos en el pedido.">Renglones:</label>
+            <input type="text" id="renglones" value="0" readonly>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <button type="button" data-tooltip="Consulta promociones comerciales.">Prom.</button>
+        <button type="button" data-tooltip="Buscar por parte del codigo">Partida</button>
+        <a href="productos_prueba.html" style="text-decoration: none;">
+            <button type="button" class="search-button" data-tooltip="Menu de Busqueda.">Buscar</button>
+        </a>
+        <button type="button" data-tooltip="Muestra otras opciones de busqueda.">Otros</button>
+    </div>
+</div>
+
+<script>
+    let productosEnPedido = [];
+    let articuloSeleccionadoIndex = -1;
+
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarProductos();
+    });
+
+    function cargarProductos() {
+        const listaArticulos = document.getElementById('lista-articulos');
+        listaArticulos.innerHTML = '';
+        let subtotalTotal = 0;
+
+        // Recuperar los productos del localStorage
+        const productosGuardados = JSON.parse(localStorage.getItem('productosEnPedido_prueba')) || [];
+        productosEnPedido = productosGuardados;
+
+        if (productosEnPedido.length > 0) {
+            productosEnPedido.forEach((producto, index) => {
+                const itemHTML = `
+                    <div class="product-item" onclick="seleccionarArticulo(${index})">
+                        <div class="item-details" data-tooltip="${producto.codigo} - ${producto.nombre} - Cantidad: ${producto.cantidad} - Precio: ${producto.precio} USD">
+                            ${producto.codigo} - ${producto.nombre}
+                        </div>
+                    </div>
+                `;
+                listaArticulos.innerHTML += itemHTML;
+                subtotalTotal += producto.subtotal;
+            });
+        } else {
+            listaArticulos.innerHTML = '<p style="text-align: center; color: #888; padding: 20px;">No hay artículos en el pedido.</p>';
+        }
+
+        // Actualizar los campos de resumen
+        document.getElementById('subtotal').value = subtotalTotal.toFixed(2).replace('.', ',');
+        document.getElementById('renglones').value = productosEnPedido.length;
+    }
+
+    function seleccionarArticulo(index) {
+        articuloSeleccionadoIndex = index;
+        const items = document.querySelectorAll('.product-item');
+        items.forEach((item, i) => {
+            if (i === index) {
+                item.classList.add('selected');
+            } else {
+                item.classList.remove('selected');
+            }
+        });
+    }
+
+    function eliminarArticuloSeleccionado() {
+        if (articuloSeleccionadoIndex !== -1) {
+            if (confirm('¿Está seguro de que desea eliminar este artículo?')) {
+                productosEnPedido.splice(articuloSeleccionadoIndex, 1);
+                localStorage.setItem('productosEnPedido_prueba', JSON.stringify(productosEnPedido));
+                cargarProductos(); 
+                articuloSeleccionadoIndex = -1;
+            }
+        } else {
+            alert('Por favor, seleccione un artículo para eliminar.');
+        }
+    }
+
+    function finalizarPedido() {
+        window.location.href = 'finalizarpedido.html';
+    }
+
+    function toggleSubmenu() {
+        const submenu = document.getElementById('submenu');
+        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function(event) {
+        const submenu = document.getElementById('submenu');
+        const submenuButton = document.querySelector('.submenu-button');
+        if (submenu.style.display === 'block' && !submenu.contains(event.target) && event.target !== submenuButton) {
+            submenu.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-tooltip]').forEach(item => {
+            item.addEventListener('mouseenter', (event) => {
+                const tooltip = event.target;
+                const tooltipText = tooltip.getAttribute('data-tooltip');
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.style.visibility = 'hidden';
+                tempDiv.style.position = 'fixed';
+                tempDiv.style.whiteSpace = 'nowrap';
+                tempDiv.style.padding = '5px 10px';
+                tempDiv.style.fontSize = '12px';
+                tempDiv.textContent = tooltipText;
+                document.body.appendChild(tempDiv);
+                
+                const tooltipWidth = tempDiv.offsetWidth;
+                const tooltipHeight = tempDiv.offsetHeight;
+                
+                document.body.removeChild(tempDiv);
+
+                const rect = tooltip.getBoundingClientRect();
+                let topPosition = rect.bottom + 5;
+                let leftPosition = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+
+                if (leftPosition + tooltipWidth > window.innerWidth - 10) {
+                    leftPosition = window.innerWidth - tooltipWidth - 10;
+                }
+
+                if (leftPosition < 10) {
+                    leftPosition = 10;
+                }
+                
+                if (topPosition + tooltipHeight > window.innerHeight) {
+                    topPosition = rect.top - tooltipHeight - 5;
+                }
+                
+                tooltip.style.setProperty('--tooltip-top', `${topPosition}px`);
+                tooltip.style.setProperty('--tooltip-left', `${leftPosition}px`);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

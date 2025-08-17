@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>056 - Por Cobrar</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+        .header-actions span { cursor: pointer; }
+        .client-info-bar { background-color: #e0e0e0; padding: 10px 15px; font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; }
+        .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        thead { background-color: #f8f8f8; font-weight: bold; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        .checkbox-cell { width: 30px; }
+        .summary-section { padding: 15px; }
+        .summary-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .summary-item label { flex-grow: 1; font-size: 14px; }
+        .summary-item .total-field { background-color: #e0e0e0; padding: 5px; border-radius: 3px; border: 1px solid #ccc; font-size: 14px; }
+        .summary-item .total-field.label { font-weight: bold; }
+        .total-row { font-weight: bold; font-size: 16px; margin-top: 10px; }
+
+        /* Estilos del modal emergente */
+        .modal-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; }
+        .modal-content { background-color: white; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 300px; text-align: center; }
+        .modal-header { font-weight: bold; font-size: 16px; padding: 15px; border-bottom: 1px solid #ccc; }
+        .modal-options { list-style: none; padding: 0; margin: 0; }
+        .modal-options li { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; }
+        .modal-options li:hover { background-color: #f0f0f0; }
+        .modal-options li:last-of-type { border-bottom: none; }
+        .modal-footer { padding: 15px; border-top: 1px solid #ccc; }
+        .modal-footer button { width: 100%; padding: 10px; font-weight: bold; border: 1px solid #ccc; background-color: #e0e0e0; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&#8592;</span>
+            <span class="header-title">056 - Por Cobrar</span>
+            <div class="header-actions">
+                <span id="btnIncluir" style="font-weight: normal; font-size: 14px;">Incluir</span>
+                <span>?</span>
+                <span class="menu-icon">&#x22EE;</span>
+            </div>
+        </div>
+
+        <div class="client-info-bar">
+            <span>ALTAMIRA FERRE-INDU.</span>
+            <span class="back-arrow">&#8592;</span>
+        </div>
+
+        <div class="main-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th>T</th>
+                            <th>No. Fiscal</th>
+                            <th>Importe USD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>A</td>
+                            <td>06880849</td>
+                            <td>97,05</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>A</td>
+                            <td>06890830</td>
+                            <td>64,66</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>A</td>
+                            <td>06895077</td>
+                            <td>80,60</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>A</td>
+                            <td>06896835</td>
+                            <td>102,01</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-section">
+                <div class="summary-item"><label>Seleccionar todo</label><input type="checkbox"></div>
+                <div class="summary-item"><span class="total-field label">Sub-Total (USD):</span><span class="total-field">0,00</span></div>
+                <div class="summary-item"><span class="total-field label">Descuento (USD):</span><span class="total-field">0,00</span><button>+</button></div>
+                <div class="summary-item"><span class="total-field label">Cargos (USD):</span><span class="total-field">0,00</span><button>+</button></div>
+                <div class="summary-item"><span class="total-field label">Total (USD):</span><span class="total-field">0,00</span></div>
+            </div>
+        </div>
+
+        <div id="paymentModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">Seleccione la forma de pago</div>
+                <ul class="modal-options">
+                    <li onclick="window.location.href='deposito_usd.html'">DEPOSITO USD</li>
+                    <li onclick="window.location.href='deposito_en_transito_usd.html'">DEPOSITO EN TRANSITO USD</li>
+                    <li onclick="window.location.href='transferencia_ves.html'">TRANSFERENCIA VES</li>
+                    <li onclick="window.location.href='transferencia_internacional_usd.html'">TRANSFERENCIA INTERNACIONAL USD</li>
+                </ul>
+                <div class="modal-footer">
+                    <button onclick="document.getElementById('paymentModal').style.display='none'">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('btnIncluir').addEventListener('click', function() {
+            document.getElementById('paymentModal').style.display = 'flex';
+        });
+    </script>
+</body>
+</html>

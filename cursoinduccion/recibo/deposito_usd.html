@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>059 - Detalle Recibo</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { display: flex; gap: 10px; align-items: center; }
+        .header-actions span { cursor: pointer; font-size: 20px; }
+        
+        .content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .section-title { font-size: 16px; font-weight: bold; border-bottom: 2px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; }
+        
+        .table-container { border: 1px solid #ccc; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 12px; }
+        thead { background-color: #f8f8f8; font-weight: bold; }
+        th, td { padding: 8px; border-bottom: 1px solid #eee; white-space: nowrap; }
+        
+        .total-row { font-weight: bold; font-size: 14px; text-align: right; padding: 10px; }
+        .total-field { padding: 5px; border-top: 1px solid #ccc; }
+        
+        .payments-section { display: flex; flex-direction: column; gap: 10px; }
+        .payments-header { display: flex; justify-content: space-between; align-items: center; }
+        .payments-header .buttons { display: flex; gap: 10px; }
+        
+        .payments-table-container { border: 1px solid #ccc; border-radius: 5px; overflow: hidden; }
+        
+        .final-summary { display: flex; justify-content: flex-end; align-items: center; margin-top: 15px; font-size: 14px; gap: 10px; }
+        .final-summary .total-value { background-color: #e0e0e0; padding: 5px 10px; border-radius: 3px; border: 1px solid #ccc; font-weight: bold; }
+        .final-summary .label { font-weight: bold; }
+
+        /* Estilo para los campos de monto editable */
+        .editable-monto {
+            width: 80px;
+            padding: 2px 5px;
+            text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        /* Estilos para la nueva tabla de resumen */
+        .summary-table-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            font-size: 12px;
+        }
+        .summary-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .summary-table-container td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .summary-table-container td:last-child {
+            text-align: right;
+        }
+        .summary-table-container tr:last-child {
+            font-weight: bold;
+            background-color: #f8f8f8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&#8592;</span>
+            <span class="header-title">059 - Detalle Recibo</span>
+            <div class="header-actions">
+                <span>&#x271A;</span>
+                <span>&#x2716;</span>
+                <span>&#x2714;</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section-title">DOCUMENTOS</div>
+            <div class="table-container">
+                <table id="documentTable">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>No. Fiscal</th>
+                            <th>Forma de Pago</th>
+                            <th>Monto USD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="summary-table-container">
+                <table>
+                    <tbody>
+                        <tr><td>Sub-Total:</td><td id="subTotalDocument">0,00</td></tr>
+                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">0,00</td></tr>
+                        <tr><td>Retención:</td><td id="retencionDocument">0,00</td></tr>
+                        <tr class="total-row-summary"><td>Total:</td><td id="documentTotal">0,00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="payments-header">
+                <div class="section-title" style="border-bottom: none;">PAGOS</div>
+                <div class="buttons">
+                    <span id="btnAddPayment" style="font-size: 24px; cursor: pointer;">+</span>
+                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&#x2716;</span>
+                </div>
+            </div>
+            <div class="payments-table-container">
+                <table id="paymentsTable">
+                    <thead>
+                        <tr>
+                            <th>Pago</th>
+                            <th>Moneda</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="final-summary">
+                <span class="label">Resta:</span>
+                <span id="restaUSD" class="total-value">0,00 USD</span>
+                <span id="restaVES" class="total-value">0,00 VES</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const documentTableBody = document.querySelector('#documentTable tbody');
+            const paymentsTableBody = document.querySelector('#paymentsTable tbody');
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedItemsJSON = urlParams.get('selectedItems');
+            const totalDescuento = parseFloat(urlParams.get('totalDescuento')) || 0;
+            const totalRetencion = parseFloat(urlParams.get('totalRetencion')) || 0;
+            const formaDePago = urlParams.get('formaDePago');
+            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
+            
+            let subTotalDocumentos = 0;
+            let totalFacturas = 0;
+
+            if (selectedItemsJSON) {
+                const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
+                selectedItems.forEach(item => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${item.tipo}</td>
+                        <td>${item.noFiscal}</td>
+                        <td>PAGO GENERICO</td>
+                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" data-importe-original="${item.importe}" data-retencion="${item.retencion}"></td>
+                    `;
+                    documentTableBody.appendChild(newRow);
+                });
+            } else {
+                console.log('No se encontraron ítems seleccionados.');
+            }
+
+            function updateDocumentSummary() {
+                subTotalDocumentos = 0;
+                documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
+                    const numericValue = parseFloat(input.value.replace(',', '.'));
+                    if (!isNaN(numericValue)) {
+                        subTotalDocumentos += numericValue;
+                    }
+                });
+                
+                // Actualizar los campos de resumen
+                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ',');
+                
+                if (aplicaDescuento) {
+                    document.getElementById('descuentoRow').style.display = 'table-row';
+                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
+                } else {
+                    document.getElementById('descuentoRow').style.display = 'none';
+                }
+                
+                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+                
+                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
+                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
+                
+                updateRemainingAmounts();
+            }
+
+            documentTableBody.addEventListener('input', (event) => {
+                if (event.target.classList.contains('editable-monto')) {
+                    updateDocumentSummary();
+                }
+            });
+
+            document.getElementById('btnAddPayment').addEventListener('click', () => {
+                const urlParams = new URLSearchParams();
+                urlParams.set('totalAPagar', totalFacturas.toFixed(2));
+                // Aquí puedes pasar otros datos si es necesario
+                window.location.href = `pagos.html?${urlParams.toString()}`;
+            });
+            
+            document.getElementById('btnDeletePayment').addEventListener('click', () => {
+                const lastRow = paymentsTableBody.lastElementChild;
+                if (lastRow) {
+                    paymentsTableBody.removeChild(lastRow);
+                    updateRemainingAmounts();
+                }
+            });
+
+            // Función para obtener los pagos y actualizar la tabla de pagos
+            function updatePaymentsTable() {
+                const paymentInfo = JSON.parse(sessionStorage.getItem('currentPayment') || '[]');
+                if (paymentInfo.length > 0) {
+                    paymentsTableBody.innerHTML = ''; // Limpiar tabla de pagos antes de renderizar
+                    paymentInfo.forEach(payment => {
+                        const newRow = document.createElement('tr');
+                        newRow.innerHTML = `
+                            <td>${payment.formaPago}</td>
+                            <td>${payment.moneda}</td>
+                            <td class="payment-monto">${payment.monto}</td>
+                        `;
+                        paymentsTableBody.appendChild(newRow);
+                    });
+                }
+                updateRemainingAmounts();
+            }
+
+            function updateRemainingAmounts() {
+                let paymentsTotal = 0;
+                paymentsTableBody.querySelectorAll('.payment-monto').forEach(cell => {
+                    const numericValue = parseFloat(cell.textContent.replace(',', '.'));
+                    if (!isNaN(numericValue)) {
+                        paymentsTotal += numericValue;
+                    }
+                });
+
+                const remaining = totalFacturas - paymentsTotal;
+                document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
+                document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
+            }
+
+            // Llamar a las funciones de actualización al cargar la página
+            updateDocumentSummary();
+            updatePaymentsTable();
+        });
+    </script>
+</body>
+</html>

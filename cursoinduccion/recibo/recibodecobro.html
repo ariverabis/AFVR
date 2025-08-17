@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>056 - Por Cobrar</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+        .header-actions span, .header-actions button { cursor: pointer; position: relative; }
+        #btnIncluir {
+            background-color: #ffc107;
+            color: #000;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold !important;
+            font-size: 14px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+            border: none;
+            margin-left: 5px;
+        }
+        #btnIncluir:hover {
+            background-color: #ffca2c;
+        }
+        .client-info-bar { background-color: #e0e0e0; padding: 10px 15px; font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; }
+        .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .instruction-box { background-color: #eaf6ff; border: 1px solid #b3e0ff; padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 13px; line-height: 1.4; }
+        .instruction-box p { margin: 0; font-weight: bold; margin-bottom: 5px; }
+        .instruction-box ol { margin: 0; padding-left: 20px; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        thead { background-color: #f8f8f8; font-weight: bold; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        .checkbox-cell { width: 30px; }
+        .summary-section { padding: 15px; }
+        .summary-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .summary-item label { flex-grow: 1; font-size: 14px; }
+        .summary-item .total-field { background-color: #e0e0e0; padding: 5px; border-radius: 3px; border: 1px solid #ccc; font-size: 14px; width: 100px; text-align: right; }
+        .summary-item .total-field.label { font-weight: bold; }
+        .total-row { font-weight: bold; font-size: 16px; margin-top: 10px; }
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 180px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -90px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 60px; }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 10px; position: relative; }
+        .close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-button:hover, .close-button:focus { color: black; text-decoration: none; cursor: pointer; }
+        .modal-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .modal-item:last-child { border-bottom: none; }
+        .modal-item h4 { margin: 0; color: #007BFF; }
+        .modal-item p { margin: 5px 0 0; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&#8592;</span>
+            <span class="header-title">056 - Por Cobrar</span>
+            <div class="header-actions">
+                <button id="btnIncluir">Incluir</button>
+                <span class="tooltip">?
+                    <span class="tooltiptext">Información de la pantalla actual.</span>
+                </span>
+                <span class="tooltip menu-icon" onclick="toggleHelpModal()">&#x22EE;
+                    <span class="tooltiptext">Ver guía para recibos de cobro.</span>
+                </span>
+            </div>
+        </div>
+        <div class="client-info-bar">
+            <span>ALTAMIRA FERRE-INDU.</span>
+            <span class="back-arrow">&#8592;</span>
+        </div>
+        <div class="main-content">
+            <div class="instruction-box">
+                <p>Pasos para elaborar el Recibo de Cobro:</p>
+                <ol>
+                    <li>Seleccione las facturas a cobrar.</li>
+                    <li>Pulse "Incluir" para registrar el pago.</li>
+                    <li>Revise los totales y complete el proceso.</li>
+                </ol>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th>T</th>
+                            <th>No. Fiscal</th>
+                            <th>Importe USD</th>
+                        </tr>
+                    </thead>
+                    <tbody id="invoice-table-body">
+                    </tbody>
+                </table>
+            </div>
+            <div class="summary-section">
+                <div class="summary-item">
+                    <label>Seleccionar todo</label>
+                    <input type="checkbox" id="selectAllCheckbox">
+                </div>
+                <div class="summary-item">
+                    <label>Sub-Total (USD):</label>
+                    <span id="subTotalValue" class="total-field">0,00</span>
+                </div>
+                <div class="summary-item" id="descuentoItem" style="display: none;">
+                    <label>Descuento (USD):</label>
+                    <span id="descuento-value" class="total-field">0,00</span>
+                </div>
+                <div class="summary-item">
+                    <label>Retención (USD):</label>
+                    <span id="retencion-value" class="total-field">0,00</span>
+                </div>
+                <div class="summary-item">
+                    <label>Total (USD):</label>
+                    <span id="totalValue" class="total-field">0,00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Guía para Elaborar Recibos</h3>
+            <div class="modal-item">
+                <h4>Seleccionar Facturas</h4>
+                <p>Use las casillas de verificación en la tabla para seleccionar una o varias facturas pendientes. El "Sub-Total" se actualizará automáticamente.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Aplicar Descuentos y Retenciones</h4>
+                <p>El sistema aplicará automáticamente cualquier retención previamente cargada para las facturas seleccionadas. Si la forma de pago es en dólares, se aplicará un descuento del 13% sobre el total.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Confirmar y Registrar</h4>
+                <p>Una vez que las facturas estén seleccionadas, pulse el botón "Incluir" para proceder a la siguiente pantalla y registrar el monto final del pago.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Importante</h4>
+                <p>Revise siempre el monto total antes de registrar. La precisión es clave para una correcta gestión financiera.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const subTotalSpan = document.getElementById('subTotalValue');
+            const retencionSpan = document.getElementById('retencion-value');
+            const descuentoSpan = document.getElementById('descuento-value');
+            const descuentoItem = document.getElementById('descuentoItem');
+            const totalSpan = document.getElementById('totalValue');
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const btnIncluir = document.getElementById('btnIncluir');
+            const helpModal = document.getElementById('helpModal');
+            const closeButton = document.querySelector('.close-button');
+            const invoiceTableBody = document.getElementById('invoice-table-body');
+            
+            const invoices = [
+                { tipo: 'A', noFiscal: '06880849', importe: 97.05 },
+                { tipo: 'A', noFiscal: '06890830', importe: 64.66 },
+                { tipo: 'A', noFiscal: '06895077', importe: 80.60 },
+                { tipo: 'A', noFiscal: '06896835', importe: 102.01 }
+            ];
+            
+            const appliedRetentions = JSON.parse(localStorage.getItem('appliedRetentions') || '[]');
+            
+            // Obtener el parámetro de la URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const formaDePago = urlParams.get('formaDePago');
+            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
+            
+            // Mostrar u ocultar el campo de descuento según la forma de pago
+            if (aplicaDescuento) {
+                descuentoItem.style.display = 'flex';
+            } else {
+                descuentoItem.style.display = 'none';
+            }
+
+            function renderInvoicesTable() {
+                invoiceTableBody.innerHTML = '';
+                invoices.forEach(invoice => {
+                    const row = document.createElement('tr');
+                    row.dataset.tipo = invoice.tipo;
+                    row.dataset.noFiscal = invoice.noFiscal;
+                    row.dataset.importe = invoice.importe;
+                    
+                    row.innerHTML = `
+                        <td class="checkbox-cell"><input type="checkbox" class="invoice-checkbox"></td>
+                        <td>${invoice.tipo}</td>
+                        <td>${invoice.noFiscal}</td>
+                        <td class="importe-value">${invoice.importe.toFixed(2).replace('.', ',')}</td>
+                    `;
+                    invoiceTableBody.appendChild(row);
+                });
+                
+                const checkboxes = document.querySelectorAll('.invoice-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', updateSummary);
+                });
+                updateSummary();
+            }
+
+            function updateSummary() {
+                const checkboxes = document.querySelectorAll('.invoice-checkbox');
+                let subTotal = 0;
+                let totalRetencion = 0;
+                let totalDescuento = 0;
+                
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        const row = checkbox.closest('tr');
+                        const noFiscal = row.dataset.noFiscal;
+                        const importe = parseFloat(row.dataset.importe);
+                        
+                        if (!isNaN(importe)) {
+                            subTotal += importe;
+                            
+                            const retencion = appliedRetentions.find(r => r.noFiscal === noFiscal);
+                            if (retencion) {
+                                totalRetencion += retencion.montoRetenido;
+                            }
+                        }
+                    }
+                });
+                
+                // Calcular el descuento solo si aplica
+                if (aplicaDescuento) {
+                    totalDescuento = subTotal * 0.13;
+                }
+
+                subTotalSpan.textContent = subTotal.toFixed(2).replace('.', ',');
+                retencionSpan.textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+                descuentoSpan.textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
+                
+                const total = subTotal - totalRetencion - totalDescuento;
+                totalSpan.textContent = total.toFixed(2).replace('.', ',');
+            }
+
+            selectAllCheckbox.addEventListener('change', () => {
+                const checkboxes = document.querySelectorAll('.invoice-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                updateSummary();
+            });
+
+            btnIncluir.addEventListener('click', function() {
+                const selectedItems = [];
+                let subTotal = 0;
+                let totalRetencion = 0;
+                let totalDescuento = 0;
+
+                document.querySelectorAll('.invoice-checkbox:checked').forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const noFiscal = row.dataset.noFiscal;
+                    const importe = parseFloat(row.dataset.importe);
+                    const retencionAplicada = appliedRetentions.find(r => r.noFiscal === noFiscal);
+                    
+                    subTotal += importe;
+                    const retencionMonto = retencionAplicada ? retencionAplicada.montoRetenido : 0;
+                    totalRetencion += retencionMonto;
+
+                    selectedItems.push({
+                        tipo: row.dataset.tipo,
+                        noFiscal: noFiscal,
+                        importe: importe,
+                        retencion: retencionMonto
+                    });
+                });
+                
+                if (selectedItems.length > 0) {
+                    if (aplicaDescuento) {
+                        totalDescuento = subTotal * 0.13;
+                    }
+                    
+                    const selectedItemsJSON = JSON.stringify(selectedItems);
+                    const encodedItems = encodeURIComponent(selectedItemsJSON);
+                    
+                    const urlParams = new URLSearchParams();
+                    urlParams.set('selectedItems', encodedItems);
+                    urlParams.set('formaDePago', formaDePago);
+                    urlParams.set('totalDescuento', totalDescuento.toFixed(2));
+                    urlParams.set('totalRetencion', totalRetencion.toFixed(2));
+                    
+                    window.location.href = `deposito_usd.html?${urlParams.toString()}`;
+
+                } else {
+                    alert("Por favor, seleccione al menos una factura para incluir.");
+                }
+            });
+
+            window.toggleHelpModal = function() {
+                helpModal.style.display = 'block';
+            }
+            closeButton.onclick = () => helpModal.style.display = 'none';
+            window.onclick = (event) => {
+                if (event.target == helpModal) {
+                    helpModal.style.display = 'none';
+                }
+            }
+            
+            renderInvoicesTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVF - Productos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .header {
+            background-color: #007bff; /* Color similar al de la imagen */
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title img {
+            height: 25px;
+            margin-right: 10px;
+        }
+        .guia {
+            background-color: #e0f7fa;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin: 10px 20px;
+            color: #333;
+            font-size: 0.9em;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            gap: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+        .search-bar input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-bar button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background-color: #d3d3d3;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product-list {
+            height: 300px;
+            overflow-y: scroll;
+            border-bottom: 1px solid #ccc;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .product-item:hover {
+            background-color: #e9e9e9;
+        }
+        .product-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .product-item.selected {
+            background-color: #e6f2ff;
+        }
+        .product-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 20px;
+        }
+        .product-details label {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .product-details input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: right;
+            background-color: #f9f9f9;
+        }
+        .product-details .price-label {
+            text-align: center;
+            font-size: 0.9em;
+            font-weight: normal;
+        }
+        .bottom-nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .bottom-nav button {
+            padding: 15px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px; /* Separación entre los botones */
+        }
+        /* Estilos para el nuevo botón de regresar */
+        .back-button {
+            background-color: #6c757d; /* Color gris */
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <img src="https://via.placeholder.com/25" alt="">
+            <span>080 - Productos</span>
+        </div>
+        <div class="options">...</div>
+    </div>
+
+    <p class="guia">Cuando haya terminado de agregar los artículos, presione el botón "Regresar" para volver a la pantalla de detalle del pedido y ver los productos cargados.</p>
+
+    <div class="search-bar">
+        <span>Buscar</span>
+        <input type="text" placeholder="Código o nombre..." id="busqueda-producto" title="Ingrese un código o nombre de producto para buscar.">
+        <button type="button" title="Buscar por código de producto.">B.</button>
+        <button type="button" onclick="window.open('datos.html', 'DatosDelPedido', 'width=300,height=400');" title="Muestra una ventana con los datos del pedido.">Sub</button>
+    </div>
+
+    <div class="product-list" id="lista-productos">
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101002" id="prod-0101002">
+            <label for="prod-0101002">Receptaculo De Pvc Blanco Bornes Automaticos Btincino - 7110502</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101007" id="prod-0101007">
+            <label for="prod-0101007">Socate metalico e27 para intemperie Eagle - 7130165</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101012" id="prod-0101012">
+            <label for="prod-0101012">Socate de porcelana e-27 Fermetal - 7130011</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101014" id="prod-0101014">
+            <label for="prod-0101014">Socate para tubo LED T8 y tubo fluorescente Gdeseo - 7300315</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101018" id="prod-0101018">
+            <label for="prod-0101018">Balasto electrónico 2 x 60 w luz blanca Philips - 7025097</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101021" id="prod-0101021">
+            <label for="prod-0101021">Socate plástico rosca E27 blanco Semilic - 7130077</label>
+        </div>
+        <div class="product-item">
+            <input type="checkbox" name="producto" value="0101024" id="prod-0101024">
+            <label for="prod-0101024">Socate de porcelana rosca E27 modelo 11 Amperios Semilic - 7130101</label>
+        </div>
+    </div>
+    
+    <div class="product-details">
+        <label>P1</label>
+        <label>P2</label>
+        <input type="text" value="3,86" readonly title="Precio de la lista 1 (P1). Haga clic para ver detalles." onclick="window.open('precios.html', 'ConsultaPrecios', 'width=380,height=600');">
+        <input type="text" value="5,35" readonly title="Precio de la lista 2 (P2). Haga clic para ver detalles." onclick="window.open('precios2.html', 'ConsultaPrecios2', 'width=380,height=600');">
+
+        <label for="u-inv">U. Inv.:</label>
+        <label for="emp-c">Emp. C.:</label>
+        <input type="text" id="u-inv" value="1 PZA" readonly title="Unidad de Inventario: Cómo se contabiliza el producto en el almacén.">
+        <input type="text" id="emp-c" value="2" readonly title="Empaque Comercial: La unidad mínima en la que se vende el producto.">
+
+        <label for="c-min">C. Min.:</label>
+        <label for="dscto">Dscto.:</label>
+        <input type="text" id="c-min" value="0.0" readonly title="Cantidad mínima de pedido.">
+        <input type="text" id="dscto" value="0.0" readonly title="Descuento aplicado al producto.">
+        
+        <label for="exist">Exist:</label>
+        <label for="cant-container"></label>
+        <input type="text" id="exist" value="723.0" readonly title="Existencia actual del producto en el inventario.">
+        <div class="cant-container">
+            <label for="cant">Cant.:</label>
+            <input type="text" id="cant" title="Ingrese la cantidad a pedir. Debe ser un múltiplo de la cantidad en Emp. C.">
+        </div>
+        
+    </div>
+
+    <div class="bottom-nav">
+        <button type="button" class="back-button" title="Volver a la pantalla anterior para ver el pedido." onclick="window.location.href='productos.html';">Regresar</button>
+        <button type="button" title="Guarda la cantidad del producto seleccionado y lo añade al pedido." onclick="alert('Producto agregado al pedido. Puede seguir agregando más productos.');">OK</button>
+    </div>
+</div>
+
+</body>
+</html>

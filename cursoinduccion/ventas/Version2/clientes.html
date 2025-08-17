@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>088 - Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .search-section {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .search-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .search-row label {
+            white-space: nowrap;
+            font-size: 14px;
+            color: #555;
+        }
+        .search-row select, .search-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .search-row .client-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .search-row .client-buttons button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background-color: #e9e9e9;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+        }
+        .client-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .client-list li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .client-list li:hover {
+            background-color: #f5f5f5;
+        }
+        .client-list li.selected {
+            background-color: #b3d4ff;
+            color: #000;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 5px;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .keyboard button {
+            padding: 10px 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos para el modal de ayuda */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 320px;
+        }
+        .close-button {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-item {
+            margin-bottom: 15px;
+        }
+        .modal-item h4 {
+            margin: 0;
+            color: #007BFF;
+        }
+        .modal-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        /* Estilos para los mensajes emergentes (tooltips) - MODIFICADOS */
+        [data-tooltip] {
+            position: relative;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: fixed;
+            bottom: calc(100vh - var(--tooltip-top) + 10px);
+            left: var(--tooltip-left);
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+            margin-bottom: 5px;
+            pointer-events: none;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()" data-tooltip="Retrocede a la pantalla anterior.">&#8592;</span>
+            <span>088 - Clientes</span>
+            <span class="menu-icon" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</span>
+        </div>
+
+        <div class="search-section">
+            <div class="search-row">
+                <label for="route" data-tooltip="Selecciona la ruta de clientes a mostrar.">Ruta:</label>
+                <select id="route">
+                    <option>--- Todas ---</option>
+                </select>
+            </div>
+            <div class="search-row">
+                <label for="client-search" data-tooltip="Codigo del cliente.">Cliente:</label>
+                <input type="text" id="client-search" value="2565065">
+                <div class="client-buttons">
+                    <button id="btnOP" data-tooltip="Muestra/Oculta el codigo del Cliente.">O.P.</button>
+                    <button id="btnB" data-tooltip="Busca el cliente por su nombre.">B.</button>
+                </div>
+            </div>
+        </div>
+
+        <ul class="client-list">
+        </ul>
+
+        <div class="keyboard">
+            <button data-tooltip="Buscar por 'A'">A</button><button data-tooltip="Buscar por 'B'">B</button><button data-tooltip="Buscar por 'C'">C</button><button data-tooltip="Buscar por 'D'">D</button><button data-tooltip="Buscar por 'E'">E</button><button data-tooltip="Buscar por 'F'">F</button><button data-tooltip="Buscar por 'G'">G</button>
+            <button data-tooltip="Buscar por 'H'">H</button><button data-tooltip="Buscar por 'I'">I</button><button data-tooltip="Buscar por 'J'">J</button><button data-tooltip="Buscar por 'K'">K</button><button data-tooltip="Buscar por 'L'">L</button><button data-tooltip="Buscar por 'M'">M</button>
+            <button data-tooltip="Buscar por 'N'">N</button><button data-tooltip="Buscar por 'O'">O</button><button data-tooltip="Buscar por 'P'">P</button><button data-tooltip="Buscar por 'Q'">Q</button><button data-tooltip="Buscar por 'R'">R</button><button data-tooltip="Buscar por 'S'">S</button>
+        </div>
+    </div>
+    
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Guía de Uso - Clientes</h3>
+            <div class="modal-item">
+                <h4>Ruta</h4>
+                <p>Usa este menú desplegable para filtrar la lista de clientes por una ruta específica.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Cliente (Buscar)</h4>
+                <p>Introduce parte del nombre o el código del cliente que deseas encontrar. La lista se actualizará automáticamente.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Lista de clientes</h4>
+                <p>Haz clic en el nombre de un cliente para seleccionarlo y proceder a gestionar sus pedidos.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Teclado</h4>
+                <p>Usa las letras del teclado para filtrar los clientes que comiencen con esa letra.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const clientList = document.querySelector('.client-list');
+            const helpButton = document.getElementById('btnHelp');
+            const helpModal = document.getElementById('helpModal');
+            const closeButton = document.querySelector('.close-button');
+
+            const clients = [
+                'A-40, C.A - 2565065',
+                'ALTAMIRA FERRE-INDUSTRIAL - 2131133',
+                'BIKE MARKET REPUESTOS & ACCESORIOS, C.A - 2531304',
+                'COLORMAR C.A. - 2541013',
+                'COMERCIAL EL SAMAN 2007, C.A. - 2532008',
+                'COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25',
+                'CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565',
+                'DISMARKET EXPRESS, C.A -',
+                'DISTORMAR C.A - 2541132',
+                'DISTRIBUIDORA S.C GUACARA, C.A. - 2531122',
+                'EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -',
+                'FERRE COMERC DE LA CHIQ C.A - 2531019',
+                'FERRE MATERIALES EL TRONO DE DIOS 2024, C.A -',
+                'FERRE MIXTOR, C.A -',
+                'FERRE REPUESTO PADUA C.A - 2580030',
+                'FERRECENTRO GUACARA C.A - 2531024',
+                'FERRECONSTRUCCIONES J&J, C.A -',
+                'FERREGUACARA, C.A - 2525004',
+                'FERRELUGAMA, C.A. - 1331555',
+                'FERREMADER, C.A. - 2580149',
+                'FERREMAT HORIZONTE, C.A -',
+                'FERREMATERIALES SAN AGUSTIN, C.A. - 2531235',
+                'FERREMATERIALES TEIXEIRA GONCALVES, C.A - 2531030',
+                'FERRENVAL C.A - 2531225',
+                'FERREOSWHAR,C.A - 2541026',
+                'FERRETERIA A1 C.A. - 2579019',
+                'FERRETERIA CAR-PIN. C.E. C.A - 2525058',
+                'FERRETERIA EL ESPACIO, C.A. - 2541917',
+                'FERRETERIA INDUSTRIAL LAS VILLAS, C.A. - 2565026',
+                'FERRETERIA SAN DIMAS, C.A. - 2541033',
+                'FERRETERIA Y CONCRETERA AH CARTAGENA, C.A. -',
+                'FERRETERIA Y CONCRETERA MARIARA 2000 C.A. - 2541003',
+                'FERRETERIA Y MATERIALES DE CONSTRUCCION EL CARMEN C',
+                'FERROCK, C.A (FERROCK, C.A) - 2541054',
+                'GRUPO ISO HOME, C.A - 2531318',
+                'GRUPO TRIFERCA, C.A - 2580160',
+                'HIPER HIERRO, C.A - 2531151',
+                'HOGAR 245, C.A -',
+                'INVERSIONES C MIGUEL A C.A - 2525053',
+                'INVERSIONES DAGA 1105, C.A. - 2525020',
+                'INVERSIONES JR & JC, C.A - 2565071',
+                'INVERSIONES PAMOLCA, C.A - 2565063',
+                'INVERSIONES SAULCAROL 2021, C.A. - 2531277',
+                'INVERSIONES T & B, C.A -',
+                'INVERSIONES VOGO, C.A - 2580046',
+                'INVERSIONES Y SUMINISTROS MEGAFER, C.A - 2541052',
+                'LAS VILLAS CENTER, C.A -',
+                'MATERIALES D.J C.A - 2541053',
+                'MULTIMARCAS K & K, C.A - 2531341',
+                'MULTISERVICIOS EL PUENTE 20, C.A -',
+                'MWING CENTER, C.A -',
+                'PROTECTORRES, C.A - 2557096',
+                'R.T.G. MINERALS GROUP, C.A. -',
+                'SUMI 2023, C.A - 2531340',
+                'SUMINISTROS ESTELAR, C.A - 2565075',
+                'SUMINISTROS HORIZONTES, C.A -',
+                'SUMINISTROS LOCH, C.A - 2531305',
+                'SUPER GUACARA CENTER C.A - 2579017',
+                'SURTI ELECTRIC, C.A. - 2579003',
+                'TODOLUX 8A, C.A - 2531345',
+                'TORNILLERIA INDUSTRIAL C.A. TORNINDUCA - 2531833',
+                'V. ROMERO MINIMARKET, C.A. - 2531314',
+                'VARIEDADES CLARIMY 2022, C.A. - 2565078',
+            ];
+
+            // Generar la lista de clientes en el HTML
+            clients.forEach(clientText => {
+                const li = document.createElement('li');
+                li.textContent = clientText.trim();
+                li.addEventListener('click', function() {
+                    document.querySelectorAll('.client-list li').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    window.location.href = 'productos_prueba.html';
+                });
+                clientList.appendChild(li);
+            });
+
+            // Lógica para la navegación con el teclado simulado
+            const keyboardButtons = document.querySelectorAll('.keyboard button');
+            keyboardButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const letra = this.textContent;
+                    scrollToClientByLetter(letra);
+                });
+            });
+
+            // NUEVA FUNCIÓN PARA DESPLAZARSE AL CLIENTE
+            function scrollToClientByLetter(letter) {
+                const listItems = document.querySelectorAll('.client-list li');
+                let found = false;
+
+                // Remover la selección anterior
+                document.querySelectorAll('.client-list li').forEach(item => {
+                    item.classList.remove('selected');
+                });
+
+                for (const item of listItems) {
+                    // Limpiar el texto y comparar con la letra, sin importar mayúsculas/minúsculas
+                    if (item.textContent.trim().toUpperCase().startsWith(letter.toUpperCase())) {
+                        // Desplazar el elemento a la vista
+                        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Seleccionar el elemento
+                        item.classList.add('selected');
+                        found = true;
+                        break; // Detener el bucle una vez que se encuentra el primer cliente
+                    }
+                }
+
+                if (!found) {
+                    console.log(`No se encontraron clientes que comiencen con la letra '${letter}'.`);
+                }
+            }
+
+            // Lógica para el modal de ayuda
+            helpButton.addEventListener('click', function() {
+                helpModal.style.display = 'flex';
+            });
+
+            closeButton.addEventListener('click', function() {
+                helpModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
+            });
+            
+            // Lógica para el botón de retroceso en el encabezado
+            document.querySelector('.back-arrow').addEventListener('click', function() {
+                window.history.back();
+            });
+
+            // Lógica para posicionar los tooltips dinámicamente
+            document.querySelectorAll('[data-tooltip]').forEach(item => {
+                item.addEventListener('mouseenter', (event) => {
+                    const rect = event.target.getBoundingClientRect();
+                    item.style.setProperty('--tooltip-top', `${rect.top}px`);
+                    item.style.setProperty('--tooltip-left', `${rect.left + rect.width / 2}px`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

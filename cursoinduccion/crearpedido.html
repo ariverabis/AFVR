@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>021 - Detalle Pedido</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .client-info-bar {
+            background-color: #e0e0e0;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }
+        .client-info-bar .back-arrow {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .product-section {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex-grow: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-box .title {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .product-list-area {
+            flex-grow: 1;
+            background-color: white;
+        }
+        .summary-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+        .summary-info div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+        .summary-info .label {
+            font-weight: bold;
+            color: #555;
+        }
+        .summary-info .value-box {
+            background-color: #e0e0e0;
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+        .footer-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 15px;
+            background-color: white;
+            border-top: 1px solid #ccc;
+            gap: 10px;
+        }
+        .footer-buttons button {
+            flex-grow: 1;
+            padding: 12px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+            background-color: #e0e0e0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow">&#8592;</span>
+            <span>021 - Detalle Pedido</span>
+            <span class="menu-icon">&#x22EE;</span>
+        </div>
+
+        <div class="client-info-bar">
+            <span>A-40, C.A - 2565065</span>
+            <span class="back-arrow">&#8592;</span>
+        </div>
+
+        <div class="product-section">
+            <div class="product-box">
+                <div class="title">Producto</div>
+                <div class="product-list-area">
+                    </div>
+            </div>
+        </div>
+
+        <div class="summary-info">
+            <div>
+                <span class="label">Subtotal (USD):</span>
+                <span class="value-box">0,00</span>
+            </div>
+            <div>
+                <span class="label">Renglones:</span>
+                <span class="value-box">0</span>
+            </div>
+        </div>
+
+        <div class="footer-buttons">
+            <button>Prom.</button>
+            <button>Partida</button>
+            <button>Buscar</button>
+            <button>Otros</button>
+        </div>
+    </div>
+
+</body>
+</html>

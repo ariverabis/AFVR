@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>124 - Retenciones de IVA</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow-y: auto; margin: 15px; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        .footer-controls { padding: 15px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; border-top: 1px solid #ccc; }
+        .footer-controls select, .footer-controls input { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; }
+        .footer-controls button { padding: 8px 12px; font-size: 14px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s; }
+        .footer-controls .button-group { display: flex; gap: 10px; }
+        #btnValidar { background-color: #007BFF; color: white; }
+        #btnValidar:disabled { background-color: #ccc; cursor: not-allowed; }
+        #btnFinalizar { background-color: #28a745; color: white; }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&#8592;</span>
+            <span class="header-title">124 - Retenciones de IVA</span>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tipo</th>
+                        <th>No. Fiscal</th>
+                        <th>Monto (USD)</th>
+                    </tr>
+                </thead>
+                <tbody id="retencion-table-body">
+                    </tbody>
+            </table>
+        </div>
+        
+        <div class="footer-controls">
+            <select id="select-action">
+                <option value="">--Seleccione--</option>
+                <option value="escanear">Escanear Retención</option>
+                <option value="pdf">Cargar PDF</option>
+                <option value="imagen">Cargar Imagen</option>
+                <option value="manual">Cargar Manual</option>
+            </select>
+            <div class="button-group">
+                <button id="btnValidar" disabled>Validar</button>
+                <button id="btnFinalizar">Finalizar</button>
+            </div>
+            <span>Total retenido:</span>
+            <input type="text" id="total-retenido" value="0" readonly>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const selectAction = document.getElementById('select-action');
+            const btnValidar = document.getElementById('btnValidar');
+            const btnFinalizar = document.getElementById('btnFinalizar');
+
+            selectAction.addEventListener('change', (e) => {
+                if (e.target.value === 'manual') {
+                    btnValidar.disabled = false;
+                } else {
+                    btnValidar.disabled = true;
+                }
+            });
+
+            btnValidar.addEventListener('click', () => {
+                if (!btnValidar.disabled) {
+                    window.location.href = 'cargarretencion2.html';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

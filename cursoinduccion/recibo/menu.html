@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>044 - Menú Cobranza</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header .menu-icon { margin-left: auto; cursor: pointer; }
+        .client-info-bar { background-color: #e0e0e0; padding: 10px 15px; font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; display: flex; flex-direction: column; }
+        .client-info-bar span:first-child { margin-bottom: 5px; }
+        .message-bar { background-color: #ffeb3b; color: #333; padding: 10px; text-align: center; font-size: 12px; font-weight: bold; border-bottom: 1px solid #fbc02d; }
+        .main-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 15px; }
+        .menu-button { width: 100%; padding: 15px; font-size: 16px; font-weight: bold; text-align: center; color: #444; background-color: #e0e0e0; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: background-color 0.2s ease; position: relative; }
+        .menu-button:hover { background-color: #d0d0d0; }
+        .footer { padding: 10px; font-size: 10px; color: #888; text-align: center; border-top: 1px solid #eee; }
+
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip .tooltiptext { visibility: hidden; width: 150px; background-color: rgba(0, 0, 0, 0.8); color: #fff; text-align: center; border-radius: 5px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -75px; opacity: 0; transition: opacity 0.3s; font-size: 12px; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .header .tooltiptext { bottom: auto; top: 125%; }
+
+        /* Submenu styles */
+        .submenu { display: none; position: absolute; top: 50px; right: 10px; background-color: #fff; border: 1px solid #ccc; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; list-style: none; margin: 0; padding: 0; width: 150px; }
+        .submenu a { display: block; padding: 10px; text-decoration: none; color: #333; border-bottom: 1px solid #eee; }
+        .submenu a:hover { background-color: #f0f0f0; }
+        .submenu a:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow tooltip" onclick="history.back()">&#8592;<span class="tooltiptext">Volver a la pantalla anterior.</span></span>
+            <span>044 - Menú Cobranza</span>
+            <span class="menu-icon tooltip" onclick="toggleSubmenu()">&#x22EE;<span class="tooltiptext">Opciones de menú.</span></span>
+            <div class="submenu" id="submenu">
+                <a href="#">Ayuda</a>
+                <a href="#">Configuración</a>
+                <a href="#">Salir</a>
+            </div>
+        </div>
+        <div class="message-bar">Una vez que ud selecciono a un cliente aparece este menu y seleccione una opción para gestionar la cobranza.</div>
+        <div class="client-info-bar">
+            <span>ALTAMIRA FERRE-INDUSTRIAL - 2131133</span>
+            <span>Código Cliente: 2131133</span>
+        </div>
+        <div class="main-content">
+            <button class="menu-button tooltip" >
+                Estado de Cuenta
+                <span class="tooltiptext">Permite ver los saldos pendientes y el historial de pagos del cliente.</span>
+            </button>
+            <button class="menu-button tooltip">
+                Análisis de Deudores
+                <span class="tooltiptext">Muestra un resumen de las facturas vencidas y por vencer.</span>
+            </button>
+            <button class="menu-button tooltip" onclick="window.location.href='cargarretencion1.html'">
+                Retenciones de IVA
+                <span class="tooltiptext">Gestione las retenciones de IVA aplicadas a las facturas.</span>
+            </button>
+            <button class="menu-button tooltip" onclick="window.location.href='listado_recibos.html'">
+                Recibos de Cobro
+                <span class="tooltiptext">Permite generar y visualizar los recibos de cobro.</span>
+            </button>
+            <button class="menu-button tooltip" >
+                Calendario
+                <span class="tooltiptext">Calendario con las fechas de vencimiento de las facturas.</span>
+            </button>
+        </div>
+        <div class="footer"> &copy; Copyright Wholesale World Information Systems LTD, 2014 </div>
+    </div>
+
+    <script>
+        function toggleSubmenu() {
+            const submenu = document.getElementById('submenu');
+            submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function(event) {
+            const submenu = document.getElementById('submenu');
+            const menuIcon = document.querySelector('.menu-icon');
+            if (submenu.style.display === 'block' && !menuIcon.contains(event.target) && !submenu.contains(event.target)) {
+                submenu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Ventas - Optimizado para Móviles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .main-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .menu-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+        .menu-button:hover:not([disabled]) {
+            background-color: #d0d0d0;
+        }
+        .menu-button[disabled] {
+            color: #a0a0a0;
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Ajustes para que el mensaje emergente se adapte al tamaño del móvil
+           y se muestre correctamente.
+        */
+        .menu-button::before, .menu-button::after {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .menu-button:hover::before, .menu-button:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+        .menu-button::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            
+            /* -- ESTA ES LA CORRECCIÓN CLAVE -- */
+            white-space: normal; /* Permite que el texto se ajuste en varias líneas */
+            max-width: 250px;    /* Limita el ancho del tooltip para que no se salga */
+            /* -- FIN DE LA CORRECCIÓN -- */
+
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .menu-button::after {
+            content: '';
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(12px);
+            border-style: solid;
+            border-width: 6px 6px 0 6px;
+            border-color: #333 transparent transparent transparent;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow">&#8592;</span>
+            <span>073 - Menú Ventas</span>
+            <span class="menu-icon">&#x22EE;</span>
+        </div>
+
+        <div class="main-content">
+            <button id="btnPedidos" class="menu-button" data-tooltip="Recibe los pedidos que tus clientes han cargado en el catálogo.">Pedidos del catálogo</button>
+            <button id="btnClientes" class="menu-button" data-tooltip="Informacion de clientes.">Clientes</button>
+            <button id="btnConsultas" class="menu-button" data-tooltip="Consultas generales de ventas.">Consultas</button>
+            <button id="btnGestionVentas" class="menu-button" data-tooltip="Genera pedidos.">Gestión de Ventas</button>
+            <button id="btnTransmitir" class="menu-button" disabled data-tooltip="Envía tus transacciones al sistema central para su procesamiento.">Transmitir Transacciones</button>
+            <button id="btnSalir" class="menu-button" data-tooltip="Finaliza tu sesión.">Salir</button>
+        </div>
+
+        <div class="footer">
+            &copy; Copyright Wholesale World Information Systems LTD, 2014
+        </div>
+    </div>
+    
+    <script>
+        const buttons = document.querySelectorAll('.menu-button');
+        
+        buttons.forEach(button => {
+            if (!button.disabled) {
+                // Al tocar o hacer clic, puedes mostrar el mensaje en un alert si lo prefieres
+                button.addEventListener('click', function() {
+                    const tooltipMessage = this.getAttribute('data-tooltip');
+                    alert(tooltipMessage);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

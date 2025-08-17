@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Ventas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .main-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .menu-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+        }
+        .menu-button:hover:not([disabled]) {
+            background-color: #d0d0d0;
+        }
+        .menu-button[disabled] {
+            color: #a0a0a0;
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .footer {
+            padding: 10px;
+            font-size: 10px;
+            color: #888;
+            text-align: center;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow">&#8592;</span>
+            <span>073 - Menú Ventas</span>
+            <span class="menu-icon">&#x22EE;</span>
+        </div>
+
+        <div class="main-content">
+            <button id="btnPedidos" class="menu-button">Pedidos del catálogo</button>
+            <button id="btnClientes" class="menu-button">Clientes</button>
+            <button id="btnConsultas" class="menu-button">Consultas</button>
+            <button id="btnGestionVentas" class="menu-button">Gestión de Ventas</button>
+            <button id="btnTransmitir" class="menu-button" disabled>Transmitir Transacciones</button>
+            <button id="btnSalir" class="menu-button">Salir</button>
+        </div>
+
+        <div class="footer">
+            &copy; Copyright Wholesale World Information Systems LTD, 2014
+        </div>
+    </div>
+    
+    <script>
+        // Obtener una referencia a cada botón por su ID
+        const btnPedidos = document.getElementById('btnPedidos');
+        const btnClientes = document.getElementById('btnClientes');
+        const btnConsultas = document.getElementById('btnConsultas');
+        const btnGestionVentas = document.getElementById('btnGestionVentas');
+        const btnTransmitir = document.getElementById('btnTransmitir');
+        const btnSalir = document.getElementById('btnSalir');
+
+        // Asignar una función a cada botón cuando se haga clic
+        btnPedidos.addEventListener('click', function() {
+            // AQUÍ DEBES HACER EL CAMBIO para el botón "Pedidos"
+            alert('Has hecho clic en Pedidos del catálogo.');
+            // Cuando crees la página de pedidos, cambia la línea de arriba por:
+            // window.location.href = 'pedidos.html';
+        });
+
+        btnClientes.addEventListener('click', function() {
+            // AQUÍ DEBES HACER EL CAMBIO para el botón "Clientes"
+            window.location.href = 'clientes.html';
+            alert('Has hecho clic en Clientes.');
+            // window.location.href = 'clientes.html';
+        });
+
+        btnConsultas.addEventListener('click', function() {
+            // AQUÍ DEBES HACER EL CAMBIO para el botón "Consultas"
+            alert('Has hecho clic en Consultas.');
+            // window.location.href = 'consultas.html';
+        });
+
+        btnGestionVentas.addEventListener('click', function() {
+            // AQUÍ DEBES HACER EL CAMBIO para el botón "Gestión de Ventas"
+            window.location.href = 'clientes.html';
+            // window.location.href = 'gestion-ventas.html';
+        });
+
+        btnTransmitir.addEventListener('click', function() {
+            // Este botón está deshabilitado. No se puede hacer clic en él.
+            // Si lo habilitas en el HTML (quitando el atributo 'disabled'), esta función se ejecutará.
+        });
+
+        btnSalir.addEventListener('click', function() {
+            // AQUÍ DEBES HACER EL CAMBIO para el botón "Salir"
+            alert('Saliendo de la aplicación...');
+            // window.location.href = 'pagina-de-salida.html';
+        });
+    </script>
+</body>
+</html>

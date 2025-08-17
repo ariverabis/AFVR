@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>097 - Retenciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+        .header-actions span, .header-actions button { cursor: pointer; position: relative; }
+        #btnFinalizar {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: background-color 0.3s;
+        }
+        #btnFinalizar:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        #btnFinalizar:hover:not(:disabled) {
+            background-color: #218838;
+        }
+        .client-info { padding: 10px 15px; background-color: #f8f8f8; font-size: 14px; border-bottom: 1px solid #ccc; }
+        .info-row { display: flex; align-items: center; margin-bottom: 5px; position: relative; }
+        .info-row span { font-weight: bold; width: 100px; }
+        .info-row input { flex-grow: 1; padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
+        .info-row input:focus { outline: none; border-color: #007BFF; }
+        input.valid { border: 2px solid green; }
+        input.invalid { border: 2px solid red; }
+        .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        .table-row-selected { background-color: #b3e0ff; }
+        .checkbox-cell { width: 30px; }
+        .footer-controls { padding: 15px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; border-top: 1px solid #ccc; }
+        .footer-controls .select-all-row { display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+        .footer-controls .total-row { display: flex; align-items: center; gap: 10px; }
+        .footer-controls .total-row span { font-weight: bold; }
+        .footer-controls .total-row input { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; width: 120px; text-align: right; }
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 60px; }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 10px; position: relative; }
+        .close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-button:hover, .close-button:focus { color: black; text-decoration: none; cursor: pointer; }
+        .modal-item h4 { margin: 0; color: #007BFF; }
+        .modal-item p { margin: 5px 0 0; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="window.location.href='recibodecobro.html'">&#8592;</span>
+            <span class="header-title">097 - Retenciones</span>
+            <div class="header-actions">
+                <button id="btnFinalizar" disabled>Finalizar</button>
+                <span onclick="toggleHelpModal()">&#x22EE;</span>
+            </div>
+        </div>
+        <div class="client-info">
+            <div class="info-row">
+                <span>RIF:</span>
+                <input type="text" value="J412013688" readonly>
+            </div>
+            <div class="info-row">
+                <span>Razón Social:</span>
+                <input type="text" value="FERRELUGAMA, C.A. - 1331555" readonly>
+            </div>
+            <div class="info-row">
+                <span>Fecha Comp:</span>
+                <input type="date" id="fecha-comp">
+            </div>
+            <div class="info-row">
+                <span>Comprobante:</span>
+                <input type="text" id="comprobante" maxlength="14" placeholder="YYYYMMXXXXXXXX">
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th>Tipo</th>
+                            <th>No. Fiscal</th>
+                            <th>Monto (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="retencion-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="footer-controls">
+            <div class="select-all-row">
+                <input type="checkbox" id="selectAllCheckbox">
+                <label for="selectAllCheckbox">Seleccionar todo</label>
+            </div>
+            <div class="total-row">
+                <span>Total (USD):</span>
+                <input type="text" id="totalRetenidoUSD" value="0,00" readonly>
+            </div>
+        </div>
+    </div>
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="toggleHelpModal()">&times;</span>
+            <h3>Guía de Retenciones</h3>
+            <div class="modal-item">
+                <h4>Descripción de la Pantalla</h4>
+                <p>Esta pantalla muestra una lista de las facturas para aplicarles una retención.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Funciones de la Tabla</h4>
+                <p>
+                    <ul>
+                        <li><input type="checkbox" disabled> **Casilla de Selección:** Use las casillas para seleccionar las facturas a las que desea aplicar la retención.</li>
+                        <li>**Monto (USD):** Es el valor de la retención a aplicar.</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="modal-item">
+                <h4>Totales y Acciones</h4>
+                <p>
+                    <ul>
+                        <li>**Total (USD):** Muestra el total de las retenciones seleccionadas.</li>
+                        <li>**Finalizar:** Pulse este botón para guardar las retenciones asociadas a las facturas seleccionadas.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fechaCompInput = document.getElementById('fecha-comp');
+            const comprobanteInput = document.getElementById('comprobante');
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const totalRetenidoUSD = document.getElementById('totalRetenidoUSD');
+            const btnFinalizar = document.getElementById('btnFinalizar');
+            const modal = document.getElementById('helpModal');
+            const tableBody = document.getElementById('retencion-table-body');
+            
+            // Datos de facturas de ejemplo que se cargarán en la tabla
+            const invoices = [
+                { tipo: 'A', noFiscal: '06880849', importe: 97.05 },
+                { tipo: 'A', noFiscal: '06890830', importe: 64.66 },
+                { tipo: 'A', noFiscal: '06895077', importe: 80.60 },
+                { tipo: 'A', noFiscal: '06896835', importe: 102.01 }
+            ];
+
+            // Renderizar la tabla con las facturas predefinidas
+            function renderInvoicesTable() {
+                tableBody.innerHTML = '';
+                invoices.forEach(invoice => {
+                    const row = document.createElement('tr');
+                    const retencionMonto = invoice.importe * 0.05; // Simular 5% de retención
+                    row.dataset.monto = retencionMonto.toFixed(2);
+                    row.dataset.tipo = invoice.tipo;
+                    row.dataset.noFiscal = invoice.noFiscal;
+                    
+                    row.innerHTML = `
+                        <td class="checkbox-cell"><input type="checkbox"></td>
+                        <td>${invoice.tipo}</td>
+                        <td>${invoice.noFiscal}</td>
+                        <td>${retencionMonto.toFixed(2).replace('.', ',')}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+                
+                const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        updateTotal();
+                        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                        selectAllCheckbox.checked = allChecked;
+                    });
+                });
+                updateTotal();
+            }
+
+            function checkFinalizarButtonState() {
+                const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+                const hasSelectedItems = Array.from(checkboxes).some(cb => cb.checked);
+                const isComprobanteValid = comprobanteInput.classList.contains('valid');
+                btnFinalizar.disabled = !(hasSelectedItems && isComprobanteValid);
+            }
+
+            function updateTotal() {
+                const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+                let total = 0;
+                checkboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    if (checkbox.checked) {
+                        row.classList.add('table-row-selected');
+                        const montoString = row.dataset.monto;
+                        const numericValue = parseFloat(montoString);
+                        total += numericValue;
+                    } else {
+                        row.classList.remove('table-row-selected');
+                    }
+                });
+                totalRetenidoUSD.value = total.toFixed(2).replace('.', ',');
+                checkFinalizarButtonState();
+            }
+
+            selectAllCheckbox.addEventListener('change', () => {
+                const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                updateTotal();
+            });
+            
+            window.toggleHelpModal = function() {
+                modal.style.display = 'block';
+            }
+            document.querySelector('.close-button').onclick = () => modal.style.display = 'none';
+
+            fechaCompInput.addEventListener('change', () => {
+                const date = fechaCompInput.value;
+                if (date) {
+                    const [year, month] = date.split('-');
+                    comprobanteInput.value = `${year}${month}XXXXXXXX`;
+                } else {
+                    comprobanteInput.value = '';
+                }
+                validateComprobante();
+            });
+
+            function validateComprobante() {
+                const comprobanteValue = comprobanteInput.value;
+                const isValid = comprobanteValue.length === 14;
+                if (comprobanteValue.length === 0) {
+                    comprobanteInput.classList.remove('valid', 'invalid');
+                } else if (isValid) {
+                    comprobanteInput.classList.remove('invalid');
+                    comprobanteInput.classList.add('valid');
+                } else {
+                    comprobanteInput.classList.remove('valid');
+                    comprobanteInput.classList.add('invalid');
+                }
+                checkFinalizarButtonState();
+            }
+
+            comprobanteInput.addEventListener('input', validateComprobante);
+
+            btnFinalizar.addEventListener('click', () => {
+                const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+                const newRetentions = [];
+                checkboxes.forEach(checkbox => {
+                    if (checkbox.checked) {
+                        const row = checkbox.closest('tr');
+                        newRetentions.push({
+                            noFiscal: row.dataset.noFiscal,
+                            montoRetenido: parseFloat(row.dataset.monto)
+                        });
+                    }
+                });
+                
+                let appliedRetentions = JSON.parse(localStorage.getItem('appliedRetentions') || '[]');
+                newRetentions.forEach(newRet => {
+                    const existingIndex = appliedRetentions.findIndex(ret => ret.noFiscal === newRet.noFiscal);
+                    if (existingIndex !== -1) {
+                        appliedRetentions[existingIndex].montoRetenido += newRet.montoRetenido;
+                    } else {
+                        appliedRetentions.push(newRet);
+                    }
+                });
+                localStorage.setItem('appliedRetentions', JSON.stringify(appliedRetentions));
+                
+                alert('Retenciones guardadas. Redirigiendo al menú principal.');
+                window.location.href = 'menu.html'; // Cambio aquí
+            });
+            
+            renderInvoicesTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVF - Consulta de Precios</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title img {
+            height: 25px;
+            margin-right: 10px;
+        }
+        .guia {
+            background-color: #e0f7fa;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin: 10px 20px;
+            color: #333;
+            font-size: 0.9em;
+        }
+        .content {
+            display: flex;
+            padding: 15px;
+            gap: 15px;
+        }
+        .list-container {
+            flex: 1;
+        }
+        .list-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .list-container th, .list-container td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        .price-type-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .price-type-container label {
+            display: block;
+        }
+        .price-type-container input {
+            margin-right: 5px;
+        }
+        .price-info-form {
+            padding: 15px;
+            border-top: 1px solid #ccc;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .form-group label {
+            font-weight: bold;
+            font-size: 0.8em;
+            width: 100px;
+            flex-shrink: 0;
+        }
+        .form-group .input-group {
+            display: flex;
+            flex: 2;
+            gap: 5px;
+        }
+        .form-group .input-group input, .form-group .input-group select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            background-color: #f9f9f9;
+        }
+        .form-group .input-group span {
+            align-self: center;
+            font-size: 0.8em;
+        }
+
+        /* Estilos del tooltip (modificados para posicionamiento dinámico) */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: fixed; /* Usar 'fixed' para evitar problemas de posicionamiento en elementos anidados */
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            pointer-events: none; /* Evita que el tooltip interfiera con los eventos del cursor */
+            /* Propiedades CSS personalizadas para la posición que serán definidas por JavaScript */
+            top: var(--tooltip-top);
+            left: var(--tooltip-left);
+        }
+        
+        [data-tooltip]:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <img src="https://via.placeholder.com/25" alt="">
+            <span>084 - Consulta de Precios</span>
+        </div>
+        <a href="#" onclick="window.close();" class="back-arrow" title="Cerrar esta ventana.">&#8617;</a>
+    </div>
+
+    <p class="guia"> Esta pantalla muestra el detalle de los precios. Seleccione una forma de pago y un descuento para recalcular el precio final del producto.</p>
+
+    <div class="content">
+        <div class="list-container">
+            <table>
+                <thead>
+                    <tr data-tooltip="Tabla que muestra descuentos por días de crédito.">
+                        <th>Días</th>
+                        <th>Descuento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0,00</td>
+                        <td>0,00</td>
+                    </tr>
+                    <tr>
+                        <td>30,00</td>
+                        <td>0,00</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="price-type-container">
+            <label><input type="radio" name="tipo-precio" value="normal" checked data-tooltip="Precio basado en la unidad de inventario."> Normal</label>
+            <label><input type="radio" name="tipo-precio" value="unitario" data-tooltip="Precio unitario por pieza del producto."> Unitario</label>
+        </div>
+    </div>
+
+    <div class="price-info-form">
+        <div class="form-group">
+            <label for="precio-articulo" data-tooltip="El precio base del artículo.">Precio del Artículo:</label>
+            <div class="input-group">
+                <input type="text" id="precio-articulo" value="3,86" readonly>
+                <span data-tooltip="Moneda en la que se expresa el precio.">USD</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dscto-empaque" data-tooltip="Descuento aplicado por el empaque.">Dscto. Empaque:</label>
+            <div class="input-group">
+                <input type="text" id="dscto-empaque" value="0,00" readonly>
+                <span data-tooltip="Porcentaje de descuento.">(%)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dscto-autorizado" data-tooltip="Descuento autorizado especial.">Dscto. Autorizado:</label>
+            <div class="input-group">
+                <input type="text" id="dscto-autorizado" value="0" readonly>
+                <span data-tooltip="Porcentaje de descuento.">(%)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="dscto-promocion" data-tooltip="Seleccione un porcentaje de descuento de promoción (del 1% al 20%).">Dscto. Promoción:</label>
+            <div class="input-group">
+                <select id="dscto-promocion">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+                <span data-tooltip="Porcentaje de descuento.">(%)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="otro-dscto" data-tooltip="Otro descuento aplicado.">Otro Dscto:</label>
+            <div class="input-group">
+                <input type="text" id="otro-dscto" value="0,00" readonly>
+                <span data-tooltip="Porcentaje de descuento.">(%)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="forma-pago" data-tooltip="Seleccione la forma de pago.">Forma Pago:</label>
+            <div class="input-group">
+                <select id="forma-pago">
+                    <option value="transferencia-internacional" selected>TRANSFERENCIA INTERNACIONAL</option>
+                    <option value="deposito-usd">DEPOSITO USD 13%</option>
+                    <option value="deposito-transito-usd">DEPOSITO EN TRANSITO USD 13%</option>
+                    <option value="transferencia-ves">TRANSFERENCIA VES 0%</option>
+                </select>
+                <span data-tooltip="Porcentaje de descuento.">(%)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="precio-sin-iva" data-tooltip="Precio del producto sin el impuesto IVA.">Precio sin IVA:</label>
+            <div class="input-group">
+                <input type="text" id="precio-sin-iva" value="3,36" readonly>
+                <span data-tooltip="Moneda en la que se expresa el precio.">USD</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="precio-con-iva" data-tooltip="Precio final del producto con el IVA incluido.">Precio con IVA:</label>
+            <div class="input-group">
+                <input type="text" id="precio-con-iva" value="3,90" readonly>
+                <span data-tooltip="Moneda en la que se expresa el precio.">USD</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('[data-tooltip]').forEach(item => {
+            item.addEventListener('mouseenter', (event) => {
+                const tooltip = event.target;
+                const tooltipText = tooltip.getAttribute('data-tooltip');
+                
+                // Crea un elemento temporal para medir el tamaño del tooltip
+                const tempDiv = document.createElement('div');
+                tempDiv.style.visibility = 'hidden';
+                tempDiv.style.position = 'fixed';
+                tempDiv.style.whiteSpace = 'nowrap';
+                tempDiv.style.padding = '5px 10px';
+                tempDiv.style.fontSize = '12px';
+                tempDiv.textContent = tooltipText;
+                document.body.appendChild(tempDiv);
+                
+                const tooltipWidth = tempDiv.offsetWidth;
+                const tooltipHeight = tempDiv.offsetHeight;
+                
+                document.body.removeChild(tempDiv);
+
+                const rect = tooltip.getBoundingClientRect();
+                let topPosition = rect.bottom + 5; // Posición inicial debajo del elemento
+                let leftPosition = rect.left + (rect.width / 2) - (tooltipWidth / 2);
+
+                // Revisa si el tooltip se sale del borde derecho de la pantalla
+                if (leftPosition + tooltipWidth > window.innerWidth - 10) {
+                    leftPosition = window.innerWidth - tooltipWidth - 10;
+                }
+
+                // Revisa si el tooltip se sale del borde izquierdo de la pantalla
+                if (leftPosition < 10) {
+                    leftPosition = 10;
+                }
+                
+                // Revisa si el tooltip se sale del borde inferior de la pantalla
+                if (topPosition + tooltipHeight > window.innerHeight) {
+                    // Si se sale, lo coloca encima del elemento
+                    topPosition = rect.top - tooltipHeight - 5;
+                }
+                
+                // Asigna las posiciones al pseudo-elemento del tooltip usando CSS custom properties
+                tooltip.style.setProperty('--tooltip-top', `${topPosition}px`);
+                tooltip.style.setProperty('--tooltip-left', `${leftPosition}px`);
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

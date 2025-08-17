@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>064 - Incluir Pagos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+        .header-actions span { cursor: pointer; }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header .close-btn {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .form-actions button {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .form-actions #btnIncluir {
+            background-color: #007BFF;
+            color: white;
+        }
+        
+        .form-actions #btnLimpiar {
+            background-color: #e0e0e0;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>064 - Incluir Pagos</span>
+                <span class="close-btn" onclick="window.history.back()">&#x2716;</span>
+            </div>
+            
+            <span style="font-weight: bold; text-align: left;">AGREGAR PAGO</span>
+
+            <div class="input-group">
+                <label for="moneda">Moneda:</label>
+                <select id="moneda">
+                    <option value="US Dollar">US Dollar</option>
+                    <option value="Bolívares">Bolívares</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="formaPago">Forma Pago:</label>
+                <select id="formaPago">
+                    <option value="DEPOSITO USD">DEPOSITO USD</option>
+                    <option value="DEPOSITO EN TRANSITO USD">DEPOSITO EN TRANSITO USD</option>
+                    <option value="TRANSFERENCIA VES">TRANSFERENCIA VES</option>
+                    <option value="TRANSFERENCIA INTERNACIONAL USD">TRANSFERENCIA INTERNACIONAL USD</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="monto">Monto:</label>
+                <input type="number" id="monto" value="50,43" step="0.01" />
+            </div>
+
+            <div class="form-actions">
+                <button id="btnIncluir">Incluir</button>
+                <button id="btnLimpiar">Limpiar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('btnIncluir').addEventListener('click', () => {
+            const formaPago = document.getElementById('formaPago').value;
+            const moneda = document.getElementById('moneda').value;
+            const monto = document.getElementById('monto').value;
+            
+            if (monto === '' || parseFloat(monto) <= 0) {
+                alert('Por favor, ingrese un monto válido.');
+                return;
+            }
+            
+            // Codificar los datos de pago para pasarlos a la página anterior
+            const paymentData = {
+                formaPago: formaPago,
+                moneda: moneda,
+                monto: monto.replace('.', ',')
+            };
+            const encodedPayment = encodeURIComponent(JSON.stringify(paymentData));
+
+            // Redirigir a la página anterior, pasando los datos como parámetros de URL
+            window.location.href = `listado_recibos.html?newPayment=${encodedPayment}`;
+        });
+        
+        document.getElementById('btnLimpiar').addEventListener('click', () => {
+            document.getElementById('moneda').selectedIndex = 0;
+            document.getElementById('formaPago').selectedIndex = 0;
+            document.getElementById('monto').value = '';
+        });
+    </script>
+</body>
+</html>

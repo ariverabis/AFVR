@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVF - Productos</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+        .header {
+            background-color: #2e8b57;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title img {
+            height: 25px;
+            margin-right: 10px;
+        }
+        .info-box {
+            background-color: #d3d3d3;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .info-box p {
+            margin: 0;
+            font-weight: bold;
+        }
+        .info-box .back-arrow {
+            font-size: 2em;
+            cursor: pointer;
+            color: #555;
+            text-decoration: none;
+        }
+        .guia-recomendacion {
+            background-color: #e0f7fa;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            margin: 10px 20px;
+            color: #333;
+            font-size: 0.9em;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+        .search-form {
+            padding: 20px;
+        }
+        .search-form h3 {
+            margin-top: 0;
+            font-size: 1.1em;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+        .form-group label {
+            flex: 1;
+            font-weight: bold;
+            cursor: help; /* Indica al usuario que la etiqueta tiene información adicional */
+        }
+        .form-group input, .form-group select {
+            flex: 2;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .action-buttons button {
+            padding: 15px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            background-color: #d3d3d3;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .action-buttons button:hover {
+            background-color: #c0c0c0;
+        }
+        .action-buttons button:active {
+            background-color: #a9a9a9;
+        }
+        .order-by-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .order-by-group button {
+            padding: 10px;
+            font-size: 1.2em;
+            background-color: #d3d3d3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options {
+            cursor: pointer;
+        }
+
+        /* Estilos para el modal de ayuda */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 320px;
+        }
+        .close-button {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-item {
+            margin-bottom: 15px;
+        }
+        .modal-item h4 {
+            margin: 0;
+            color: #2e8b57;
+        }
+        .modal-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        /* Estilos para los mensajes emergentes (tooltips) - CORREGIDOS */
+        [data-tooltip] {
+            position: relative;
+        }
+        
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: fixed;
+            top: var(--tooltip-top);
+            left: var(--tooltip-left);
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <img src="logofebeca.png" alt="Logo">
+            <span>034 - Productos</span>
+        </div>
+        <div class="options" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">...</div>
+    </div>
+
+    <div class="info-box">
+        <p>Artículo</p>
+        <a href="detallepedido_prueba.html" class="back-arrow" data-tooltip="Regresar a la pantalla de detalle de pedido">&#8617;</a>
+    </div>
+    
+    <p class="guia-recomendacion">
+        Para una búsqueda eficiente, se recomienda seleccionar <br> " -- Todas --" en el campo Grupo antes de presionar Buscar.
+    </p>
+
+    <div class="search-form">
+        <form id="form-busqueda" action="#" method="get">
+            <div class="form-group">
+                <label for="codigo" data-tooltip="código del producto para una búsqueda.">Código:</label>
+                <input type="text" id="codigo" name="codigo">
+            </div>
+            <div class="form-group">
+                <label for="nombre" data-tooltip="nombre o parte del nombre del producto.">Nombre:</label>
+                <input type="text" id="nombre" name="nombre">
+            </div>
+            <div class="form-group">
+                <label for="referencia" data-tooltip="Referencia del producto.">Referencia:</label>
+                <input type="text" id="referencia" name="referencia">
+            </div>
+            <div class="form-group">
+                <label for="marca" data-tooltip="Marca del producto.">Marca:</label>
+                <select id="marca" name="marca">
+                    <option value="">--Seleccione--</option>
+                    <option value="bosch">Bosch</option>
+                    <option value="stanley">Stanley</option>
+                    <option value="dewalt">DeWalt</option>
+                    <option value="black-decker">Black+Decker</option>
+                    <option value="pcp">PCP</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categoria" data-tooltip="Seleccione la categoría de productos (ej. herramientas, eléctricos).">Categoría:</label>
+                <select id="categoria" name="categoria">
+                    <option value="">--Seleccione--</option>
+                    <option value="herramientas-electricas">Herramientas Eléctricas</option>
+                    <option value="herramientas-manuales">Herramientas Manuales</option>
+                    <option value="pinturas">Pinturas y Accesorios</option>
+                    <option value="plomeria">Plomería</option>
+                    <option value="electricidad">Electricidad</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subcategoria" data-tooltip="Seleccione una sub-categoría para refinar la búsqueda.">Sub-Categoría:</label>
+                <select id="subcategoria" name="subcategoria">
+                    <option value="">--Seleccione--</option>
+                    <option value="taladros">Taladros</option>
+                    <option value="sierras">Sierras</option>
+                    <option value="llaves-ajustables">Llaves Ajustables</option>
+                    <option value="lijadoras">Lijadoras</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="grupo" data-tooltip="Seleccione el grupo de productos. Es recomendable elegir '-- Todas --' para búsquedas amplias.">Grupo:</label>
+                <select id="grupo" name="grupo">
+                    <option value="">--Seleccione--</option>
+                    <option value="todas">-- Todas --</option>
+                    <option value="grupo-a">Grupo A</option>
+                    <option value="grupo-b">Grupo B</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="partida" data-tooltip="Seleccione la partida a la que pertenece el producto.">Partida:</label>
+                <select id="partida" name="partida">
+                    <option value="">--Seleccione--</option>
+                    <option value="partida-1">Partida 1</option>
+                    <option value="partida-2">Partida 2</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="clasificacion" data-tooltip="Seleccione la clasificación del producto.">Clasificación:</label>
+                <select id="clasificacion" name="clasificacion">
+                    <option value="">--Seleccione--</option>
+                    <option value="clas-a">Clase A</option>
+                    <option value="clas-b">Clase B</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ordenar-por" data-tooltip="Seleccione un criterio para ordenar los resultados.">Ordenar Por:</label>
+                <div class="order-by-group">
+                    <select id="ordenar-por" name="ordenar-por">
+                        <option value="">--Seleccione--</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="precio">Precio</option>
+                        <option value="codigo">Código</option>
+                    </select>
+                    <button type="button" data-tooltip="Añadir un criterio de ordenamiento adicional.">+</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="action-buttons">
+        <button type="button" id="btnLimpiar" data-tooltip="Borra todos los campos del formulario de búsqueda.">Limpiar</button>
+        <button type="button" id="btnBuscar" data-tooltip="Presione para ejecutar la búsqueda con los criterios seleccionados.">Buscar</button>
+    </div>
+</div>
+
+<div id="helpModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Guía de Uso - Productos</h3>
+        <div class="modal-item">
+            <h4>Búsqueda por Campos</h4>
+            <p>Utilice los campos de texto y las listas desplegables para filtrar los productos por Código, Nombre, Referencia, Marca, Categoría, Sub-Categoría, Grupo o Partida.</p>
+        </div>
+        <div class="modal-item">
+            <h4>Recomendación de búsqueda</h4>
+            <p>Para resultados más completos, es recomendable seleccionar la opción "-- Todas --" en el campo Grupo.</p>
+        </div>
+        <div class="modal-item">
+            <h4>Botones de Acción</h4>
+            <ul>
+                <li><strong>Limpiar:</strong> Borra todos los filtros de búsqueda aplicados.</li>
+                <li><strong>Buscar:</strong> Ejecuta la búsqueda de productos según los criterios seleccionados.</li>
+                <li><strong>Regresar:</strong> (Flecha) Vuelve a la pantalla de detalle del pedido.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const helpButton = document.getElementById('btnHelp');
+        const helpModal = document.getElementById('helpModal');
+        const closeButton = document.querySelector('.close-button');
+        const limpiarButton = document.getElementById('btnLimpiar');
+        const buscarButton = document.getElementById('btnBuscar');
+
+        function validarBusqueda() {
+            const grupoSeleccionado = document.getElementById('grupo').value;
+            
+            if (grupoSeleccionado !== 'todas' && grupoSeleccionado !== '') {
+                const confirmacion = confirm('Advertencia: Se recomienda encarecidamente seleccionar "-- Todas --" en el campo Grupo para una búsqueda completa. ¿Desea continuar con la búsqueda actual?');
+                
+                if (confirmacion) {
+                    window.location.href = 'resultados_prueba.html';
+                }
+            } else {
+                window.location.href = 'resultados_prueba.html';
+            }
+        }
+        
+        // Asignar la función validarBusqueda al botón Buscar
+        buscarButton.addEventListener('click', validarBusqueda);
+
+        // Lógica para el modal de ayuda
+        helpButton.addEventListener('click', function() {
+            helpModal.style.display = 'flex';
+        });
+
+        closeButton.addEventListener('click', function() {
+            helpModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target === helpModal) {
+                helpModal.style.display = 'none';
+            }
+        });
+
+        // Lógica para el botón "Limpiar"
+        limpiarButton.addEventListener('click', function() {
+            document.getElementById('form-busqueda').reset();
+        });
+
+        // Lógica para posicionar los tooltips dinámicamente
+        document.querySelectorAll('[data-tooltip]').forEach(item => {
+            item.addEventListener('mouseenter', (event) => {
+                const rect = event.target.getBoundingClientRect();
+                const tooltipText = item.getAttribute('data-tooltip');
+                const tooltipWidth = tooltipText.length * 6; // Estimación del ancho
+                
+                let leftPosition = rect.left + (rect.width / 2);
+                let topPosition = rect.top;
+
+                // Ajuste para evitar que el tooltip se salga de la pantalla
+                if (leftPosition - tooltipWidth / 2 < 0) {
+                    leftPosition = tooltipWidth / 2 + 10;
+                } else if (leftPosition + tooltipWidth / 2 > window.innerWidth) {
+                    leftPosition = window.innerWidth - tooltipWidth / 2 - 10;
+                }
+                
+                // Si el elemento está en la parte superior, el tooltip se coloca debajo
+                if (topPosition < 50) { 
+                    item.style.setProperty('--tooltip-top', `${topPosition + rect.height + 5}px`);
+                } else {
+                    item.style.setProperty('--tooltip-top', `${topPosition - 5}px`);
+                }
+                
+                item.style.setProperty('--tooltip-left', `${leftPosition}px`);
+            });
+        });
+    });
+</script>
+
+</body>
+</html> 

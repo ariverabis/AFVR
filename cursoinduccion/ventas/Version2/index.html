@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción al Curso - Menús de Venta</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .image-card {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: calc(50% - 10px); /* Dos imágenes por fila en pantallas grandes */
+            max-width: 300px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+        .image-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px solid #ddd;
+        }
+        .image-card .image-title {
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #0056b3;
+        }
+        
+        /* Media Queries para diseño responsive */
+        @media (min-width: 768px) {
+            .image-gallery {
+                justify-content: space-around;
+            }
+            .image-card {
+                width: calc(25% - 15px); /* Cuatro imágenes por fila en pantallas grandes */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenido al Curso Interactivo</h1>
+        <p>Explora los diferentes módulos de nuestra aplicación de gestión de ventas haciendo clic en las miniaturas. Cada imagen te llevará a un ejemplo práctico.</p>
+
+        <div class="image-gallery">
+            <a href="catalogo-beval.html" class="image-card">
+                <img src="catalogo beval.jpeg" alt="Catálogo Beval">
+                <div class="image-title">
+                    Catálogo Beval
+                </div>
+            </a>
+            <a href="catalogo-sillaca.html" class="image-card">
+                <img src="catalogo sillaca.jpeg" alt="Catálogo Sillaca">
+                <div class="image-title">
+                    Catálogo Sillaca
+                </div>
+            </a>
+            <a href="catalogofebeca.html" class="image-card">
+                <img src="catalogofebeca.jpeg" alt="Catálogo Febeca">
+                <div class="image-title">
+                    Catálogo Febeca
+                </div>
+            </a>
+            <a href="MenuVentasFH.html" class="image-card">
+                <img src="AFV.jpeg" alt="Inicio de Sesión AFV">
+                <div class="image-title">
+                    Inicio de Sesión
+                </div>
+            </a>
+                <a href="Sds.html" class="image-card">
+                <img src="sds.jpeg" alt="Inicio de Sesión AFV">
+                <div class="image-title">
+                    Inicio de Sesión
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
