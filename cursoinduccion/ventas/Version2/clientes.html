@@ -247,7 +247,7 @@
         </div>
     </div>
 
-    <div id="helpModalPedido" class="modal" style="display: flex;">
+    <div id="helpModalPedido" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal('helpModalPedido')">&times;</span>
             <h3>Pasos para elaborar un pedido</h3>
@@ -268,6 +268,9 @@
             const clientList = document.querySelector('.client-list');
             const helpModal = document.getElementById('helpModal');
             const helpModalPedido = document.getElementById('helpModalPedido');
+
+            // Mostrar el modal de ayuda de pedido al cargar la página
+            helpModalPedido.style.display = 'flex';
 
             // Función para cerrar cualquier modal
             window.closeModal = function(modalId) {
@@ -392,11 +395,10 @@
 
             // Lógica para el modal de ayuda de uso
             const helpButton = document.getElementById('btnHelp');
-            const helpModalPedido = document.getElementById('helpModalPedido');
             helpButton.addEventListener('click', function() {
                 helpModal.style.display = 'flex';
             });
-            
+
             // Lógica para el nuevo modal de pasos de pedido
             const helpButtonPedido = document.getElementById('btnHelpPedido');
             helpButtonPedido.addEventListener('click', function() {
