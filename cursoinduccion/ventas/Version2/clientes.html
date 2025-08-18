@@ -17,7 +17,7 @@
         }
         .screen-container {
             width: 360px;
-            height: 640px;
+            height: auto;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             border-radius: 10px;
@@ -46,6 +46,16 @@
             cursor: pointer;
             margin-right: 10px;
             font-size: 20px;
+        }
+        /* Nuevo estilo para el mensaje de ayuda */
+        .help-message-container {
+            background-color: #e0f7fa;
+            color: #004d40;
+            padding: 10px;
+            border-bottom: 1px solid #b2dfdb;
+            font-size: 14px;
+            text-align: left;
+            white-space: pre-wrap;
         }
         .search-section {
             padding: 15px;
@@ -197,6 +207,10 @@
             <span class="menu-icon" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</span>
         </div>
 
+        <div class="help-message-container">
+            Para una búsqueda eficiente, se recomienda seleccionar<br>"--- Todas ---" en el campo Grupo antes de<br>presionar Buscar.
+        </div>
+
         <div class="search-section">
             <div class="search-row">
                 <label for="route" data-tooltip="Selecciona la ruta de clientes a mostrar.">Ruta:</label>
@@ -268,9 +282,6 @@
             const clientList = document.querySelector('.client-list');
             const helpModal = document.getElementById('helpModal');
             const helpModalPedido = document.getElementById('helpModalPedido');
-
-            // Mostrar el modal de ayuda de pedido al cargar la página
-            helpModalPedido.style.display = 'flex';
 
             // Función para cerrar cualquier modal
             window.closeModal = function(modalId) {
