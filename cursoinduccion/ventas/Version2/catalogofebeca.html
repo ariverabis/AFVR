@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayorista de Valor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-size: 14px;
+        }
+
+        .container {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: white;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+        }
+
+        .sidebar.open {
+            width: 250px;
+        }
+
+        .sidebar-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-size: 1.2em;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 1.1em;
+            color: #333;
+            display: block;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebar .new-notifications {
+            background-color: #ffc107;
+            color: black;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sidebar .section-title {
+            padding: 10px 15px;
+            font-weight: bold;
+            color: #ffc107;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .sidebar .communication-item, .sidebar .config-item, .sidebar .help-item {
+            font-size: 0.9em;
+        }
+
+        .top-bar {
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+        }
+
+        .top-bar .menu-button {
+            font-size: 2em;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .top-bar .search-container {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .top-bar .search-container input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .top-bar .search-container .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        
+        .product-section, .new-arrivals-section {
+            padding: 10px;
+        }
+
+        .product-list, .new-arrivals-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px;
+            flex-shrink: 0;
+            width: 150px;
+            text-align: center;
+            position: relative;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-card .price {
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 5px;
+        }
+
+        .product-card .icon-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .product-card .icon-row span {
+            cursor: pointer;
+            font-size: 1.2em;
+            color: #007bff;
+        }
+
+        .product-card .icon-row span:hover {
+            color: #0056b3;
+        }
+
+        .section-title-products {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .section-title-arrivals {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .see-all-button {
+            text-align: right;
+            padding-right: 10px;
+            color: #007bff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 350px;
+            border-radius: 8px;
+            position: relative;
+            text-align: center;
+        }
+        
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .close-button {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .modal-body {
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .detail-row label {
+            font-weight: bold;
+            white-space: nowrap;
+            margin-right: 10px;
+        }
+
+        .detail-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            background-color: #d3d3d3;
+        }
+        
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .modal-footer .ok-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-footer .cancel-button {
+            background-color: #ccc;
+        }
+
+        .modal-retenciones .modal-body {
+            display: block;
+        }
+
+        .modal-retenciones .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .modal-retenciones .modal-body th, .modal-retenciones .modal-body td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .modal-retenciones .modal-body th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .modal-retenciones .modal-body tr.selected {
+            background-color: #b0e0e6;
+        }
+
+        .modal-retenciones .total-section {
+            margin-top: 15px;
+        }
+
+        .modal-retenciones .total-section input {
+            width: 100px;
+        }
+
+        .modal-retenciones .total-section button {
+            margin-left: 10px;
+        }
+        
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 10px;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+        <h3 style="margin:0;">Mayorista de Valor</h3>
+        <span>Bienvenido v115464813</span>
+    </div>
+    <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
+    <a href="#" class="tooltip">Mi Compañía<span class="tooltiptext">Ver información de la empresa.</span></a>
+    <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes.</span></a>
+    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar categorías de productos.</span></a>
+    <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados para ti.</span></a>
+    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes.</span></a>
+    
+    <div class="section-title">Solicitudes de Cotización</div>
+    <a href="#" class="tooltip">Solicitud Abierta<span class="tooltiptext">Ver cotizaciones pendientes.</span></a>
+    <a href="#" class="tooltip">Solicitudes Cerradas<span class="tooltiptext">Ver cotizaciones finalizadas.</span></a>
+    
+    <div class="section-title">Mis Cotizaciones</div>
+    <a href="#" class="tooltip">Cotizaciones Abiertas<span class="tooltiptext">Ver mis cotizaciones pendientes.</span></a>
+    <a href="#" class="tooltip">Cotizaciones Cerradas<span class="tooltiptext">Ver mis cotizaciones finalizadas.</span></a>
+
+    <div class="section-title">Comunicación</div>
+    <a href="#" class="communication-item tooltip">Contáctanos<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
+    <a href="#" class="communication-item tooltip">Invitar Amigos<span class="tooltiptext">Invitar a otros a usar la aplicación.</span></a>
+
+    <div class="section-title">Configuración</div>
+    <a href="#" class="config-item tooltip">Mi Cuenta<span class="tooltiptext">Configurar perfil y detalles de la cuenta.</span></a>
+    <a href="#" class="config-item tooltip">Manejo de Imágenes<span class="tooltiptext">Administrar imágenes de productos.</span></a>
+
+    <div class="section-title">Ayuda</div>
+    <a href="#" class="help-item tooltip">Mensaje Bienvenida<span class="tooltiptext">Ver el mensaje de bienvenida.</span></a>
+    <a href="#" class="help-item tooltip">Reportar Error<span class="tooltiptext">Enviar un reporte de error.</span></a>
+    <a href="#" class="help-item tooltip">Acerca de<span class="tooltiptext">Ver información de la aplicación.</span></a>
+</div>
+
+<div class="container" id="main-content">
+    
+    <div class="top-bar">
+        <button class="menu-button tooltip" onclick="toggleSidebar()">&#9776;<span class="tooltiptext">Abrir/Cerrar menú lateral.</span></button>
+        <div class="search-container tooltip">
+            <input type="text" placeholder="Buscar">
+            <span class="search-icon">&#128269;</span>
+            <span class="tooltiptext">Buscar productos por nombre o código.</span>
+        </div>
+    </div>
+    
+    <div class="product-section">
+        <div class="product-list">
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Extractor de Aire">
+                <div class="product-title">Extractor de Aire 6 FP</div>
+                <div class="price">USD 100,39</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Ventilador de Mesa">
+                <div class="product-title">Ventilador de Mesa Oscilante</div>
+                <div class="price">USD 31,07</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Válvula de Aire">
+                <div class="product-title">Válvula Inser...</div>
+                <div class="price">USD 20,50</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="see-all-button">VER TODOS</div>
+    </div>
+
+    <div class="new-arrivals-section">
+        <div class="section-title-arrivals">Nuevas Existencias</div>
+        <div class="new-arrivals-list">
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Pintura Naranja">
+                <div class="product-title">Pintura Esmalte Brillante Naranja</div>
+                <div class="price">USD 36,40</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Pintura Negra">
+                <div class="product-title">Pintura Esmalte Brillante Negro</div>
+                <div class="price">USD 10,66</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card tooltip">
+                <img src="https://via.placeholder.com/150" alt="Teflón Líquido">
+                <div class="product-title">Teflón Líquido Sellador</div>
+                <div class="price">USD 5,75</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="retencionModal" class="modal" onclick="closeModal('retencionModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            098 - Detalle Retencion
+            <span class="close-button" onclick="closeModal('retencionModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <label>Comprobante:</label>
+                <input type="text" value="20250800000000" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Tipo Doc:</label>
+                <input type="text" value="FAC" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Doc:</label>
+                <input type="text" value="06886193" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Control:</label>
+                <input type="text" value="" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Alicuota (%):</label>
+                <input type="text" value="16,00% Ret: 75.0%" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Base:</label>
+                <input type="text" value="20.808,38" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Impuesto:</label>
+                <input type="text" value="2.869,93" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Retención:</label>
+                <input type="text" value="2.152,44" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button">OK</button>
+            <button class="cancel-button">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="retencionesIVAModal" class="modal modal-retenciones" onclick="closeModal('retencionesIVAModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            124 - Retenciones de IVA
+            <span class="close-button" onclick="closeModal('retencionesIVAModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tipo</th>
+                        <th>No. Fiscal</th>
+                        <th>Monto (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886186</td>
+                        <td>9,60</td>
+                    </tr>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886193</td>
+                        <td>18,92</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="total-section">
+                <span>--Seleccione--</span>
+                <select>
+                    <option>Escanear Retención</option>
+                    <option>Cargar PDF</option>
+                    <option>Cargar Imagen</option>
+                    <option>Cargar Manual</option>
+                </select>
+                <label>Total retenido:</label>
+                <input type="text" value="0" readonly>
+                <button>Validar</button>
+                <button>Finalizar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+        } else {
+            sidebar.style.width = '250px';
+        }
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    // Funciones para simular interacciones de las ventanas modales
+    document.addEventListener('DOMContentLoaded', () => {
+        // Simular clic para abrir el modal de Retenciones de IVA
+        // Esto es solo para demostración. En una aplicación real, se activaría con un evento.
+        // Por ejemplo: openModal('retencionesIVAModal');
+
+        // Simular clic para abrir el modal de Detalle Retención
+        // Esto es solo para demostración.
+        // Por ejemplo: openModal('retencionModal');
+    });
+
+    // Función para simular la selección de filas en la tabla
+    function toggleSelection(row) {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        if (checkbox.checked) {
+            row.classList.add('selected');
+        } else {
+            row.classList.remove('selected');
+        }
+    }
+</script>
+
+</body>
+</html>
