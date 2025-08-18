@@ -45,7 +45,7 @@
             position: absolute;
             top: 0;
             width: 100%;
-            cursor: pointer; /* Agregado para indicar que es clickeable */
+            cursor: pointer;
         }
 
         .sidebar a {
@@ -125,6 +125,53 @@
             color: #888;
         }
         
+        /* New Styles for Crypto Section */
+        .crypto-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .crypto-container p {
+            margin: 0 0 10px 0;
+        }
+
+        .crypto-container .crypto-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .crypto-container .crypto-info .crypto-text {
+            flex: 1;
+        }
+
+        .crypto-container .crypto-img {
+            width: 80px;
+            height: auto;
+        }
+
+        .crypto-container .qr-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .crypto-container .qr-item {
+            text-align: center;
+        }
+
+        .crypto-container .qr-item img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+        }
+
         .product-section, .new-arrivals-section {
             padding: 10px;
         }
@@ -367,14 +414,14 @@
 <div id="sidebar" class="sidebar">
     <div class="sidebar-header" onclick="toggleSidebar()">
         <h3 style="margin:0; cursor: pointer;">Mayorista de Valor</h3>
-        <span>Bienvenido v115464813</span>
+        <span>Bienvenido RIf0000000</span>
     </div>
     <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
     <a href="#" class="tooltip">Mi Compañía<span class="tooltiptext">Ver información de la empresa.</span></a>
-    <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes.</span></a>
-    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar categorías de productos.</span></a>
-    <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados para ti.</span></a>
-    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes.</span></a>
+    <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes (cambios de existencia).</span></a>
+    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar listas  de productos creadas segun la necesidad del usuario.</span></a>
+    <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados.</span></a>
+    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes Crear clientes o seleccionarlos.</span></a>
     
     <div class="section-title">Solicitudes de Cotización</div>
     <a href="#" class="tooltip">Solicitud Abierta<span class="tooltiptext">Ver cotizaciones pendientes.</span></a>
@@ -409,6 +456,30 @@
         </div>
     </div>
     
+    <div class="crypto-container">
+        <div class="crypto-info">
+            <div class="crypto-text">
+                <h3>¡Ahora pueden pagar con la Criptomoneda Tether (USDT)!</h3>
+                <p>Y aprovecha el descuento por forma de pago.</p>
+            </div>
+            <img src="cripto.png" alt="Logo de Tether" class="crypto-img">
+        </div>
+        <p>Para realizar su pago de manera rápida y segura, pueden escanear el código QR o utilizar las siguientes direcciones de nuestra Wallet:</p>
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="codigoqr.png" alt="QR ERC20">
+                <p>ERC</p>
+                <p>Red ERC-20: 0x0AF8eBeD4800d7B8EaE0db7feC7c9Efb60FAc193A</p>
+            </div>
+            <div class="qr-item">
+                <img src="https://via.placeholder.com/100" alt="QR TRC20">
+                <p>TRC</p>
+                <p>Red TRC-20: TD6CrQk3BcPPeFLqZJm2NptEQLQZM9H4Cd</p>
+            </div>
+        </div>
+        <p style="text-align: right; font-size: 0.8em; color: #666;">Fecha de publicación: 10 de junio del 2025</p>
+    </div>
+
     <div class="product-section">
         <div class="product-list">
             <div class="product-card tooltip">
