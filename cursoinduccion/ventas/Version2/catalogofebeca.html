@@ -45,6 +45,7 @@
             position: absolute;
             top: 0;
             width: 100%;
+            cursor: pointer; /* Agregado para indicar que es clickeable */
         }
 
         .sidebar a {
@@ -364,8 +365,8 @@
 <body>
 
 <div id="sidebar" class="sidebar">
-    <div class="sidebar-header">
-        <h3 style="margin:0;">Mayorista de Valor</h3>
+    <div class="sidebar-header" onclick="toggleSidebar()">
+        <h3 style="margin:0; cursor: pointer;">Mayorista de Valor</h3>
         <span>Bienvenido v115464813</span>
     </div>
     <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
@@ -411,7 +412,7 @@
     <div class="product-section">
         <div class="product-list">
             <div class="product-card tooltip">
-                <img src="extractor.png" alt="Extractor de Aire">
+                <img src="extractordeaire.png" alt="Extractor de Aire">
                 <div class="product-title">Extractor de Aire 6 FP</div>
                 <div class="price">USD 100,39</div>
                 <div class="icon-row">
@@ -421,7 +422,7 @@
                 </div>
             </div>
             <div class="product-card tooltip">
-                <img src="ventiladordemesa.png" alt="Ventilador de Mesa">
+                <img src="ventiladordemesa" alt="Ventilador de Mesa">
                 <div class="product-title">Ventilador de Mesa Oscilante</div>
                 <div class="price">USD 31,07</div>
                 <div class="icon-row">
@@ -448,7 +449,7 @@
         <div class="section-title-arrivals">Nuevas Existencias</div>
         <div class="new-arrivals-list">
             <div class="product-card tooltip">
-                <img src="pinturanaranja.png" alt="Pintura Naranja">
+                <img src="pinturanaranja" alt="Pintura Naranja">
                 <div class="product-title">Pintura Esmalte Brillante Naranja</div>
                 <div class="price">USD 36,40</div>
                 <div class="icon-row">
@@ -468,7 +469,7 @@
                 </div>
             </div>
             <div class="product-card tooltip">
-                <img src="https://via.placeholder.com/150" alt="Teflón Líquido">
+                <img src="teflonliquido.png" alt="Teflón Líquido">
                 <div class="product-title">Teflón Líquido Sellador</div>
                 <div class="price">USD 5,75</div>
                 <div class="icon-row">
