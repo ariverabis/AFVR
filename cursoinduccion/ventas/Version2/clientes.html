@@ -44,6 +44,8 @@
         .header .menu-icon {
             margin-left: auto;
             cursor: pointer;
+            margin-right: 10px;
+            font-size: 20px;
         }
         .search-section {
             padding: 15px;
@@ -191,6 +193,7 @@
         <div class="header">
             <span class="back-arrow" onclick="history.back()" data-tooltip="Retrocede a la pantalla anterior.">&#8592;</span>
             <span>088 - Clientes</span>
+            <span class="menu-icon" id="btnHelpPedido" data-tooltip="Haz clic para ver los pasos para un pedido.">&#x2753;</span>
             <span class="menu-icon" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</span>
         </div>
 
@@ -223,7 +226,7 @@
     
     <div id="helpModal" class="modal">
         <div class="modal-content">
-            <span class="close-button">&times;</span>
+            <span class="close-button" onclick="closeModal('helpModal')">&times;</span>
             <h3>Guía de Uso - Clientes</h3>
             <div class="modal-item">
                 <h4>Ruta</h4>
@@ -243,13 +246,36 @@
             </div>
         </div>
     </div>
+
+    <div id="helpModalPedido" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('helpModalPedido')">&times;</span>
+            <h3>Pasos para elaborar un pedido</h3>
+            <div class="modal-item">
+                <ol>
+                    <li>Seleccione el cliente al que se le va a cargar el pedido.</li>
+                    <li>Busque el producto que desea cargar por nombre o código.</li>
+                    <li>Al visualizar los productos, haga clic en el producto a cargar.</li>
+                    <li>Se visualizará una pantalla donde cargará la cantidad del producto y el precio.</li>
+                    <li>En la pantalla de productos cargados, elija si desea facturar el pedido.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const clientList = document.querySelector('.client-list');
-            const helpButton = document.getElementById('btnHelp');
             const helpModal = document.getElementById('helpModal');
-            const closeButton = document.querySelector('.close-button');
+            const helpModalPedido = document.getElementById('helpModalPedido');
+
+            // Mostrar el modal de ayuda de pedido al cargar la página
+            helpModalPedido.style.display = 'flex';
+
+            // Función para cerrar cualquier modal
+            window.closeModal = function(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            };
 
             const clients = [
                 'A-40, C.A - 2565065',
@@ -340,7 +366,7 @@
                 });
             });
 
-            // NUEVA FUNCIÓN PARA DESPLAZARSE AL CLIENTE
+            // Función para desplazarse al cliente
             function scrollToClientByLetter(letter) {
                 const listItems = document.querySelectorAll('.client-list li');
                 let found = false;
@@ -367,18 +393,25 @@
                 }
             }
 
-            // Lógica para el modal de ayuda
+            // Lógica para el modal de ayuda de uso
+            const helpButton = document.getElementById('btnHelp');
             helpButton.addEventListener('click', function() {
                 helpModal.style.display = 'flex';
             });
 
-            closeButton.addEventListener('click', function() {
-                helpModal.style.display = 'none';
+            // Lógica para el nuevo modal de pasos de pedido
+            const helpButtonPedido = document.getElementById('btnHelpPedido');
+            helpButtonPedido.addEventListener('click', function() {
+                helpModalPedido.style.display = 'flex';
             });
-
+            
+            // Lógica para cerrar modals al hacer clic fuera
             window.addEventListener('click', function(event) {
                 if (event.target === helpModal) {
                     helpModal.style.display = 'none';
+                }
+                if (event.target === helpModalPedido) {
+                    helpModalPedido.style.display = 'none';
                 }
             });
             
