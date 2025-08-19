@@ -482,6 +482,19 @@
         }
         
         const codigo = productoSeleccionado.getAttribute('data-codigo');
+
+        // --- INICIO: LÓGICA AÑADIDA PARA VALIDAR DUPLICADOS ---
+        let productosEnPedido = JSON.parse(localStorage.getItem('productosEnPedido_prueba')) || [];
+        
+        // Buscar si el producto ya existe en el array del pedido
+        const productoExistente = productosEnPedido.find(p => p.codigo === codigo);
+
+        if (productoExistente) {
+            alert('¡El producto ' + codigo + ' ya se encuentra en el pedido!');
+            return; // Detiene la función si el producto ya existe
+        }
+        // --- FIN: LÓGICA AÑADIDA PARA VALIDAR DUPLICADOS ---
+
         const nombre = productoSeleccionado.getAttribute('data-nombre');
         const precio = parseFloat(productoSeleccionado.getAttribute('data-precio'));
         
@@ -493,7 +506,6 @@
             subtotal: (cantidad * precio)
         };
 
-        let productosEnPedido = JSON.parse(localStorage.getItem('productosEnPedido_prueba')) || [];
         productosEnPedido.push(nuevoProducto);
         
         localStorage.setItem('productosEnPedido_prueba', JSON.stringify(productosEnPedido));
