@@ -201,7 +201,7 @@
 <body>
     <div class="screen-container">
         <div class="header">
-            <span class="back-arrow" onclick="history.back()" data-tooltip="Retrocede a la pantalla anterior.">&#8592;</span>
+            <span class="back-arrow" onclick="window.location.href = 'MenuVentasFH.html';" data-tooltip="Retrocede a la pantalla anterior.">&#8592;</span>
             <span>088 - Clientes</span>
             <span class="menu-icon" id="btnHelpPedido" data-tooltip="Haz clic para ver los pasos para un pedido.">&#x2753;</span>
             <span class="menu-icon" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</span>
@@ -296,7 +296,6 @@
                 'COMERCIAL EL SAMAN 2007, C.A. - 2532008',
                 'COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25',
                 'CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565',
-                'DISMARKET EXPRESS, C.A -',
                 'DISTORMAR C.A - 2541132',
                 'DISTRIBUIDORA S.C GUACARA, C.A. - 2531122',
                 'EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -',
@@ -319,11 +318,8 @@
                 'FERRETERIA EL ESPACIO, C.A. - 2541917',
                 'FERRETERIA INDUSTRIAL LAS VILLAS, C.A. - 2565026',
                 'FERRETERIA SAN DIMAS, C.A. - 2541033',
-                'FERRETERIA Y CONCRETERA AH CARTAGENA, C.A. -',
                 'FERRETERIA Y CONCRETERA MARIARA 2000 C.A. - 2541003',
-                'FERRETERIA Y MATERIALES DE CONSTRUCCION EL CARMEN C',
                 'FERROCK, C.A (FERROCK, C.A) - 2541054',
-                'GRUPO ISO HOME, C.A - 2531318',
                 'GRUPO TRIFERCA, C.A - 2580160',
                 'HIPER HIERRO, C.A - 2531151',
                 'HOGAR 245, C.A -',
@@ -354,8 +350,11 @@
                 'VARIEDADES CLARIMY 2022, C.A. - 2565078',
             ];
 
+            const halfIndex = Math.ceil(clients.length / 2);
+            const reducedClients = clients.slice(0, halfIndex);
+
             // Generar la lista de clientes en el HTML
-            clients.forEach(clientText => {
+            reducedClients.forEach(clientText => {
                 const li = document.createElement('li');
                 li.textContent = clientText.trim();
                 li.addEventListener('click', function() {
@@ -426,11 +425,6 @@
                 }
             });
             
-            // Lógica para el botón de retroceso en el encabezado
-            document.querySelector('.back-arrow').addEventListener('click', function() {
-                window.history.back();
-            });
-
             // Lógica para posicionar los tooltips dinámicamente
             document.querySelectorAll('[data-tooltip]').forEach(item => {
                 item.addEventListener('mouseenter', (event) => {
