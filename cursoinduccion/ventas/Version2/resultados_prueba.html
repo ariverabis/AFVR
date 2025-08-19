@@ -49,6 +49,14 @@
             color: #333;
             font-size: 0.9em;
         }
+        .help-message-container {
+            background-color: #fff3cd; /* Color de fondo para alerta de ayuda */
+            border-left: 5px solid #ffc107; /* Borde izquierdo de color amarillo */
+            padding: 15px;
+            margin: 10px 20px;
+            color: #664d03;
+            font-size: 0.9em;
+        }
         .search-bar {
             display: flex;
             align-items: center;
@@ -230,15 +238,24 @@
             <img src="logofebeca.png" alt="Logo">
             <span>080 - Productos</span>
         </div>
-        <div class="options" data-tooltip="Opciones de menú...">...</div>
+        <div class="options" data-tooltip="Opciones de menú..." onclick="mostrarAyudaGeneral()">...</div>
+    </div>
+    
+    <div class="help-message-container">
+        <b>Guía de Uso:</b>
+        <p>1. Ingrese el código o parte del nombre del producto en el campo de búsqueda y presione 'Enter' o el botón 'B.'.</p>
+        <p>2. Seleccione un producto de la lista para ver sus detalles.</p>
+        <p>3. Ingrese la cantidad deseada en el campo 'Cant.' (debe ser un múltiplo de Emp. C.).</p>
+        <p>4. Presione el botón 'OK' para agregar el producto al pedido.</p>
     </div>
 
     <div class="search-bar">
         <span class="search-label">Buscar</span>
-        <input type="text" placeholder="Código o nombre..." id="busqueda-producto">
-        <button type="button">B.</button>
+        <input type="text" placeholder="Código o nombre..." id="busqueda-producto" onkeyup="if(event.key === 'Enter') buscarProducto()">
+        <button type="button" onclick="buscarProducto()">B.</button>
         <button type="button" onclick="window.open('datos.html', 'DatosDelPedido', 'width=300,height=400');">Sub</button>
-    </div> 
+    </div>
+    
     <div class="product-list" id="lista-productos">
 
         <div class="product-item" data-codigo="0101002" data-nombre="Receptaculo De Pvc Blanco Bornes Automaticos Btincino - 7110502" data-precio="3.86" data-existencia="450" data-empaque="10" onclick="seleccionarProducto(this)">
@@ -339,25 +356,23 @@
 </div>
 
 <script>
+    // Lógica para el tooltip, sin cambios
     document.addEventListener('DOMContentLoaded', function() {
-        // Lógica para posicionar los tooltips dinámicamente
         document.querySelectorAll('[data-tooltip]').forEach(item => {
             item.addEventListener('mouseenter', (event) => {
                 const rect = event.target.getBoundingClientRect();
                 const tooltipText = item.getAttribute('data-tooltip');
-                const tooltipWidth = tooltipText.length * 6; // Estimación del ancho
+                const tooltipWidth = tooltipText.length * 6;
                 
                 let leftPosition = rect.left + (rect.width / 2);
                 let topPosition = rect.top;
 
-                // Ajuste para evitar que el tooltip se salga de la pantalla
                 if (leftPosition - tooltipWidth / 2 < 0) {
                     leftPosition = tooltipWidth / 2 + 10;
                 } else if (leftPosition + tooltipWidth / 2 > window.innerWidth) {
                     leftPosition = window.innerWidth - tooltipWidth / 2 - 10;
                 }
                 
-                // Si el elemento está en la parte superior, el tooltip se coloca debajo
                 if (topPosition < 50) { 
                     item.style.setProperty('--tooltip-top', `${topPosition + rect.height + 5}px`);
                 } else {
@@ -369,7 +384,54 @@
         });
     });
 
+    /**
+     * Busca y selecciona un producto en la lista por su código o nombre.
+     */
+    function buscarProducto() {
+        const busquedaInput = document.getElementById('busqueda-producto');
+        const searchTerm = busquedaInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            alert('Por favor, ingrese un código o nombre para buscar.');
+            return;
+        }
+
+        const productItems = document.querySelectorAll('.product-item');
+        let encontrado = false;
+        let productoASeleccionar = null;
+
+        productItems.forEach(item => {
+            const codigo = item.getAttribute('data-codigo').toLowerCase();
+            const nombre = item.getAttribute('data-nombre').toLowerCase();
+            
+            if (codigo.includes(searchTerm) || nombre.includes(searchTerm)) {
+                // Almacena el primer producto que coincida
+                if (!productoASeleccionar) {
+                    productoASeleccionar = item;
+                }
+                encontrado = true;
+            }
+        });
+
+        if (productoASeleccionar) {
+            seleccionarProducto(productoASeleccionar);
+            // Desplazar la vista para que el elemento sea visible
+            productoASeleccionar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+            alert('Producto no encontrado.');
+        }
+    }
+
+    /**
+     * Selecciona un producto de la lista y actualiza los campos de detalles.
+     * @param {HTMLElement} elemento - El elemento div del producto seleccionado.
+     */
     function seleccionarProducto(elemento) {
+        // Si el elemento ya está seleccionado, no hacer nada
+        if (elemento.classList.contains('selected')) {
+            return;
+        }
+
         document.querySelectorAll('.product-item').forEach(item => {
             item.classList.remove('selected');
             item.querySelector('input[type="checkbox"]').checked = false;
@@ -391,8 +453,12 @@
         document.getElementById('precio-p2').value = precioP2.toFixed(2).replace('.', ',');
         document.getElementById('exist').value = existencia;
         document.getElementById('emp-c').value = empaqueComercial;
+        document.getElementById('cant').value = ''; // Limpiar el campo de cantidad
     }
 
+    /**
+     * Agrega el producto seleccionado al pedido.
+     */
     function agregarProducto() {
         const productoSeleccionado = document.querySelector('.product-item.selected');
         const cantidadInput = document.getElementById('cant');
@@ -437,6 +503,28 @@
         cantidadInput.value = '';
         productoSeleccionado.classList.remove('selected');
         productoSeleccionado.querySelector('input[type="checkbox"]').checked = false;
+    }
+
+    /**
+     * Muestra la ventana de ayuda general.
+     */
+    function mostrarAyudaGeneral() {
+        const ayudaUrl = 'ayuda_general.html'; // Puedes crear un archivo HTML para la ayuda general
+        const ayudaContenido = `
+            <h1>Ayuda General del Sistema</h1>
+            <p>Este sistema de gestión de productos le permite consultar precios, existencias y crear pedidos de manera eficiente.</p>
+            <h3>Funcionalidades Clave:</h3>
+            <ul>
+                <li><b>Búsqueda Rápida:</b> Utilice el campo "Buscar" para encontrar productos por código o nombre.</li>
+                <li><b>Detalles del Producto:</b> Al seleccionar un producto, podrá ver su precio, existencia, empaque y otros datos importantes.</li>
+                <li><b>Pedido:</b> Ingrese la cantidad deseada y haga clic en "OK" para añadir el producto a su pedido.</li>
+                <li><b>Consulta de Precios:</b> Los campos P1 y P2 le permiten abrir una ventana detallada con la información de precios.</li>
+            </ul>
+            <p>Para más información, contacte al administrador del sistema.</p>
+        `;
+        const ayudaWindow = window.open('', 'AyudaGeneral', 'width=450,height=500,resizable=yes,scrollbars=yes');
+        ayudaWindow.document.write(ayudaContenido);
+        ayudaWindow.document.close();
     }
 </script>
 
