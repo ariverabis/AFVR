@@ -5,13 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>064 - Incluir Pagos</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
-        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
-        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
-        .header-title { flex-grow: 1; }
-        .header-actions { display: flex; gap: 15px; align-items: center; }
-        .header-actions span { cursor: pointer; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f0f0f0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            height: 100vh; 
+            margin: 0; 
+            padding-top: 20px; 
+        }
+
+        .screen-container { 
+            width: 360px; 
+            height: 640px; 
+            background-color: white; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+        }
+        
+        .header { 
+            background-color: #007BFF; 
+            color: white; 
+            padding: 15px; 
+            display: flex; 
+            align-items: center; 
+            font-size: 18px; 
+            font-weight: bold; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+
+        .header .back-arrow { 
+            font-size: 24px; 
+            margin-right: 15px; 
+            cursor: pointer; 
+        }
+
+        .header-title { 
+            flex-grow: 1; 
+        }
+
+        .header-actions { 
+            display: flex; 
+            gap: 15px; 
+            align-items: center; 
+        }
+
+        .header-actions span { 
+            cursor: pointer; 
+        }
 
         .modal-overlay {
             position: fixed;
@@ -131,7 +177,7 @@
             
             <div class="input-group">
                 <label for="monto">Monto:</label>
-                <input type="number" id="monto" value="50,43" step="0.01" />
+                <input type="number" id="monto" value="50.43" step="0.01" />
             </div>
 
             <div class="form-actions">
@@ -152,16 +198,17 @@
                 return;
             }
             
-            // Codificar los datos de pago para pasarlos a la página anterior
             const paymentData = {
                 formaPago: formaPago,
                 moneda: moneda,
-                monto: monto.replace('.', ',')
+                monto: monto
             };
-            const encodedPayment = encodeURIComponent(JSON.stringify(paymentData));
 
-            // Redirigir a la página anterior, pasando los datos como parámetros de URL
-            window.location.href = `listado_recibos.html?newPayment=${encodedPayment}`;
+            let payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
+            payments.push(paymentData);
+            sessionStorage.setItem('currentPayments', JSON.stringify(payments));
+
+            window.location.href = `deposito_usd.html`;
         });
         
         document.getElementById('btnLimpiar').addEventListener('click', () => {
