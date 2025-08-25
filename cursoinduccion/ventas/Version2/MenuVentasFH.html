@@ -154,6 +154,15 @@
             margin: 5px 0 0;
             font-size: 14px;
         }
+        .help-message-container {
+            background-color: #e0f7fa;
+            color: #004d40;
+            padding: 10px;
+            border-bottom: 1px solid #b2dfdb;
+            font-size: 14px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
     </style>
 </head>
 <body>
@@ -163,7 +172,9 @@
             <span>073 - Menú Ventas</span>
             <span class="menu-icon" id="btnHelp">&#x22EE;</span>
         </div>
-
+        <div class="help-message-container">
+            Para crear un pedido, la opcion a seleccionar es la Gestión de Ventas. Luego selecciona el cliente y luego se crea un pedido nuevo.
+        </div>
         <div class="main-content">
             <button id="btnPedidos" class="menu-button" data-tooltip="Pedidos de clientes cargados en sus catálogos digitales.">Pedidos del catálogo</button>
             <button id="btnClientes" class="menu-button" data-tooltip="Informacion de clientes.">Clientes</button>
@@ -205,6 +216,7 @@
         </div>
     </div>
     
+
     <script>
         const btnPedidos = document.getElementById('btnPedidos');
         const btnClientes = document.getElementById('btnClientes');
