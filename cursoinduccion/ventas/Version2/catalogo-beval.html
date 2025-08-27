@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Catálogo - beval</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Menu */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 75%;
+            max-width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .menu.open {
+            transform: translateX(0);
+        }
+        .menu-header {
+            background-color: #6cbf18; /* A shade of green from beval image */
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .menu-header.blue {
+            background-color: #007bff; /* Blue for Febeca/Mayorista */
+        }
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu ul li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .menu ul li:hover {
+            background-color: #f9f9f9;
+        }
+        .menu ul li .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .menu .section-title {
+            color: #777;
+            font-size: 0.9em;
+            padding: 15px 20px 5px;
+            font-weight: bold;
+        }
+        .menu .notification-count {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.7em;
+            margin-left: auto;
+        }
+        
+        /* Main Content */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .content-overlay.active {
+            display: block;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 0;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #6cbf18; /* Green for Beval */
+            color: white;
+        }
+        .header.blue {
+            background-color: #007bff; /* Blue for Febeca/Mayorista */
+        }
+        .header .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            position: relative;
+        }
+        .header .search-bar input {
+            width: calc(100% - 40px);
+            padding: 8px 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .header .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .header .search-bar .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        .header .app-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+
+        .home-screen {
+            padding: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 58px); /* Adjust based on header height */
+        }
+        .welcome-message {
+            background-color: #d8ecbd; /* Light green background */
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .welcome-message h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .welcome-message img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+        
+        .product-section h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 10px;
+        }
+        .product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            font-weight: bold;
+            color: #2e8b57;
+            margin: 5px 0;
+        }
+        .product-card .icons {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            color: #777;
+        }
+
+        /* Generic styles for Icons */
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        /* Helper for showing only one home screen */
+        .home-screen.hidden {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="menu" id="sideMenu">
+            <div class="menu-header" id="menuHeader">
+                beval
+            </div>
+            <ul>
+                <li onclick="toggleScreens('screen1')">
+                    <span class="icon">&#9733;</span> Inicio
+                </li>
+                <li>
+                    <span class="icon">&#9733;</span> Mi Compañía
+                </li>
+                <li>
+                    <span class="icon">&#9733;</span> Notificaciones <span class="notification-count" id="notificationCount">211</span>
+                </li>
+                <li>
+                    <span class="icon">&#9733;</span> Listas de Productos
+                </li>
+                <li>
+                    <span class="icon">&#9733;</span> Recomendados
+                </li>
+                <li>
+                    <span class="icon">&#9733;</span> Clientes
+                </li>
+            </ul>
+            <div class="section-title">Solicitudes de Cotización</div>
+            <ul>
+                <li><span class="icon">&#9733;</span> Solicitud Abierta</li>
+                <li><span class="icon">&#9733;</span> Solicitudes Cerradas</li>
+            </ul>
+            <div class="section-title">Mis Cotizaciones</div>
+            <ul>
+                <li><span class="icon">&#9733;</span> Cotizaciones Abiertas</li>
+                <li><span class="icon">&#9733;</span> Cotizaciones Cerradas</li>
+            </ul>
+            <div class="section-title">Comunicación</div>
+            <ul>
+                <li><span class="icon">&#9993;</span> Contáctanos</li>
+                <li><span class="icon">&#10132;</span> Invitar Amigos</li>
+            </ul>
+            <div class="section-title">Configuración</div>
+            <ul>
+                <li><span class="icon">&#9786;</span> Mi Cuenta</li>
+                <li><span class="icon">&#128247;</span> Manejo de Imágenes</li>
+            </ul>
+            <div class="section-title">Ayuda</div>
+            <ul>
+                <li><span class="icon">&#9745;</span> Mensaje Bienvenida</li>
+                <li><span class="icon">&#9888;</span> Reportar Error</li>
+                <li><span class="icon">&#x2139;</span> Acerca de</li>
+            </ul>
+            <br>
+        </div>
+
+        <div class="main-content">
+            <div class="header" id="appHeader">
+                <span class="menu-toggle" onclick="toggleMenu()">&#9776;</span>
+                <span class="app-logo">beval</span>
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar">
+                    <span class="search-icon">&#128269;</span>
+                </div>
+            </div>
+
+            <div class="content-overlay" id="overlay" onclick="toggleMenu()"></div>
+
+            <div class="home-screen" id="screen1">
+                <div class="welcome-message">
+                    <p>¡Bienvenido!, NOMBRE CLIENTE -</p>
+                    <img src="paginabeval.png" alt="Visita nuestra Página Web">
+                </div>
+                
+                <div class="product-section">
+                    <h3>Marcas Destacadas</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img src="fraco.png" alt="Fraco Gaskets">
+                            <p>Fraco</p>
+                            <p style="font-size: 0.8em; color: #555;">Conoce todo el surtido disponible<br>¡Haz clic aquí!</p>
+                        </div>
+                    </div>
+                    <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><a href="#">VER TODOS</a></p>
+                </div>
+
+                <div class="product-section">
+                    <h3>Nuevas Existencias</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img src="borne4.png" alt="Borne de Camión">
+                            <p>BORNE DE PLOMO PARA BATERIA DE CAMION 195 PONI - 5806010</p>
+                            <p class="price">USD 2,43</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="borne2.png" alt="Borne de Carro">
+                            <p>BORNE DE PLOMO PARA BATERIA DE CARRO 194 PONI - 5806011</p>
+                            <p class="price">USD 2,05</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="goma.png" alt="Lubricante especial">
+                            <p>LUBRICANTE ESPECIAL PARA ARMADO DE MOTORES...</p>
+                            <p class="price">USD 10,7</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="borne1.png" alt="Borne de Caja">
+                            <p>BORNE DE CARRO 194-C PONI CAJA 100 UNIDADES GRANEL - 0106045</p>
+                            <p class="price">USD 1,82</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="home-screen hidden" id="screen2">
+                 <div class="welcome-message" style="background-color: #e0f7fa; color: #333;">
+                    <p>¡Bienvenido!, ALVARO ALEXANDER RIVERA BISCARDI -</p>
+                    <img src="https://i.ibb.co/K2JjP69/febeca-pago-qr.png" alt="Pago con Criptomoneda">
+                </div>
+                 <div class="product-section">
+                    <h3>Nuevas Existencias</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img src="https://i.ibb.co/y4L2s19/ventilador.jpg" alt="Ventilador">
+                            <p>VENTILADOR DE MESA OSCILANTE 16. CONFORT...</p>
+                            <p class="price">USD 31,07</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://i.ibb.co/c8HnN1D/pintura-naranja.jpg" alt="Pintura Naranja">
+                            <p>PINTURA ESMALTE BRILLANTE D-KOR CLASE B 1 GALÓN NARANJA QUIMICOLOR</p>
+                            <p class="price">USD 36,40</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://i.ibb.co/L5rC3xV/extractor-aire.jpg" alt="Extractor de Aire">
+                            <p>EXTRACTOR DE AIRE 6 FP - 7096004</p>
+                            <p class="price">USD 100,39</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://i.ibb.co/f4R7s32/pintura-negra.jpg" alt="Pintura Negra">
+                            <p>PINTURA ESMALTE BRILLANTE D-KOR CLASE B 1/4 GALÓN NEGRO QUIMICOLOR</p>
+                            <p class="price">USD 10,66</p>
+                            <div class="icons">
+                                <span>&#10084;</span>
+                                <span>&#128722;</span>
+                                <span>&#128172;</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const appHeader = document.getElementById('appHeader');
+        const menuHeader = document.getElementById('menuHeader');
+        const appLogo = document.querySelector('.app-logo');
+        const screens = {
+            'screen1': document.getElementById('screen1'),
+            'screen2': document.getElementById('screen2')
+        };
+        const notificationCount = document.getElementById('notificationCount');
+
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function toggleScreens(screenId) {
+            for (const key in screens) {
+                if (screens.hasOwnProperty(key)) {
+                    if (key === screenId) {
+                        screens[key].classList.remove('hidden');
+                        if (key === 'screen1') {
+                            appHeader.classList.remove('blue');
+                            menuHeader.classList.remove('blue');
+                            appHeader.classList.add('green');
+                            menuHeader.classList.add('green');
+                            appLogo.textContent = 'beval';
+                            notificationCount.textContent = '19';
+                        } else {
+                            appHeader.classList.add('blue');
+                            menuHeader.classList.add('blue');
+                            appHeader.classList.remove('green');
+                            menuHeader.classList.remove('green');
+                            appLogo.textContent = 'febeca';
+                            notificationCount.textContent = '211';
+                        }
+                    } else {
+                        screens[key].classList.add('hidden');
+                    }
+                }
+            }
+            toggleMenu();
+        }
+
+        // Initial state
+        toggleScreens('screen1');
+    </script>
+</body>
+</html>
