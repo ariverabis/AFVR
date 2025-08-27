@@ -60,11 +60,87 @@
             font-size: 20px; 
         }
         
+        .finish-button {
+            display: none; /* Oculto por defecto */
+            background-color: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .finish-button.active {
+            display: block; /* Visible cuando se activa */
+        }
+        
+        /* Estilos para los mensajes de pasos */
+        .step-messages {
+            background-color: #e8f5e9; /* Un color suave para destacar */
+            padding: 10px 15px;
+            border-bottom: 1px solid #c8e6c9;
+            font-size: 14px;
+            color: #1b5e20;
+            line-height: 1.5;
+        }
+
+        .step-messages .step-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .step-messages .step-icon {
+            font-weight: bold;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        /* Estilos para los mensajes superiores */
+        .top-messages {
+            display: flex;
+            justify-content: space-between;
+            background-color: #e3f2fd;
+            padding: 10px 15px;
+            border-bottom: 1px solid #c0d9e7;
+        }
+
+        .message-box {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #004d8b;
+        }
+
+        .message-box .help-icon {
+            margin-left: 5px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
         .content { 
             padding: 15px; 
             flex-grow: 1; 
             display: flex; 
             flex-direction: column; 
+            overflow-y: auto;
         }
 
         .section-title { 
@@ -156,7 +232,6 @@
             font-weight: bold; 
         }
 
-        /* Estilo para los campos de monto editable */
         .editable-monto {
             width: 80px;
             padding: 2px 5px;
@@ -165,7 +240,6 @@
             border-radius: 3px;
         }
 
-        /* Estilos para la nueva tabla de resumen */
         .summary-table-container {
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -193,6 +267,58 @@
             font-weight: bold;
             background-color: #f8f8f8;
         }
+
+        /* Modal (Pop-up) Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Estilo para el botón + */
+        #btnAddPayment {
+            font-size: 30px; /* Tamaño más grande */
+            background-color: #007BFF;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -202,9 +328,45 @@
             <span class="back-arrow" onclick="history.back()">&#8592;</span>
             <span class="header-title">059 - Detalle Recibo</span>
             <div class="header-actions">
-                <span>&#x271A;</span>
-                <span>&#x2716;</span>
-                <span>&#x2714;</span>
+                <div class="finish-button" id="btnFinish">FIN</div>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( &#x2716; ) o guardar ( &#x2714; ).')">&#x2716;</span>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( &#x2716; ) o guardar ( &#x2714; ).')">&#x2714;</span>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( &#x2716; ) o guardar ( &#x2714; ).')">&#x271A;</span>
+            </div>
+        </div>
+
+        <div class="step-messages">
+
+            <div class="step-item">
+
+                <span class="step-icon">1</span>
+
+                <span>Puede cambiar el monto de la factura. Seria abono a la factura.</span>
+
+                <span class="help-icon" onclick="showManual('Cambiar Monto de Factura', 'Si la factura no se cancela en su totalidad, puede modificar el monto a abonar directamente en la tabla de DOCUMENTOS. Solo necesita hacer clic en el campo del monto y escribir el nuevo valor.')">?</span>
+
+            </div>
+
+            <div class="step-item">
+
+                <span class="step-icon">2</span>
+
+                <span>Una vez establecido el monto o abono incluya el pago en el simbolo + En el area PAGOS.</span>
+
+                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')">?</span>
+
+            </div>
+
+        </div>
+
+        <div class="top-messages">
+            <div class="message-box">
+                Total Facturas: <span id="totalFacturas">0,00 USD</span>
+                <span class="help-icon" onclick="showManual('Total Facturas', 'Este es el monto total de los documentos seleccionados, incluyendo cualquier descuento o retención que aplique.')">?</span>
+            </div>
+            <div class="message-box">
+                Total Abonado: <span id="totalAbonado">0,00 USD</span>
+                <span class="help-icon" onclick="showManual('Total Abonado', 'Este es el total de los pagos que se han agregado al recibo hasta el momento. Este valor debe ser igual al Total de Facturas para que el pago sea completo.')">?</span>
             </div>
         </div>
 
@@ -239,7 +401,7 @@
             <div class="payments-header">
                 <div class="section-title" style="border-bottom: none;">PAGOS</div>
                 <div class="buttons">
-                    <span id="btnAddPayment" style="font-size: 24px; cursor: pointer;">+</span>
+                    <div id="btnAddPayment">+</div>
                     <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&#x2716;</span>
                 </div>
             </div>
@@ -264,11 +426,26 @@
             </div>
         </div>
     </div>
+
+    <div id="manualModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeManual()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalContent"></p>
+        </div>
+    </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const documentTableBody = document.querySelector('#documentTable tbody');
             const paymentsTableBody = document.querySelector('#paymentsTable tbody');
+            const totalFacturasMessage = document.getElementById('totalFacturas');
+            const totalAbonadoMessage = document.getElementById('totalAbonado');
+            const manualModal = document.getElementById('manualModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const btnFinish = document.getElementById('btnFinish');
+            
             const urlParams = new URLSearchParams(window.location.search);
             const selectedItemsJSON = urlParams.get('selectedItems');
             const totalDescuento = parseFloat(urlParams.get('totalDescuento')) || 0;
@@ -295,6 +472,22 @@
                 console.log('No se encontraron ítems seleccionados.');
             }
 
+            function showManual(title, content) {
+                modalTitle.textContent = title;
+                modalContent.textContent = content;
+                manualModal.style.display = 'block';
+            }
+
+            function closeManual() {
+                manualModal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == manualModal) {
+                    closeManual();
+                }
+            }
+
             function updateDocumentSummary() {
                 subTotalDocumentos = 0;
                 documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
@@ -317,6 +510,8 @@
                 
                 totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
                 document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
+
+                totalFacturasMessage.textContent = `${totalFacturas.toFixed(2).replace('.', ',')} USD`;
                 
                 updateRemainingAmounts();
             }
@@ -345,15 +540,19 @@
             function renderPayments() {
                 const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
                 paymentsTableBody.innerHTML = '';
+                let paymentsTotal = 0;
                 payments.forEach(payment => {
                     const newRow = document.createElement('tr');
+                    const monto = parseFloat(payment.monto);
+                    paymentsTotal += monto;
                     newRow.innerHTML = `
                         <td>${payment.formaPago}</td>
                         <td>${payment.moneda}</td>
-                        <td class="payment-monto">${parseFloat(payment.monto).toFixed(2).replace('.', ',')}</td>
+                        <td class="payment-monto">${monto.toFixed(2).replace('.', ',')}</td>
                     `;
                     paymentsTableBody.appendChild(newRow);
                 });
+                totalAbonadoMessage.textContent = `${paymentsTotal.toFixed(2).replace('.', ',')} USD`;
                 updateRemainingAmounts();
             }
 
@@ -370,6 +569,13 @@
                 document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
                 // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
                 document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
+
+                // Activar el botón FIN si no hay monto restante
+                if (remaining <= 0) {
+                    btnFinish.classList.add('active');
+                } else {
+                    btnFinish.classList.remove('active');
+                }
             }
 
             updateDocumentSummary();
