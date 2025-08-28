@@ -314,11 +314,12 @@
                 <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+"" En el area PAGOS.</span>
                 <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')">?</span>
             </div>
-            <div class="step-item">
+                        <div class="step-item">
                 <span class="step-icon">3</span>
                 <span>EL boton Fin Aparece en la parte superior, Cuando el monto registrado en Pago, es mayor o igual al monto asignado arriba.</span>
                 <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')">?</span>
             </div>
+
         </div>
         <div class="content">
             <div class="section-title">DOCUMENTOS</div>
@@ -341,4 +342,192 @@
                 <table>
                     <tbody>
                         <tr><td>Sub-Total:</td><td id="subTotalDocument">0,00</td></tr>
-                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">
+                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">0,00</td></tr>
+                        <tr><td>Retención:</td><td id="retencionDocument">0,00</td></tr>
+                        <tr class="total-row-summary"><td>Total:</td><td id="documentTotal">0,00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="payments-header">
+                <div class="section-title" style="border-bottom: none;">PAGOS</div>
+                <div class="buttons">
+                    <div id="btnAddPayment">+</div>
+                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&times;</span>
+                </div>
+            </div>
+            <div class="payments-table-container">
+                <table id="paymentsTable">
+                    <thead>
+                        <tr>
+                            <th>Pago</th>
+                            <th>Moneda</th>
+                            <th>Monto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="final-summary">
+                <span class="label">Resta:</span>
+                <span id="restaUSD" class="total-value">0,00 USD</span>
+                <span id="restaVES" class="total-value">0,00 VES</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="manualModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeManual()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalContent"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const documentTableBody = document.querySelector('#documentTable tbody');
+            const paymentsTableBody = document.querySelector('#paymentsTable tbody');
+            const manualModal = document.getElementById('manualModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const btnFinish = document.getElementById('btnFinish');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedItemsJSON = urlParams.get('selectedItems');
+            const totalDescuento = parseFloat(urlParams.get('totalDescuento')) || 0;
+            const totalRetencion = parseFloat(urlParams.get('totalRetencion')) || 0;
+            const formaDePago = urlParams.get('formaDePago');
+            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
+
+            let subTotalDocumentos = 0;
+            let totalFacturas = 0;
+            let paymentsTotal = 0;
+
+            if (selectedItemsJSON) {
+                const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
+                selectedItems.forEach(item => {
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${item.tipo}</td>
+                        <td>${item.noFiscal}</td>
+                        <td>PAGO GENERICO</td>
+                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" data-importe-original="${item.importe}" data-retencion="${item.retencion}"></td>
+                    `;
+                    documentTableBody.appendChild(newRow);
+                });
+            } else {
+                console.log('No se encontraron ítems seleccionados.');
+            }
+
+            window.showManual = function(title, content) {
+                modalTitle.textContent = title;
+                modalContent.textContent = content;
+                manualModal.style.display = 'block';
+            }
+
+            window.closeManual = function() {
+                manualModal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == manualModal) {
+                    closeManual();
+                }
+            }
+
+            function updateDocumentSummary() {
+                subTotalDocumentos = 0;
+                documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
+                    const numericValue = parseFloat(input.value.replace(',', '.'));
+                    if (!isNaN(numericValue)) {
+                        subTotalDocumentos += numericValue;
+                    }
+                });
+
+                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ',');
+
+                if (aplicaDescuento) {
+                    document.getElementById('descuentoRow').style.display = 'table-row';
+                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
+                } else {
+                    document.getElementById('descuentoRow').style.display = 'none';
+                }
+
+                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+
+                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
+                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
+
+                updateRemainingAmounts();
+            }
+
+            documentTableBody.addEventListener('input', (event) => {
+                if (event.target.classList.contains('editable-monto')) {
+                    updateDocumentSummary();
+                }
+            });
+
+            document.getElementById('btnAddPayment').addEventListener('click', () => {
+                const urlParams = new URLSearchParams();
+                urlParams.set('totalAPagar', totalFacturas.toFixed(2));
+                window.location.href = `pagos.html?${urlParams.toString()}`;
+            });
+
+            document.getElementById('btnDeletePayment').addEventListener('click', () => {
+                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
+                if (payments.length > 0) {
+                    payments.pop();
+                    sessionStorage.setItem('currentPayments', JSON.stringify(payments));
+                    renderPayments();
+                }
+            });
+
+            function renderPayments() {
+                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
+                paymentsTableBody.innerHTML = '';
+                paymentsTotal = 0;
+                payments.forEach(payment => {
+                    const newRow = document.createElement('tr');
+                    const monto = parseFloat(payment.monto);
+                    paymentsTotal += monto;
+                    newRow.innerHTML = `
+                        <td>${payment.formaPago}</td>
+                        <td>${payment.moneda}</td>
+                        <td class="payment-monto">${monto.toFixed(2).replace('.', ',')}</td>
+                    `;
+                    paymentsTableBody.appendChild(newRow);
+                });
+                updateRemainingAmounts();
+            }
+
+            function updateRemainingAmounts() {
+                let paymentsTotal = 0;
+                paymentsTableBody.querySelectorAll('.payment-monto').forEach(cell => {
+                    const numericValue = parseFloat(cell.textContent.replace(',', '.'));
+                    if (!isNaN(numericValue)) {
+                        paymentsTotal += numericValue;
+                    }
+                });
+
+                const remaining = totalFacturas - paymentsTotal;
+                document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
+                // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
+                document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
+
+                // Activar el botón FIN si no hay monto restante
+                if (remaining <= 0) {
+                    btnFinish.classList.add('active');
+                } else {
+                    btnFinish.classList.remove('active');
+                }
+            }
+
+            updateDocumentSummary();
+            renderPayments();
+        });
+    </script>
+</body>
+</html>
