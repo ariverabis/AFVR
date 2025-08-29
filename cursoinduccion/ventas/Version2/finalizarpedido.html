@@ -344,16 +344,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Valores de prueba de los productos (precios base sin recargo)
-        const productosEnPedido = [
-            { codigo: '0101002', nombre: 'Receptaculo De Pvc Blanco Bornes Automaticos Bticino', cantidad: 1, precioBase: 10.70, subtotalBase: 10.70 },
-            { codigo: 'Socate metalico', nombre: 'Socate metalico e27 para intemperie Eagle', cantidad: 1, precioBase: 10.70, subtotalBase: 10.70 },
-            { codigo: 'Tornillo', nombre: 'Tornillo para madera', cantidad: 50, precioBase: 0.50, subtotalBase: 25.00 },
-            { codigo: 'Bombillo', nombre: 'Bombillo LED 10W', cantidad: 5, precioBase: 2.50, subtotalBase: 12.50 },
-            { codigo: 'Destornillador', nombre: 'Destornillador de estrella', cantidad: 2, precioBase: 8.00, subtotalBase: 16.00 },
-        ];
 
-        localStorage.setItem('productosEnPedido', JSON.stringify(productosEnPedido));
         calcularTotales();
     });
 
