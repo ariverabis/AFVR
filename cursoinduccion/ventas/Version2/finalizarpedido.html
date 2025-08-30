@@ -237,7 +237,7 @@
         </div>
     </div>
     
-    <div class="message-bar">Verifique los datos del pedido ,  valide la lista de precios bs. o $ y presione "Fin" para continuar. Existe un descuento por flete depende del monto del pedido en este caso es del 100% si pasa los 75$.</div>
+    <div class="message-bar">Verifique los datos del pedido ,  valide la lista de precios bs. o $ y presione "Fin" para continuar. Existe un descuento por flete depende del monto del pedido en este caso es del 100% si pasa los 75$.</div>
 
     <div class="info-form">
         <div class="form-group">
@@ -324,7 +324,7 @@
         <label class="tooltip">Observaciones:<span class="tooltiptext">Añade comentarios adicionales al pedido.</span></label>
         <div class="input-group">
             <input type="text" id="observaciones">
-            <button type="button" class="tooltip tooltip-right">+</span class="tooltiptext">Guardar observación.</span></button>
+            <button type="button" class="tooltip tooltip-right">+</button>
         </div>
     </div>
     
@@ -344,6 +344,34 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // Se carga la data inicial del local storage
+        const productosMock = [{
+            "codigo": "0101002",
+            "nombre": "Receptaculo De Pvc Blanco Bornes Automaticos Bticino",
+            "cantidad": 1,
+            "precioBase": 10.70
+        }, {
+            "codigo": "0101003",
+            "nombre": "Socate metalico e27 para intemperie Eagle",
+            "cantidad": 1,
+            "precioBase": 10.70
+        }, {
+            "codigo": "0202001",
+            "nombre": "Tornillo para madera",
+            "cantidad": 50,
+            "precioBase": 0.50
+        }, {
+            "codigo": "0303001",
+            "nombre": "Bombillo LED 10W",
+            "cantidad": 5,
+            "precioBase": 2.50
+        }, {
+            "codigo": "0404001",
+            "nombre": "Destornillador de estrella",
+            "cantidad": 2,
+            "precioBase": 8.00
+        }];
+        localStorage.setItem('productosEnPedido', JSON.stringify(productosMock));
 
         calcularTotales();
     });
@@ -355,13 +383,24 @@
         let subtotal = 0;
         const recargoTasa = 0.15;
 
-        productos.forEach(producto => {pe
+        productos.forEach(producto => {
             let precioActual = producto.precioBase;
             if (nivel === 'MAYOREOB') {
                 precioActual = producto.precioBase * (1 + recargoTasa);
             }
             producto.precio = precioActual;
-            producto.subtotal = producto.cantidad * precioActual;
+
+            // Generar y aplicar un descuento aleatorio si no existe
+            if (producto.descuentoPorcentaje === undefined) {
+                // Descuento entre 1% y 5%
+                producto.descuentoPorcentaje = Math.random() * (0.05 - 0.01) + 0.01;
+            }
+
+            // Recalcular subtotal de la línea de producto con el descuento
+            const subtotalSinDescuento = producto.cantidad * precioActual;
+            const subtotalConDescuento = subtotalSinDescuento * (1 - producto.descuentoPorcentaje);
+            producto.subtotal = subtotalConDescuento;
+            
             subtotal += producto.subtotal;
         });
 
@@ -423,7 +462,8 @@
         doc.text("TIPO DOCUMENTO: Pedido", 10, y);
         y += 10;
 
-        const tableColumn = ["CODIGO", "ARTICULO", "CANT", "PRECIO U.", "PRECIO NETO"];
+        // Nueva columna "DESCUENTO"
+        const tableColumn = ["CODIGO", "ARTICULO", "CANT", "PRECIO U.", "DESCUENTO", "PRECIO NETO"];
         const tableRows = [];
 
         productos.forEach(producto => {
@@ -432,6 +472,7 @@
                 producto.nombre,
                 producto.cantidad,
                 producto.precio.toFixed(2),
+                (producto.descuentoPorcentaje * 100).toFixed(0) + '%', // Mostrar el porcentaje de descuento
                 producto.subtotal.toFixed(2)
             ];
             tableRows.push(productoData);
