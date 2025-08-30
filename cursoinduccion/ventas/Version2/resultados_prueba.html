@@ -84,6 +84,12 @@
             font-size: 0.9em;
             flex-shrink: 0;
         }
+        /* NUEVO: Estilos para el botón Prom. deshabilitado */
+        .search-bar button:disabled {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            color: #999;
+        }
         .product-list {
             height: 300px;
             overflow-y: scroll;
@@ -254,60 +260,59 @@
         <input type="text" placeholder="Código o nombre..." id="busqueda-producto" onkeyup="if(event.key === 'Enter') buscarProducto()">
         <button type="button" onclick="buscarProducto()">B.</button>
         <button type="button" onclick="window.open('datos.html', 'DatosDelPedido', 'width=300,height=400');">Sub</button>
+        <button type="button" id="btn-prom" onclick="irAPromocion()" disabled>Prom.</button>
     </div>
     
     <div class="product-list" id="lista-productos">
-
-        <div class="product-item" data-codigo="0101002" data-nombre="Receptaculo De Pvc Blanco Bornes Automaticos Btincino - 7110502" data-precio="3.86" data-existencia="450" data-empaque="10" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101002" data-nombre="Receptaculo De Pvc Blanco Bornes Automaticos Btincino - 7110502" data-precio="3.86" data-existencia="450" data-empaque="10" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101002" id="prod-0101002">
             <div class="product-details-text">
                 <span class="code">0101002</span>
                 <span class="description">Receptaculo De Pvc Blanco Bornes Automaticos Btincino - 7110502</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101007" data-nombre="Socate metalico e27 para intemperie Eagle - 7130165" data-precio="5.35" data-existencia="210" data-empaque="6" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101007" data-nombre="Socate metalico e27 para intemperie Eagle - 7130165" data-precio="5.35" data-existencia="210" data-empaque="6" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101007" id="prod-0101007">
             <div class="product-details-text">
                 <span class="code">0101007</span>
                 <span class="description">Socate metalico e27 para intemperie Eagle - 7130165</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101012" data-nombre="Socate de porcelana e-27 Fermetal - 7130011" data-precio="1.50" data-existencia="1500" data-empaque="12" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101012" data-nombre="Socate de porcelana e-27 Fermetal - 7130011" data-precio="1.50" data-existencia="1500" data-empaque="12" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101012" id="prod-0101012">
             <div class="product-details-text">
                 <span class="code">0101012</span>
                 <span class="description">Socate de porcelana e-27 Fermetal - 7130011</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101014" data-nombre="Socate para tubo LED T8 y tubo fluorescente Gdeseo - 7300315" data-precio="2.15" data-existencia="75" data-empaque="1" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101014" data-nombre="Socate para tubo LED T8 y tubo fluorescente Gdeseo - 7300315" data-precio="2.15" data-existencia="75" data-empaque="1" data-has-promo="true" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101014" id="prod-0101014">
             <div class="product-details-text">
                 <span class="code">0101014</span>
                 <span class="description">Socate para tubo LED T8 y tubo fluorescente Gdeseo - 7300315</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101018" data-nombre="Balasto electrónico 2 x 60 w luz blanca Philips - 7025097" data-precio="8.75" data-existencia="30" data-empaque="2" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101018" data-nombre="Balasto electrónico 2 x 60 w luz blanca Philips - 7025097" data-precio="8.75" data-existencia="30" data-empaque="2" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101018" id="prod-0101018">
             <div class="product-details-text">
                 <span class="code">0101018</span>
                 <span class="description">Balasto electrónico 2 x 60 w luz blanca Philips - 7025097</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101021" data-nombre="Socate plástico rosca E27 blanco Semilic - 7130077" data-precio="0.95" data-existencia="1250" data-empaque="20" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101021" data-nombre="Socate plástico rosca E27 blanco Semilic - 7130077" data-precio="0.95" data-existencia="1250" data-empaque="20" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101021" id="prod-0101021">
             <div class="product-details-text">
                 <span class="code">0101021</span>
                 <span class="description">Socate plástico rosca E27 blanco Semilic - 7130077</span>
             </div>
         </div>
-        <div class="product-item" data-codigo="0101024" data-nombre="Socate de porcelana rosca E27 modelo 11 Amperios Semilic - 7130101" data-precio="2.30" data-existencia="850" data-empaque="4" onclick="seleccionarProducto(this)">
+        <div class="product-item" data-codigo="0101024" data-nombre="Socate de porcelana rosca E27 modelo 11 Amperios Semilic - 7130101" data-precio="2.30" data-existencia="850" data-empaque="4" data-has-promo="false" onclick="seleccionarProducto(this)">
             <input type="checkbox" name="producto" value="0101024" id="prod-0101024">
             <div class="product-details-text">
                 <span class="code">0101024</span>
                 <span class="description">Socate de porcelana rosca E27 modelo 11 Amperios Semilic - 7130101</span>
             </div>
         </div>
-
     </div>
     
     <div class="product-details">
@@ -444,6 +449,7 @@
         const precioP1 = parseFloat(elemento.getAttribute('data-precio'));
         const existencia = parseFloat(elemento.getAttribute('data-existencia'));
         const empaqueComercial = parseFloat(elemento.getAttribute('data-empaque'));
+        const tienePromocion = elemento.getAttribute('data-has-promo') === 'true'; // NUEVO: Obtiene el estado de la promoción
 
         // Calcular el precio P2 (P1 + 20%)
         const precioP2 = precioP1 * 1.20;
@@ -454,6 +460,10 @@
         document.getElementById('exist').value = existencia;
         document.getElementById('emp-c').value = empaqueComercial;
         document.getElementById('cant').value = ''; // Limpiar el campo de cantidad
+
+        // NUEVO: Habilita o deshabilita el botón de promoción
+        const btnProm = document.getElementById('btn-prom');
+        btnProm.disabled = !tienePromocion;
     }
 
     /**
@@ -537,6 +547,17 @@
         const ayudaWindow = window.open('', 'AyudaGeneral', 'width=450,height=500,resizable=yes,scrollbars=yes');
         ayudaWindow.document.write(ayudaContenido);
         ayudaWindow.document.close();
+    }
+    
+    // NUEVO: Función para navegar a la página de promociones
+    function irAPromocion() {
+        const productoSeleccionado = document.querySelector('.product-item.selected');
+        if (productoSeleccionado) {
+            const codigo = productoSeleccionado.getAttribute('data-codigo');
+            window.location.href = `086-promociones.html?code=${codigo}`;
+        } else {
+            alert('Por favor, seleccione un producto con promoción.');
+        }
     }
 </script>
 
