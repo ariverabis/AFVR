@@ -1,533 +1,637 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>059 - Detalle Recibo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            height: 100vh;
-            margin: 0;
-            padding-top: 20px;
-        }
+<!DOCTYPE html> 
+<html lang="es"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>059 - Detalle Recibo</title> 
+    <style> 
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f0f0f0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            height: 100vh; 
+            margin: 0; 
+            padding-top: 20px; 
+        } 
 
-        .screen-container {
-            width: 360px;
-            height: 640px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            border-radius: 10px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
+        .screen-container { 
+            width: 360px; 
+            height: 640px; 
+            background-color: white; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+        } 
 
-        .header {
-            background-color: #007BFF;
-            color: white;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+        .header { 
+            background-color: #007BFF; 
+            color: white; 
+            padding: 15px; 
+            display: flex; 
+            align-items: center; 
+            font-size: 18px; 
+            font-weight: bold; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        } 
 
-        .header .back-arrow {
-            font-size: 24px;
-            margin-right: 15px;
-            cursor: pointer;
-        }
+        .header .back-arrow { 
+            font-size: 24px; 
+            margin-right: 15px; 
+            cursor: pointer; 
+        } 
 
-        .header-title {
-            flex-grow: 1;
-        }
+        .header-title { 
+            flex-grow: 1; 
+        } 
 
-        .header-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
+        .header-actions { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+        } 
 
-        .header-actions span {
-            cursor: pointer;
-            font-size: 20px;
-        }
+        .header-actions span { 
+            cursor: pointer; 
+            font-size: 20px; 
+        } 
 
-        .finish-button {
-            display: none; /* Oculto por defecto */
-            background-color: #28a745;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .finish-button.active {
-            display: block; /* Visible cuando se activa */
-        }
+        .finish-button { 
+            display: none; /* Oculto por defecto */ 
+            background-color: #28a745; 
+            color: white; 
+            padding: 5px 15px; 
+            border-radius: 5px; 
+            font-size: 14px; 
+            font-weight: bold; 
+            cursor: pointer; 
+        } 
+        .finish-button.active { 
+            display: block; /* Visible cuando se activa */ 
+        } 
 
-        /* Estilos para los mensajes de pasos */
-        .step-messages {
-            background-color: #e8f5e9; /* Un color suave para destacar */
-            padding: 10px 15px;
-            border-bottom: 1px solid #c8e6c9;
-            font-size: 14px;
-            color: #1b5e20;
-            line-height: 1.5;
-        }
+        /* Estilos para los mensajes de pasos */ 
+        .step-messages { 
+            background-color: #e8f5e9; /* Un color suave para destacar */ 
+            padding: 10px 15px; 
+            border-bottom: 1px solid #c8e6c9; 
+            font-size: 14px; 
+            color: #1b5e20; 
+            line-height: 1.5; 
+        } 
 
-        .step-messages .step-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
+        .step-messages .step-item { 
+            display: flex; 
+            align-items: center; 
+            margin-bottom: 5px; 
+        } 
 
-        .step-messages .step-icon {
-            font-weight: bold;
-            background-color: #4caf50;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-            margin-right: 8px;
-        }
+        .step-messages .step-icon { 
+            font-weight: bold; 
+            background-color: #4caf50; 
+            color: white; 
+            border-radius: 50%; 
+            width: 20px; 
+            height: 20px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 12px; 
+            margin-right: 8px; 
+        } 
 
-        .content {
-            padding: 15px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
+        .content { 
+            padding: 15px; 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            overflow-y: auto; 
+        } 
 
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
+        .section-title { 
+            font-size: 16px; 
+            font-weight: bold; 
+            border-bottom: 2px solid #ccc; 
+            padding-bottom: 5px; 
+            margin-bottom: 10px; 
+        } 
 
-        .table-container {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
+        .table-container { 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+        } 
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-            font-size: 12px;
-        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            text-align: center; 
+            font-size: 12px; 
+        } 
 
-        thead {
-            background-color: #f8f8f8;
-            font-weight: bold;
-        }
+        thead { 
+            background-color: #f8f8f8; 
+            font-weight: bold; 
+        } 
 
-        th, td {
-            padding: 8px;
-            border-bottom: 1px solid #eee;
-            white-space: nowrap;
-        }
+        th, td { 
+            padding: 8px; 
+            border-bottom: 1px solid #eee; 
+            white-space: nowrap; 
+        } 
 
-        .total-row {
-            font-weight: bold;
-            font-size: 14px;
-            text-align: right;
-            padding: 10px;
-        }
+        .total-row { 
+            font-weight: bold; 
+            font-size: 14px; 
+            text-align: right; 
+            padding: 10px; 
+        } 
 
-        .total-field {
-            padding: 5px;
-            border-top: 1px solid #ccc;
-        }
+        .total-field { 
+            padding: 5px; 
+            border-top: 1px solid #ccc; 
+        } 
 
-        .payments-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .payments-section { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px; 
+        } 
 
-        .payments-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .payments-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        } 
 
-        .payments-header .buttons {
-            display: flex;
-            gap: 10px;
-        }
+        .payments-header .buttons { 
+            display: flex; 
+            gap: 10px; 
+        } 
 
-        .payments-table-container {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
+        .payments-table-container { 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            overflow: hidden; 
+        } 
 
-        .final-summary {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 15px;
-            font-size: 14px;
-            gap: 10px;
-        }
+        .final-summary { 
+            display: flex; 
+            justify-content: flex-end; 
+            align-items: center; 
+            margin-top: 15px; 
+            font-size: 14px; 
+            gap: 10px; 
+        } 
 
-        .final-summary .total-value {
-            background-color: #e0e0e0;
-            padding: 5px 10px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            font-weight: bold;
-        }
+        .final-summary .total-value { 
+            background-color: #e0e0e0; 
+            padding: 5px 10px; 
+            border-radius: 3px; 
+            border: 1px solid #ccc; 
+            font-weight: bold; 
+        } 
 
-        .final-summary .label {
-            font-weight: bold;
-        }
+        .final-summary .label { 
+            font-weight: bold; 
+        } 
 
-        .editable-monto {
-            width: 80px;
-            padding: 2px 5px;
-            text-align: right;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
+        .editable-monto { 
+            width: 80px; 
+            padding: 2px 5px; 
+            text-align: right; 
+            border: 1px solid #ccc; 
+            border-radius: 3px; 
+        } 
 
-        .summary-table-container {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
+        .summary-table-container { 
+            border: 1px solid #ccc; 
+            border-radius: 5px; 
+            overflow: hidden; 
+            margin-bottom: 15px; 
+            font-size: 12px; 
+        } 
 
-        .summary-table-container table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+        .summary-table-container table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        } 
 
-        .summary-table-container td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
+        .summary-table-container td { 
+            padding: 8px; 
+            text-align: left; 
+            border-bottom: 1px solid #eee; 
+        } 
 
-        .summary-table-container td:last-child {
-            text-align: right;
-        }
+        .summary-table-container td:last-child { 
+            text-align: right; 
+        } 
 
-        .summary-table-container tr:last-child {
-            font-weight: bold;
-            background-color: #f8f8f8;
-        }
+        .summary-table-container tr:last-child { 
+            font-weight: bold; 
+            background-color: #f8f8f8; 
+        } 
 
-        /* Modal (Pop-up) Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
+        /* Modal (Pop-up) Styles */ 
+        .modal { 
+            display: none; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0; 
+            top: 0; 
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+        } 
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 8px;
-            position: relative;
-        }
+        .modal-content { 
+            background-color: #fefefe; 
+            margin: 15% auto; 
+            padding: 20px; 
+            border: 1px solid #888; 
+            width: 90%; 
+            max-width: 400px; 
+            border-radius: 8px; 
+            position: relative; 
+        } 
 
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+        .close-button { 
+            color: #aaa; 
+            float: right; 
+            font-size: 28px; 
+            font-weight: bold; 
+        } 
 
-        .close-button:hover,
-        .close-button:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
+        .close-button:hover, 
+        .close-button:focus { 
+            color: #000; 
+            text-decoration: none; 
+            cursor: pointer; 
+        } 
 
-        /* Estilo para el botón + */
-        #btnAddPayment {
-            font-size: 30px; /* Tamaño más grande */
-            background-color: #007BFF;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+        /* Estilo para el botón + */ 
+        #btnAddPayment { 
+            font-size: 30px; /* Tamaño más grande */ 
+            background-color: #007BFF; 
+            color: white; 
+            border-radius: 50%; 
+            width: 30px; 
+            height: 30px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            cursor: pointer; 
+        } 
+    </style> 
+</head> 
+<body> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-    <div class="screen-container">
-        <div class="header">
-            <span class="back-arrow" onclick="history.back()">&larr;</span>
-            <span class="header-title">059 - Detalle Recibo</span>
-            <div class="header-actions">
-                <div class="finish-button" id="btnFinish">FIN</div>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&times;</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x2714;</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x271A;</span>
-            </div>
-        </div>
-        <div class="step-messages">
-            <div class="step-item">
-                <span class="step-icon">1</span>
-                <span>Puede cambiar el monto a pagar de la factura. (Abono).</span>
-                <span class="help-icon" onclick="showManual('Cambiar Monto de Factura', 'Si la factura no se cancela en su totalidad, puede modificar el monto a abonar directamente en la tabla de DOCUMENTOS. Solo necesita hacer clic en el campo del monto y escribir el nuevo valor.')">?</span>
-            </div>
-            <div class="step-item">
-                <span class="step-icon">2</span>
-                <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+"" En el area PAGOS.</span>
-                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')">?</span>
-            </div>
-                        <div class="step-item">
-                <span class="step-icon">3</span>
-                <span>EL boton Fin Aparece en la parte superior, Cuando el monto registrado en Pago, es mayor o igual al monto asignado arriba.</span>
-                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')">?</span>
-            </div>
+    <div class="screen-container"> 
+        <div class="header"> 
+            <span class="back-arrow" onclick="history.back()">&larr;</span> 
+            <span class="header-title">059 - Detalle Recibo</span> 
+            <div class="header-actions"> 
+                <div class="finish-button active" id="btnFinish">FIN</div> 
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&times;</span> 
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x2714;</span> 
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x271A;</span> 
+            </div> 
+        </div> 
+        <div class="step-messages"> 
+            <div class="step-item"> 
+                <span class="step-icon">1</span> 
+                <span>Puede cambiar el monto a pagar de la factura. (Abono).</span> 
+                <span class="help-icon" onclick="showManual('Cambiar Monto de Factura', 'Si la factura no se cancela en su totalidad, puede modificar el monto a abonar directamente en la tabla de DOCUMENTOS. Solo necesita hacer clic en el campo del monto y escribir el nuevo valor.')"></span> 
+            </div> 
+            <div class="step-item"> 
+                <span class="step-icon">2</span> 
+                <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+"" En el area PAGOS.</span> 
+                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')"></span> 
+            </div> 
+            <div class="step-item"> 
+                <span class="step-icon">3</span> 
+                <span>EL boton Fin Aparece en la parte superior, Cuando el monto registrado en Pago, es mayor o igual al monto asignado arriba.</span> 
+                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')"></span> 
+            </div> 
+        </div> 
+        <div class="content"> 
+            <div class="section-title">DOCUMENTOS</div> 
+            <div class="table-container"> 
+                <table id="documentTable"> 
+                    <thead> 
+                        <tr> 
+                            <th>Tipo</th> 
+                            <th>No. Fiscal</th> 
+                            <th>Forma de Pago</th> 
+                            <th>Monto USD</th> 
+                        </tr> 
+                    </thead> 
+                    <tbody> 
+                    </tbody> 
+                </table> 
+            </div> 
 
-        </div>
-        <div class="content">
-            <div class="section-title">DOCUMENTOS</div>
-            <div class="table-container">
-                <table id="documentTable">
-                    <thead>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>No. Fiscal</th>
-                            <th>Forma de Pago</th>
-                            <th>Monto USD</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <div class="summary-table-container"> 
+                <table> 
+                    <tbody> 
+                        <tr><td>Sub-Total:</td><td id="subTotalDocument">0,00</td></tr> 
+                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">0,00</td></tr> 
+                        <tr><td>Retención:</td><td id="retencionDocument">0,00</td></tr> 
+                        <tr class="total-row-summary"><td>Total:</td><td id="documentTotal">0,00</td></tr> 
+                    </tbody> 
+                </table> 
+            </div> 
 
-            <div class="summary-table-container">
-                <table>
-                    <tbody>
-                        <tr><td>Sub-Total:</td><td id="subTotalDocument">0,00</td></tr>
-                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">0,00</td></tr>
-                        <tr><td>Retención:</td><td id="retencionDocument">0,00</td></tr>
-                        <tr class="total-row-summary"><td>Total:</td><td id="documentTotal">0,00</td></tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="payments-header"> 
+                <div class="section-title" style="border-bottom: none;">PAGOS</div> 
+                <div class="buttons"> 
+                    <div id="btnAddPayment">+</div> 
+                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&times;</span> 
+                </div> 
+            </div> 
+            <div class="payments-table-container"> 
+                <table id="paymentsTable"> 
+                    <thead> 
+                        <tr> 
+                            <th>Pago</th> 
+                            <th>Moneda</th> 
+                            <th>Monto</th> 
+                        </tr> 
+                    </thead> 
+                    <tbody> 
+                    </tbody> 
+                </table> 
+            </div> 
 
-            <div class="payments-header">
-                <div class="section-title" style="border-bottom: none;">PAGOS</div>
-                <div class="buttons">
-                    <div id="btnAddPayment">+</div>
-                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&times;</span>
-                </div>
-            </div>
-            <div class="payments-table-container">
-                <table id="paymentsTable">
-                    <thead>
-                        <tr>
-                            <th>Pago</th>
-                            <th>Moneda</th>
-                            <th>Monto</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
+            <div class="final-summary"> 
+                <span class="label">Resta:</span> 
+                <span id="restaUSD" class="total-value">0,00 USD</span> 
+                <span id="restaVES" class="total-value">0,00 VES</span> 
+            </div> 
+        </div> 
+    </div> 
 
-            <div class="final-summary">
-                <span class="label">Resta:</span>
-                <span id="restaUSD" class="total-value">0,00 USD</span>
-                <span id="restaVES" class="total-value">0,00 VES</span>
-            </div>
-        </div>
-    </div>
+    <div id="manualModal" class="modal"> 
+        <div class="modal-content"> 
+            <span class="close-button" onclick="closeManual()">&times;</span> 
+            <h2 id="modalTitle"></h2> 
+            <p id="modalContent"></p> 
+        </div> 
+    </div> 
 
-    <div id="manualModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeManual()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalContent"></p>
-        </div>
-    </div>
+    <script> 
+        const { jsPDF } = window.jspdf;
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const documentTableBody = document.querySelector('#documentTable tbody');
-            const paymentsTableBody = document.querySelector('#paymentsTable tbody');
-            const manualModal = document.getElementById('manualModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            const btnFinish = document.getElementById('btnFinish');
+        document.addEventListener('DOMContentLoaded', () => { 
+            const documentTableBody = document.querySelector('#documentTable tbody'); 
+            const paymentsTableBody = document.querySelector('#paymentsTable tbody'); 
+            const manualModal = document.getElementById('manualModal'); 
+            const modalTitle = document.getElementById('modalTitle'); 
+            const modalContent = document.getElementById('modalContent'); 
+            const btnFinish = document.getElementById('btnFinish'); 
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const selectedItemsJSON = urlParams.get('selectedItems');
-            const totalDescuento = parseFloat(urlParams.get('totalDescuento')) || 0;
-            const totalRetencion = parseFloat(urlParams.get('totalRetencion')) || 0;
-            const formaDePago = urlParams.get('formaDePago');
-            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
+            const urlParams = new URLSearchParams(window.location.search); 
+            const selectedItemsJSON = urlParams.get('selectedItems'); 
+            const totalDescuento = parseFloat(urlParams.get('totalDescuento')) || 0; 
+            const totalRetencion = parseFloat(urlParams.get('totalRetencion')) || 0; 
+            const formaDePago = urlParams.get('formaDePago'); 
+            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd'); 
 
-            let subTotalDocumentos = 0;
-            let totalFacturas = 0;
-            let paymentsTotal = 0;
+            let subTotalDocumentos = 0; 
+            let totalFacturas = 0; 
+            let paymentsTotal = 0; 
 
-            if (selectedItemsJSON) {
-                const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
-                selectedItems.forEach(item => {
-                    const newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td>${item.tipo}</td>
-                        <td>${item.noFiscal}</td>
-                        <td>PAGO GENERICO</td>
-                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" data-importe-original="${item.importe}" data-retencion="${item.retencion}"></td>
-                    `;
-                    documentTableBody.appendChild(newRow);
-                });
-            } else {
-                console.log('No se encontraron ítems seleccionados.');
-            }
+            if (selectedItemsJSON) { 
+                const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON)); 
+                selectedItems.forEach(item => { 
+                    const newRow = document.createElement('tr'); 
+                    newRow.innerHTML = ` 
+                        <td>${item.tipo}</td> 
+                        <td>${item.noFiscal}</td> 
+                        <td>PAGO GENERICO</td> 
+                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" data-importe-original="${item.importe}" data-retencion="${item.retencion}"></td> 
+                    `; 
+                    documentTableBody.appendChild(newRow); 
+                }); 
+            } else { 
+                console.log('No se encontraron ítems seleccionados.'); 
+            } 
 
-            window.showManual = function(title, content) {
-                modalTitle.textContent = title;
-                modalContent.textContent = content;
-                manualModal.style.display = 'block';
-            }
+            window.showManual = function(title, content) { 
+                modalTitle.textContent = title; 
+                modalContent.textContent = content; 
+                manualModal.style.display = 'block'; 
+            } 
 
-            window.closeManual = function() {
-                manualModal.style.display = 'none';
-            }
+            window.closeManual = function() { 
+                manualModal.style.display = 'none'; 
+            } 
 
-            window.onclick = function(event) {
-                if (event.target == manualModal) {
-                    closeManual();
+            window.onclick = function(event) { 
+                if (event.target == manualModal) { 
+                    closeManual(); 
+                } 
+            } 
+
+            function updateDocumentSummary() { 
+                subTotalDocumentos = 0; 
+                documentTableBody.querySelectorAll('.editable-monto').forEach(input => { 
+                    const numericValue = parseFloat(input.value.replace(',', '.')); 
+                    if (!isNaN(numericValue)) { 
+                        subTotalDocumentos += numericValue; 
+                    } 
+                }); 
+
+                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ','); 
+
+                if (aplicaDescuento) { 
+                    document.getElementById('descuentoRow').style.display = 'table-row'; 
+                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`; 
+                } else { 
+                    document.getElementById('descuentoRow').style.display = 'none'; 
+                } 
+
+                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`; 
+
+                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion; 
+                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ','); 
+
+                updateRemainingAmounts(); 
+            } 
+
+            documentTableBody.addEventListener('input', (event) => { 
+                if (event.target.classList.contains('editable-monto')) { 
+                    updateDocumentSummary(); 
                 }
-            }
+            }); 
 
-            function updateDocumentSummary() {
-                subTotalDocumentos = 0;
-                documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
-                    const numericValue = parseFloat(input.value.replace(',', '.'));
-                    if (!isNaN(numericValue)) {
-                        subTotalDocumentos += numericValue;
+            document.getElementById('btnAddPayment').addEventListener('click', () => { 
+                const urlParams = new URLSearchParams(); 
+                urlParams.set('totalAPagar', totalFacturas.toFixed(2)); 
+                window.location.href = `pagos.html?${urlParams.toString()}`; 
+            }); 
+
+            document.getElementById('btnDeletePayment').addEventListener('click', () => { 
+                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]'); 
+                if (payments.length > 0) { 
+                    payments.pop(); 
+                    sessionStorage.setItem('currentPayments', JSON.stringify(payments)); 
+                    renderPayments(); 
+                } 
+            }); 
+
+            function renderPayments() { 
+                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]'); 
+                paymentsTableBody.innerHTML = ''; 
+                paymentsTotal = 0; 
+                payments.forEach(payment => { 
+                    const newRow = document.createElement('tr'); 
+                    const monto = parseFloat(payment.monto); 
+                    paymentsTotal += monto; 
+                    newRow.innerHTML = ` 
+                        <td>${payment.formaPago}</td> 
+                        <td>${payment.moneda}</td> 
+                        <td class="payment-monto">${monto.toFixed(2).replace('.', ',')}</td> 
+                    `; 
+                    paymentsTableBody.appendChild(newRow); 
+                }); 
+                updateRemainingAmounts(); 
+            } 
+
+            function updateRemainingAmounts() { 
+                let paymentsTotal = 0; 
+                paymentsTableBody.querySelectorAll('.payment-monto').forEach(cell => { 
+                    const numericValue = parseFloat(cell.textContent.replace(',', '.')); 
+                    if (!isNaN(numericValue)) { 
+                        paymentsTotal += numericValue; 
+                    } 
+                }); 
+
+                const remaining = totalFacturas - paymentsTotal; 
+                document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`; 
+                // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo. 
+                document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`; 
+
+                // Activar el botón FIN si no hay monto restante 
+                if (remaining <= 0) { 
+                    btnFinish.classList.add('active'); 
+                } else { 
+                    btnFinish.classList.remove('active'); 
+                } 
+            } 
+
+            updateDocumentSummary(); 
+            renderPayments(); 
+
+            // =========================================================================
+            // Lógica para la generación del PDF
+            // =========================================================================
+            btnFinish.addEventListener('click', () => {
+                const doc = new jsPDF();
+                let yOffset = 20;
+
+                // Título y detalles principales
+                doc.setFontSize(16);
+                doc.text("febeca", 10, yOffset);
+                doc.setFontSize(10);
+                yOffset += 5;
+                doc.text("mayor de ferretería.", 10, yOffset);
+                yOffset += 10;
+                doc.setFontSize(14);
+                doc.text("Recibo de Cobro", 100, yOffset, null, null, "center");
+                yOffset += 10;
+                doc.setFontSize(12);
+                doc.text(`Recibo Nro. ${Math.floor(Math.random() * 10000000) + 1}`, 10, yOffset);
+                yOffset += 7;
+                doc.text(`CLIENTE: DISTRIBUIDORA V.P. HOGAR, C.A.`, 10, yOffset); // Usar datos de la página si están disponibles
+                yOffset += 7;
+                doc.text(`FECHA DE PAGO: ${new Date().toLocaleDateString('es-ES')}`, 10, yOffset);
+                yOffset += 7;
+                doc.text(`VENDEDOR: YENDER VOLCAN`, 10, yOffset);
+                yOffset += 15;
+
+                // Tabla de Documentos
+                const documentRows = [];
+                documentTableBody.querySelectorAll('tr').forEach(row => {
+                    const rowData = [];
+                    const inputs = row.querySelectorAll('td input');
+                    const cells = row.querySelectorAll('td:not(:has(input))');
+                    cells.forEach(cell => rowData.push(cell.innerText));
+                    if (inputs.length > 0) {
+                      inputs.forEach(input => rowData.push(parseFloat(input.value).toFixed(2)));
+                    }
+                    documentRows.push(rowData);
+                });
+
+                doc.autoTable({
+                    startY: yOffset,
+                    head: [['Tipo', 'No. Fiscal', 'Forma de Pago', 'Monto USD']],
+                    body: documentRows,
+                    theme: 'grid',
+                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
+                    styles: { fontSize: 10 },
+                    columnStyles: {
+                        3: { halign: 'right' }
                     }
                 });
 
-                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ',');
+                yOffset = doc.autoTable.previous.finalY + 10;
 
-                if (aplicaDescuento) {
-                    document.getElementById('descuentoRow').style.display = 'table-row';
-                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
-                } else {
-                    document.getElementById('descuentoRow').style.display = 'none';
-                }
+                // Resumen de la factura
+                const subTotal = document.getElementById('subTotalDocument').innerText.replace(',', '.');
+                const retencion = document.getElementById('retencionDocument').innerText.replace(',', '.');
+                const total = document.getElementById('documentTotal').innerText.replace(',', '.');
+                
+                doc.setFontSize(12);
+                doc.text(`Sub-Total: ${subTotal} USD`, 190, yOffset, null, null, "right");
+                yOffset += 7;
+                doc.text(`Retención: ${retencion} USD`, 190, yOffset, null, null, "right");
+                yOffset += 7;
+                doc.text(`Total: ${total} USD`, 190, yOffset, null, null, "right");
 
-                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+                yOffset += 15;
 
-                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
-                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
-
-                updateRemainingAmounts();
-            }
-
-            documentTableBody.addEventListener('input', (event) => {
-                if (event.target.classList.contains('editable-monto')) {
-                    updateDocumentSummary();
-                }
-            });
-
-            document.getElementById('btnAddPayment').addEventListener('click', () => {
-                const urlParams = new URLSearchParams();
-                urlParams.set('totalAPagar', totalFacturas.toFixed(2));
-                window.location.href = `pagos.html?${urlParams.toString()}`;
-            });
-
-            document.getElementById('btnDeletePayment').addEventListener('click', () => {
-                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
-                if (payments.length > 0) {
-                    payments.pop();
-                    sessionStorage.setItem('currentPayments', JSON.stringify(payments));
-                    renderPayments();
-                }
-            });
-
-            function renderPayments() {
-                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
-                paymentsTableBody.innerHTML = '';
-                paymentsTotal = 0;
-                payments.forEach(payment => {
-                    const newRow = document.createElement('tr');
-                    const monto = parseFloat(payment.monto);
-                    paymentsTotal += monto;
-                    newRow.innerHTML = `
-                        <td>${payment.formaPago}</td>
-                        <td>${payment.moneda}</td>
-                        <td class="payment-monto">${monto.toFixed(2).replace('.', ',')}</td>
-                    `;
-                    paymentsTableBody.appendChild(newRow);
+                // Tabla de Pagos
+                const paymentRows = [];
+                paymentsTableBody.querySelectorAll('tr').forEach(row => {
+                    const rowData = [];
+                    row.querySelectorAll('td').forEach(cell => rowData.push(cell.innerText));
+                    paymentRows.push(rowData);
                 });
-                updateRemainingAmounts();
-            }
 
-            function updateRemainingAmounts() {
-                let paymentsTotal = 0;
-                paymentsTableBody.querySelectorAll('.payment-monto').forEach(cell => {
-                    const numericValue = parseFloat(cell.textContent.replace(',', '.'));
-                    if (!isNaN(numericValue)) {
-                        paymentsTotal += numericValue;
+                doc.autoTable({
+                    startY: yOffset,
+                    head: [['Forma de Pago', 'Moneda', 'Monto']],
+                    body: paymentRows,
+                    theme: 'grid',
+                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
+                    styles: { fontSize: 10 },
+                    columnStyles: {
+                        2: { halign: 'right' }
                     }
                 });
 
-                const remaining = totalFacturas - paymentsTotal;
-                document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
-                // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
-                document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
-
-                // Activar el botón FIN si no hay monto restante
-                if (remaining <= 0) {
-                    btnFinish.classList.add('active');
-                } else {
-                    btnFinish.classList.remove('active');
-                }
-            }
-
-            updateDocumentSummary();
-            renderPayments();
-        });
-    </script>
-</body>
+                yOffset = doc.autoTable.previous.finalY + 10;
+                
+                // Firmas y notas legales
+                doc.setFontSize(10);
+                doc.text("FIRMA Y SELLO DEL CLIENTE", 10, yOffset);
+                doc.text("FIRMA VENDEDOR", 150, yOffset);
+                yOffset += 15;
+                doc.text("Declaro que el dinero utilizado para el pago de la presente venta, proviene de una fuente lícita...", 10, yOffset, { maxWidth: 180 });
+                
+                // Guardar el PDF
+                doc.save('Recibo_de_Cobro.pdf');
+            });
+        }); 
+    </script> 
+</body> 
 </html>
