@@ -3,49 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Introducción al Curso - Menús de Venta</title>
+    <title>Manual Interactivo AFV: Ventas y Gestión Comercial</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f0f2f5;
             color: #333;
             margin: 0;
             padding: 20px;
-            text-align: center;
+            line-height: 1.6;
         }
         .container {
-            max-width: 900px;
+            max-width: 960px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 20px 30px;
             background-color: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            text-align: center;
         }
         h1 {
-            color: #007bff;
+            color: #1a73e8;
             font-size: 2.5em;
             margin-bottom: 10px;
         }
         p {
             font-size: 1.1em;
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 30px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        h2 {
+            color: #1a73e8;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-top: 40px;
         }
         .image-gallery {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
             justify-content: center;
-            gap: 20px;
         }
         .image-card {
-            background-color: #e9ecef;
+            background-color: #f8f9fa;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: calc(50% - 10px); /* Dos imágenes por fila en pantallas grandes */
-            max-width: 300px;
             text-decoration: none;
             color: inherit;
             display: flex;
@@ -53,75 +57,108 @@
             cursor: pointer;
         }
         .image-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         .image-card img {
             width: 100%;
             height: auto;
             display: block;
-            border-bottom: 2px solid #ddd;
+            border-bottom: 3px solid #e0e0e0;
         }
         .image-card .image-title {
             padding: 15px;
             font-size: 1.2em;
             font-weight: bold;
             color: #0056b3;
+            text-align: center;
         }
-        
-        /* Media Queries para diseño responsive */
-        @media (min-width: 768px) {
-            .image-gallery {
-                justify-content: space-around;
-            }
-            .image-card {
-                width: calc(25% - 15px); /* Cuatro imágenes por fila en pantallas grandes */
-            }
+        .evaluation-section {
+            margin-top: 50px;
+            background-color: #e6f3ff;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px dashed #b3d9ff;
+        }
+        .evaluation-section h2 {
+            margin-top: 0;
+            color: #0056b3;
+            border-bottom: none;
+        }
+        .evaluation-section p {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .evaluation-links {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .evaluation-links a {
+            display: block;
+            background-color: #1a73e8;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            max-width: 350px;
+        }
+        .evaluation-links a:hover {
+            background-color: #0d47a1;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Bienvenido al Curso Interactivo</h1>
-        <p>Explora los diferentes módulos de nuestra aplicación de gestión de ventas haciendo clic en las miniaturas. Cada imagen te llevará a un ejemplo práctico.</p>
+        <h1>Manual Interactivo AFV: Ventas y Gestión Comercial</h1>
+        <p>Este manual interactivo te guiará a través de los conceptos clave de la aplicación **AFV**. Aprende a navegar por los menús de **venta y gestión de cobranza**, y descubre cómo optimizar tus procesos comerciales para alcanzar mejores resultados.</p>
 
+        <h2>Módulos de Venta</h2>
         <div class="image-gallery">
             <a href="catalogo-beval.html" class="image-card">
                 <img src="catalogo beval.jpeg" alt="Catálogo Beval">
-                <div class="image-title">
-                    Catálogo Beval
-                </div>
+                <div class="image-title">Catálogo Beval</div>
             </a>
             <a href="catalogo-sillaca.html" class="image-card">
                 <img src="catalogo sillaca.jpeg" alt="Catálogo Sillaca">
-                <div class="image-title">
-                    Catálogo Sillaca
-                </div>
+                <div class="image-title">Catálogo Sillaca</div>
             </a>
             <a href="catalogofebeca.html" class="image-card">
                 <img src="catalogofebeca.jpeg" alt="Catálogo Febeca">
-                <div class="image-title">
-                    Catálogo Febeca
-                </div>
+                <div class="image-title">Catálogo Febeca</div>
             </a>
             <a href="MenuVentasFH.html" class="image-card">
-                <img src="AFV.jpeg" alt="Inicio de Sesión AFV">
-                <div class="image-title">
-                    Inicio de Sesión
-                </div>
+                <img src="AFV.jpeg" alt="Menú de Ventas">
+                <div class="image-title">Menú de Ventas</div>
             </a>
-                <a href="Sds.html" class="image-card">
-                <img src="sds.jpeg" alt="Inicio de Sesión AFV">
-                <div class="image-title">
-                    Inicio de Sesión
-                </div>
+        </div>
+        
+        <h2>Módulos de Gestión de Cobranza</h2>
+        <div class="image-gallery">
+            <a href="Sds.html" class="image-card">
+                <img src="sds.jpeg" alt="Gestión de Saldos">
+                <div class="image-title">Gestión de Saldos</div>
             </a>
             <a href="../../recibo/menu.html" class="image-card">
-                <img src="../../recibo/0.jpg" alt="Inicio de Sesión AFV">
-                <div class="image-title">
-                    Inicio de Sesión
-                </div>
+                <img src="../../recibo/0.jpg" alt="Generar Recibo de Pago">
+                <div class="image-title">Generar Recibo de Pago</div>
             </a>
+        </div>
+
+        <div class="evaluation-section">
+            <h2>Evalúa tus conocimientos</h2>
+            <p>Una vez que hayas explorado todos los módulos, te invitamos a evaluar lo que has aprendido. Completa los siguientes formularios para recibir tu certificado de participación y ayudarnos a mejorar.</p>
+            <div class="evaluation-links">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZv8PrDzzlCpq7fsqkBYlAOSkAzsRBmUEDz4A-901r3cpJOg/viewform?usp=header" target="_blank">Regístrate para la Evaluación</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScjLXWVS10t7L1gtC1OErbksyn6uXHX9G74uBxmCobqO-62ew/viewform?usp=header" target="_blank">Evalúa tu Manejo del Manual</a>
+            </div>
         </div>
     </div>
 </body>
