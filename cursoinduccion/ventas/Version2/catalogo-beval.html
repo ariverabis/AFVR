@@ -474,7 +474,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="home-screen hidden" id="screen2">
                  <div class="welcome-message" style="background-color: #e0f7fa; color: #333;">
                      <p>¡Bienvenido!, ALVARO ALEXANDER RIVERA BISCARDI -</p>
@@ -528,7 +527,6 @@
             </div>
         </div>
     </div>
-
     <div id="helpModal" class="modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
@@ -544,7 +542,6 @@
             <p>¡Explora y disfruta tu experiencia de compra digital!</p>
         </div>
     </div>
-
     <script>
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
@@ -559,11 +556,9 @@
         };
         const notificationCount = document.getElementById('notificationCount');
         let currentScreen = 'screen1';
-
         // Add event listeners for help tooltips
         document.addEventListener('DOMContentLoaded', () => {
             const helpElements = document.querySelectorAll('[data-help]');
-
             helpElements.forEach(el => {
                 let tooltip = document.createElement('div');
                 tooltip.classList.add('help-tooltip');
@@ -587,7 +582,6 @@
                     tooltip.classList.add('visible');
                 });
             });
-
             // Hide tooltips when tapping anywhere else on the screen
             document.addEventListener('touchstart', (e) => {
                 if (!e.target.closest('[data-help]')) {
@@ -595,7 +589,6 @@
                 }
             });
         });
-
         function toggleMenu() {
             sideMenu.classList.toggle('open');
             overlay.classList.toggle('active');
@@ -609,13 +602,11 @@
                 }
             }
         }
-        
         function goBack() {
             if (currentScreen !== 'screen1') {
                 toggleScreens('screen1');
             }
         }
-
         function toggleScreens(screenId) {
             currentScreen = screenId;
             for (const key in screens) {
@@ -650,17 +641,14 @@
                 toggleMenu();
             }
         }
-
         // --- Funciones para el Modal de Ayuda ---
         function openModal() {
             document.getElementById('helpModal').style.display = 'block';
             toggleMenu(); // Cierra el menú lateral si está abierto
         }
-
         function closeModal() {
             document.getElementById('helpModal').style.display = 'none';
         }
-
         // Cierra el modal si se hace clic fuera del contenido
         window.onclick = function(event) {
             const modal = document.getElementById('helpModal');
@@ -668,7 +656,6 @@
                 modal.style.display = "none";
             }
         }
-
         toggleScreens('screen1');
     </script>
 </body>
