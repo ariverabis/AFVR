@@ -4,20 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FEBECA - Catálogo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #ffc107;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --success-color: #28a745;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            font-size: 14px;
+            color: var(--text-color);
+            line-height: 1.6;
         }
 
         .container {
             transition: transform 0.3s ease-in-out;
         }
 
+        /* --- Sidebar --- */
         .sidebar {
             height: 100%;
             width: 0;
@@ -25,11 +40,11 @@
             z-index: 1000;
             top: 0;
             left: 0;
-            background-color: white;
+            background-color: var(--card-background);
             overflow-x: hidden;
-            transition: 0.3s;
+            transition: width 0.3s;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
             padding-top: 60px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
         }
 
         .sidebar.open {
@@ -37,22 +52,27 @@
         }
 
         .sidebar-header {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
-            padding: 10px;
+            padding: 15px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
             position: absolute;
             top: 0;
             width: 100%;
+            box-sizing: border-box;
             cursor: pointer;
         }
 
+        .sidebar-header h3, .sidebar-header span {
+            margin: 0;
+        }
+
         .sidebar a {
-            padding: 10px 15px;
+            padding: 12px 15px;
             text-decoration: none;
-            font-size: 1.1em;
-            color: #333;
+            font-size: 1em;
+            color: var(--text-color);
             display: block;
             border-bottom: 1px solid #eee;
             position: relative;
@@ -63,7 +83,7 @@
         }
 
         .sidebar .new-notifications {
-            background-color: #ffc107;
+            background-color: var(--secondary-color);
             color: black;
             border-radius: 12px;
             padding: 2px 8px;
@@ -75,18 +95,16 @@
         }
 
         .sidebar .section-title {
-            padding: 10px 15px;
+            padding: 12px 15px;
             font-weight: bold;
-            color: #ffc107;
+            color: var(--primary-color);
             border-bottom: 1px solid #ccc;
-        }
-        
-        .sidebar .communication-item, .sidebar .config-item, .sidebar .help-item {
-            font-size: 0.9em;
+            background-color: #e9ecef;
         }
 
+        /* --- Top Bar --- */
         .top-bar {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
             display: flex;
             align-items: center;
@@ -95,6 +113,7 @@
             position: sticky;
             top: 0;
             z-index: 500;
+            box-shadow: var(--shadow-light);
         }
 
         .top-bar .menu-button {
@@ -113,85 +132,108 @@
         .top-bar .search-container input {
             width: 100%;
             padding: 8px 10px;
-            border-radius: 5px;
+            border-radius: 20px;
             border: none;
+            font-size: 1em;
         }
 
         .top-bar .search-container .search-icon {
             position: absolute;
-            right: 10px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
             color: #888;
         }
-        
-        /* New Styles for Crypto Section */
-        .crypto-container {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        /* --- Main Content Sections --- */
+        .content-section {
             padding: 15px;
-            margin: 10px;
-            display: flex;
-            flex-direction: column;
+            margin: 15px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
         }
 
-        .crypto-container p {
-            margin: 0 0 10px 0;
+        .crypto-container {
+            text-align: center;
         }
 
-        .crypto-container .crypto-info {
+        .crypto-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             margin-bottom: 15px;
         }
 
-        .crypto-container .crypto-info .crypto-text {
+        .crypto-info .crypto-text {
             flex: 1;
+            text-align: left;
+        }
+        
+        .crypto-info .crypto-text h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .crypto-info .crypto-text p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
         }
 
-        .crypto-container .crypto-img {
+        .crypto-img {
             width: 80px;
             height: auto;
         }
 
-        .crypto-container .qr-container {
+        .qr-container {
             display: flex;
-            justify-content: space-around;
+            flex-direction: column;
+            gap: 20px;
             align-items: center;
         }
 
-        .crypto-container .qr-item {
+        .qr-item {
             text-align: center;
+            flex: 1;
         }
 
-        .crypto-container .qr-item img {
+        .qr-item img {
             width: 100px;
             height: 100px;
-            border: 1px solid #ccc;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        
+        .qr-item p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+        
+        .product-section {
+            margin-top: 20px;
         }
 
-        .product-section, .new-arrivals-section {
-            padding: 10px;
-        }
-
-        .product-list, .new-arrivals-list {
+        .product-list {
             display: flex;
             overflow-x: auto;
-            gap: 10px;
+            gap: 15px;
             padding: 10px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .product-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
         }
 
         .product-card {
-            background-color: white;
+            background-color: var(--card-background);
             border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-light);
             padding: 10px;
             flex-shrink: 0;
             width: 150px;
             text-align: center;
-            position: relative;
         }
 
         .product-card img {
@@ -202,7 +244,16 @@
 
         .product-card .price {
             font-weight: bold;
-            color: #28a745;
+            color: var(--success-color);
+            margin-top: 8px;
+            font-size: 1.1em;
+        }
+        
+        .product-card .product-title {
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             margin-top: 5px;
         }
 
@@ -214,34 +265,32 @@
 
         .product-card .icon-row span {
             cursor: pointer;
-            font-size: 1.2em;
-            color: #007bff;
+            font-size: 1.4em;
+            color: var(--primary-color);
+            transition: color 0.2s;
         }
 
         .product-card .icon-row span:hover {
             color: #0056b3;
         }
 
-        .section-title-products {
-            font-size: 1.2em;
+        .section-title-products, .section-title-arrivals {
+            font-size: 1.4em;
             font-weight: bold;
             margin-bottom: 10px;
-        }
-
-        .section-title-arrivals {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-top: 20px;
+            color: var(--text-color);
         }
 
         .see-all-button {
             text-align: right;
-            padding-right: 10px;
-            color: #007bff;
+            padding-right: 15px;
+            color: var(--primary-color);
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
         }
-        
+
+        /* --- Modals --- */
         .modal {
             display: none;
             position: fixed;
@@ -250,26 +299,23 @@
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
         }
         
         .modal-content {
-            background-color: #fefefe;
-            margin: auto;
+            background-color: var(--card-background);
             padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 350px;
             border-radius: 8px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
-            text-align: center;
         }
         
         .modal-header {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
             padding: 10px;
             border-top-left-radius: 8px;
@@ -292,7 +338,7 @@
             position: relative;
             z-index: 2;
         }
-        
+
         .modal-body {
             padding-top: 50px;
             display: flex;
@@ -300,19 +346,19 @@
             gap: 15px;
             text-align: left;
         }
-
+        
         .detail-row {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 10px;
         }
 
         .detail-row label {
             font-weight: bold;
             white-space: nowrap;
-            margin-right: 10px;
+            min-width: 80px;
         }
-
+        
         .detail-row input {
             flex-grow: 1;
             padding: 8px;
@@ -321,11 +367,12 @@
             text-align: right;
             background-color: #d3d3d3;
         }
-        
+
         .modal-footer {
             margin-top: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-end;
+            gap: 10px;
         }
 
         .modal-footer button {
@@ -335,14 +382,15 @@
             cursor: pointer;
             font-weight: bold;
         }
-
-        .modal-footer .ok-button {
-            background-color: #007bff;
+        
+        .ok-button {
+            background-color: var(--primary-color);
             color: white;
         }
 
-        .modal-footer .cancel-button {
+        .cancel-button {
             background-color: #ccc;
+            color: var(--text-color);
         }
 
         .modal-retenciones .modal-body {
@@ -354,74 +402,151 @@
             border-collapse: collapse;
             margin-top: 10px;
         }
-
+        
         .modal-retenciones .modal-body th, .modal-retenciones .modal-body td {
             border: 1px solid #ccc;
             padding: 8px;
             text-align: center;
         }
-
+        
         .modal-retenciones .modal-body th {
-            background-color: #007bff;
+            background-color: var(--primary-color);
             color: white;
         }
 
         .modal-retenciones .modal-body tr.selected {
-            background-color: #b0e0e6;
+            background-color: #e0f7fa;
         }
 
-        .modal-retenciones .total-section {
+        .total-section {
             margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .modal-retenciones .total-section input {
+        .total-section .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .total-section input {
             width: 100px;
+            text-align: right;
         }
 
-        .modal-retenciones .total-section button {
-            margin-left: 10px;
+        .total-section button {
+            margin-left: auto;
         }
         
+        /* Tooltips */
         .tooltip {
             position: relative;
             display: inline-block;
         }
+        
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 120px;
             background-color: rgba(0, 0, 0, 0.8);
             color: #fff;
             text-align: center;
             border-radius: 6px;
-            padding: 5px 0;
+            padding: 8px 10px;
             position: absolute;
             z-index: 1;
             bottom: 125%;
             left: 50%;
-            margin-left: -60px;
+            transform: translateX(-50%);
             opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 10px;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.9em;
+            white-space: nowrap;
         }
+
         .tooltip:hover .tooltiptext {
             visibility: visible;
             opacity: 1;
+        }
+
+        /* --- Media Queries for Mobile --- */
+        @media (max-width: 768px) {
+            .container.shift {
+                transform: translateX(250px);
+            }
+            .sidebar {
+                box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            .top-bar {
+                padding: 10px 15px;
+            }
+            .crypto-info {
+                flex-direction: column;
+            }
+            .crypto-info .crypto-text {
+                text-align: center;
+            }
+            .qr-container {
+                flex-direction: column;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .tooltip .tooltiptext {
+                /* Larger tooltip for better touch interaction */
+                bottom: 110%;
+                left: 0;
+                transform: none;
+                width: 150px;
+                white-space: normal;
+            }
+            .tooltip:not(:hover) .tooltiptext {
+                visibility: hidden;
+                opacity: 0;
+            }
+            /* Show tooltips by default on elements with 'mobile-tooltip' class */
+            .mobile-tooltip .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: none; /* No interaction */
+            }
         }
     </style>
 </head>
 <body>
 
+<div id="welcomeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            Bienvenido a FEBECA
+            <span class="close-button" onclick="closeModal('welcomeModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>¡Hola!</strong> Te damos la bienvenida a tu catálogo digital. Aquí tienes algunas ayudas para empezar:</p>
+            <ul>
+                <li>Usa el botón de menú <strong style="font-size: 1.2em;">&#9776;</strong> para ver las opciones. ¡Desliza el dedo a la derecha desde el borde de la pantalla para abrir el menú!</li>
+                <li>En la barra superior, puedes buscar productos por nombre o código.</li>
+                <li>Explora los productos en las secciones de "Nuevas Existencias" y más abajo.</li>
+                <li>Si tienes dudas, los <span style="font-weight: bold; border-bottom: 2px dashed #007bff;">mensajes de ayuda</span> (tooltips) te guiarán.</li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button" onclick="closeModal('welcomeModal')">Entendido</button>
+        </div>
+    </div>
+</div>
+
 <div id="sidebar" class="sidebar">
     <div class="sidebar-header" onclick="toggleSidebar()">
-        <h3 style="margin:0; cursor: pointer;">Mayorista de Valor</h3>
+        <h3>Mayorista de Valor</h3>
         <span>Bienvenido RIf0000000</span>
     </div>
     <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
     <a href="#" class="tooltip">Mi Compañía<span class="tooltiptext">Ver información de la empresa.</span></a>
     <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes (cambios de existencia).</span></a>
-    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar listas  de productos creadas segun la necesidad del usuario.</span></a>
+    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar listas de productos creadas según la necesidad del usuario.</span></a>
     <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados.</span></a>
-    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes Crear clientes o seleccionarlos.</span></a>
+    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes. Crear o seleccionar clientes.</span></a>
     
     <div class="section-title">Solicitudes de Cotización</div>
     <a href="#" class="tooltip">Solicitud Abierta<span class="tooltiptext">Ver cotizaciones pendientes.</span></a>
@@ -432,58 +557,59 @@
     <a href="#" class="tooltip">Cotizaciones Cerradas<span class="tooltiptext">Ver mis cotizaciones finalizadas.</span></a>
 
     <div class="section-title">Comunicación</div>
-    <a href="#" class="communication-item tooltip">Contáctanos<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
-    <a href="#" class="communication-item tooltip">Invitar Amigos<span class="tooltiptext">Invitar a otros a usar la aplicación.</span></a>
+    <a href="#" class="tooltip">Contáctanos<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
+    <a href="#" class="tooltip">Invitar Amigos<span class="tooltiptext">Invitar a otros a usar la aplicación.</span></a>
 
     <div class="section-title">Configuración</div>
-    <a href="#" class="config-item tooltip">Mi Cuenta<span class="tooltiptext">Configurar perfil y detalles de la cuenta.</span></a>
-    <a href="#" class="config-item tooltip">Manejo de Imágenes<span class="tooltiptext">Administrar imágenes de productos.</span></a>
+    <a href="#" class="tooltip">Mi Cuenta<span class="tooltiptext">Configurar perfil y detalles de la cuenta.</span></a>
+    <a href="#" class="tooltip">Manejo de Imágenes<span class="tooltiptext">Administrar imágenes de productos.</span></a>
 
     <div class="section-title">Ayuda</div>
-    <a href="#" class="help-item tooltip">Mensaje Bienvenida<span class="tooltiptext">Ver el mensaje de bienvenida.</span></a>
-    <a href="#" class="help-item tooltip">Reportar Error<span class="tooltiptext">Enviar un reporte de error.</span></a>
-    <a href="#" class="help-item tooltip">Acerca de<span class="tooltiptext">Ver información de la aplicación.</span></a>
+    <a href="#" class="tooltip">Mensaje Bienvenida<span class="tooltiptext">Ver el mensaje de bienvenida.</span></a>
+    <a href="#" class="tooltip">Reportar Error<span class="tooltiptext">Enviar un reporte de error.</span></a>
+    <a href="#" class="tooltip">Acerca de<span class="tooltiptext">Ver información de la aplicación.</span></a>
 </div>
 
 <div class="container" id="main-content">
     
     <div class="top-bar">
-        <button class="menu-button tooltip" onclick="toggleSidebar()">&#9776;<span class="tooltiptext">Abrir/Cerrar menú lateral.</span></button>
-        <div class="search-container tooltip">
-            <input type="text" placeholder="Buscar">
+        <button class="menu-button tooltip mobile-tooltip" onclick="toggleSidebar()">&#9776;<span class="tooltiptext">Abre el menú lateral para navegar por el catálogo.</span></button>
+        <div class="search-container tooltip mobile-tooltip">
+            <input type="text" placeholder="Buscar productos...">
             <span class="search-icon">&#128269;</span>
-            <span class="tooltiptext">Buscar productos por nombre o código.</span>
+            <span class="tooltiptext">Busca productos por nombre o código.</span>
         </div>
     </div>
     
-    <div class="crypto-container">
+    <div class="content-section crypto-container mobile-tooltip">
         <div class="crypto-info">
             <div class="crypto-text">
-                <h3>¡Ahora pueden pagar con la Criptomoneda Tether (USDT)!</h3>
-                <p>Y aprovecha el descuento por forma de pago.</p>
+                <h3>¡Paga con Tether (USDT)!</h3>
+                <p>Aprovecha los descuentos por pago con criptomoneda.</p>
             </div>
-            <img src="cripto.png" alt="Logo de Tether" class="crypto-img">
+            <img src="https://via.placeholder.com/100" alt="Logo de Tether" class="crypto-img">
         </div>
-        <p>Para realizar su pago de manera rápida y segura, pueden escanear el código QR o utilizar las siguientes direcciones de nuestra Wallet:</p>
+        <p style="font-size: 0.9em; color: var(--light-text);">Escanea el código QR o usa las direcciones de nuestra Wallet para pagar:</p>
         <div class="qr-container">
             <div class="qr-item">
-                <img src="codigoqr.png" alt="QR ERC20">
-                <p>ERC</p>
-                <p>Red ERC-20: 0x0AF8eBeD4800d7B8EaE0db7feC7c9Efb60FAc193A</p>
+                <img src="https://via.placeholder.com/100" alt="QR ERC20">
+                <p>ERC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">0x0AF8eBeD4800d7B8EaE0db7feC7c9Efb60FAc193A</p>
             </div>
             <div class="qr-item">
-                <img src="cripto.png" alt="QR TRC20">
-                <p>TRC</p>
-                <p>Red TRC-20: TD6CrQk3BcPPeFLqZJm2NptEQLQZM9H4Cd</p>
+                <img src="https://via.placeholder.com/100" alt="QR TRC20">
+                <p>TRC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">TD6CrQk3BcPPeFLqZJm2NptEQLQZM9H4Cd</p>
             </div>
         </div>
-        <p style="text-align: right; font-size: 0.8em; color: #666;">Fecha de publicación: 10 de junio del 2025</p>
+        <p style="text-align: right; font-size: 0.8em; color: var(--light-text);">Publicado: 10/06/2025</p>
     </div>
 
     <div class="product-section">
+        <h2 class="section-title-products">Productos Destacados</h2>
         <div class="product-list">
-            <div class="product-card tooltip">
-                <img src="extractor.png" alt="Extractor de Aire">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Extractor de Aire">
                 <div class="product-title">Extractor de Aire 6 FP</div>
                 <div class="price">USD 100,39</div>
                 <div class="icon-row">
@@ -492,8 +618,8 @@
                     <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
                 </div>
             </div>
-            <div class="product-card tooltip">
-                <img src="ventiladordemesa.png" alt="Ventilador de Mesa">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Ventilador de Mesa">
                 <div class="product-title">Ventilador de Mesa Oscilante</div>
                 <div class="price">USD 31,07</div>
                 <div class="icon-row">
@@ -502,7 +628,7 @@
                     <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
                 </div>
             </div>
-            <div class="product-card tooltip">
+            <div class="product-card">
                 <img src="https://via.placeholder.com/150" alt="Válvula de Aire">
                 <div class="product-title">Válvula Inser...</div>
                 <div class="price">USD 20,50</div>
@@ -516,11 +642,11 @@
         <div class="see-all-button">VER TODOS</div>
     </div>
 
-    <div class="new-arrivals-section">
-        <div class="section-title-arrivals">Nuevas Existencias</div>
-        <div class="new-arrivals-list">
-            <div class="product-card tooltip">
-                <img src="pinturanaranja.png" alt="Pintura Naranja">
+    <div class="product-section">
+        <h2 class="section-title-arrivals">Nuevas Existencias</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Pintura Naranja">
                 <div class="product-title">Pintura Esmalte Brillante Naranja</div>
                 <div class="price">USD 36,40</div>
                 <div class="icon-row">
@@ -529,8 +655,8 @@
                     <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
                 </div>
             </div>
-            <div class="product-card tooltip">
-                <img src="pinturanegra.png" alt="Pintura Negra">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Pintura Negra">
                 <div class="product-title">Pintura Esmalte Brillante Negro</div>
                 <div class="price">USD 10,66</div>
                 <div class="icon-row">
@@ -539,8 +665,8 @@
                     <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
                 </div>
             </div>
-            <div class="product-card tooltip">
-                <img src="teflonliquido.png" alt="Teflón Líquido">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Teflón Líquido">
                 <div class="product-title">Teflón Líquido Sellador</div>
                 <div class="price">USD 5,75</div>
                 <div class="icon-row">
@@ -641,8 +767,10 @@
                 </select>
                 <label>Total retenido:</label>
                 <input type="text" value="0" readonly>
-                <button>Validar</button>
-                <button>Finalizar</button>
+                <div class="modal-footer">
+                    <button class="ok-button">Validar</button>
+                    <button class="ok-button">Finalizar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -654,8 +782,10 @@
         const mainContent = document.getElementById('main-content');
         if (sidebar.style.width === '250px') {
             sidebar.style.width = '0';
+            mainContent.classList.remove('shift');
         } else {
             sidebar.style.width = '250px';
+            mainContent.classList.add('shift');
         }
     }
 
@@ -667,27 +797,49 @@
         document.getElementById(modalId).style.display = 'none';
     }
 
-    // Funciones para simular interacciones de las ventanas modales
-    document.addEventListener('DOMContentLoaded', () => {
-        // Simular clic para abrir el modal de Retenciones de IVA
-        // Esto es solo para demostración. En una aplicación real, se activaría con un evento.
-        // Por ejemplo: openModal('retencionesIVAModal');
-
-        // Simular clic para abrir el modal de Detalle Retención
-        // Esto es solo para demostración.
-        // Por ejemplo: openModal('retencionModal');
-    });
-
-    // Función para simular la selección de filas en la tabla
     function toggleSelection(row) {
         const checkbox = row.querySelector('input[type="checkbox"]');
         checkbox.checked = !checkbox.checked;
-        if (checkbox.checked) {
-            row.classList.add('selected');
-        } else {
-            row.classList.remove('selected');
-        }
+        row.classList.toggle('selected', checkbox.checked);
     }
+
+    // Mostrar el modal de bienvenida al cargar la página si es la primera vez
+    window.onload = function() {
+        const hasVisited = localStorage.getItem('hasVisitedFEBECA');
+        if (!hasVisited) {
+            openModal('welcomeModal');
+            localStorage.setItem('hasVisitedFEBECA', 'true');
+        }
+
+        // Agregar evento de arrastrar para el menú lateral en móviles
+        let startX = 0;
+        let isDragging = false;
+        const mainContent = document.getElementById('main-content');
+        const sidebar = document.getElementById('sidebar');
+
+        mainContent.addEventListener('touchstart', (e) => {
+            if (!sidebar.classList.contains('open')) {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }
+        });
+
+        mainContent.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const currentX = e.touches[0].clientX;
+                const diffX = currentX - startX;
+                if (diffX > 50) { // Si arrastra más de 50px a la derecha
+                    toggleSidebar();
+                    isDragging = false; // Evitar que se active de nuevo hasta el próximo toque
+                }
+            }
+        });
+
+        mainContent.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+    };
 </script>
 
 </body>
