@@ -12,14 +12,12 @@
             background-color: #f0f0f0;
             overflow-x: hidden;
         }
-
         /* Main Container */
         .app-container {
             display: flex;
             height: 100vh;
             transition: transform 0.3s ease-in-out;
         }
-
         /* Menu */
         .menu {
             position: fixed;
@@ -39,14 +37,14 @@
             transform: translateX(0);
         }
         .menu-header {
-            background-color: #6cbf18; /* A shade of green from beval image */
+            background-color: #6cbf18;
             color: white;
             padding: 20px;
             font-size: 1.2em;
             font-weight: bold;
         }
         .menu-header.blue {
-            background-color: #007bff; /* Blue for Beval/Mayorista */
+            background-color: #007bff;
         }
         .menu ul {
             list-style: none;
@@ -82,7 +80,28 @@
             font-size: 0.7em;
             margin-left: auto;
         }
-        
+        .menu-buttons {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .menu-buttons button {
+            flex-grow: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+        }
+        .menu-buttons .btn-beval {
+            background-color: #6cbf18;
+        }
+        .menu-buttons .btn-mayorista {
+            background-color: #007bff;
+        }
         /* Main Content */
         .content-overlay {
             position: fixed;
@@ -97,38 +116,32 @@
         .content-overlay.active {
             display: block;
         }
-
         .main-content {
             flex-grow: 1;
             padding: 0;
-            position: relative; /* Needed for positioning tooltips */
+            position: relative;
         }
-
         .header {
             display: flex;
             align-items: center;
             padding: 10px 15px;
-            background-color: #6cbf18; /* Green for Beval */
+            background-color: #6cbf18;
             color: white;
-            position: relative; /* Add this for positioning the back button */
+            position: relative;
         }
         .header.blue {
-            background-color: #007bff; /* Blue for Beval/Mayorista */
+            background-color: #007bff;
         }
-        .header .menu-toggle {
+        .header .menu-toggle, .header .back-button {
             font-size: 24px;
             cursor: pointer;
             margin-right: 15px;
         }
-        /* New Back Button Styles */
-        .header .back-button {
-            font-size: 24px;
-            cursor: pointer;
-            margin-right: 15px;
-            display: none; /* Initially hidden */
+        .header .back-button.hidden {
+            display: none;
         }
-        .header .back-button.active {
-            display: block;
+        .header .menu-toggle.hidden {
+            display: none;
         }
         .header .search-bar {
             flex-grow: 1;
@@ -157,14 +170,13 @@
             font-weight: bold;
             flex-grow: 1;
         }
-
         .home-screen {
             padding: 20px;
             overflow-y: auto;
-            height: calc(100vh - 58px); /* Adjust based on header height */
+            height: calc(100vh - 58px);
         }
         .welcome-message {
-            background-color: #d8ecbd; /* Light green background */
+            background-color: #d8ecbd;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -180,7 +192,6 @@
             height: auto;
             margin-top: 10px;
         }
-        
         .product-section h3 {
             border-bottom: 1px solid #ccc;
             padding-bottom: 5px;
@@ -218,21 +229,18 @@
             border-top: 1px solid #eee;
             color: #777;
         }
-
         /* Generic styles for Material Symbols Icons */
         .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
         }
-        
         /* Helper for showing only one home screen */
         .home-screen.hidden {
             display: none;
         }
-
         /* --- Tooltip Styles --- */
         .help-tooltip {
             position: absolute;
@@ -243,11 +251,11 @@
             font-size: 0.9em;
             z-index: 1010;
             max-width: 250px;
-            pointer-events: none; /* Allows clicks to pass through */
+            pointer-events: none;
             display: none;
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
-            bottom: calc(100% + 10px); /* Position above the element */
+            bottom: calc(100% + 10px);
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
@@ -266,23 +274,21 @@
             display: block;
             opacity: 1;
         }
-
         /* --- Modal Styles --- */
         .modal {
-            display: none; /* Oculto por defecto */
+            display: none;
             position: fixed;
-            z-index: 1020; /* Asegura que esté por encima de todo */
+            z-index: 1020;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.6); /* Fondo semi-transparente */
+            background-color: rgba(0,0,0,0.6);
         }
-
         .modal-content {
             background-color: #fefefe;
-            margin: 15% auto; /* Centrado verticalmente, ajusta para móvil */
+            margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 90%;
@@ -292,20 +298,17 @@
             position: relative;
             text-align: center;
         }
-
         @media (max-width: 600px) {
             .modal-content {
-                margin: 5% auto; /* Más arriba en móviles */
+                margin: 5% auto;
             }
         }
-
         .close-button {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
-
         .close-button:hover,
         .close-button:focus {
             color: #000;
@@ -316,33 +319,32 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 <body>
-
     <div class="app-container">
-        
         <div class="menu" id="sideMenu">
             <div class="menu-header" id="menuHeader">
                 beval
+            </div>
+            <div class="menu-buttons">
+                <button class="btn-beval" onclick="toggleScreens('screen1')">beval</button>
+                <button class="btn-mayorista" onclick="toggleScreens('screen2')">Mayorista</button>
             </div>
             <ul>
                 <li onclick="toggleScreens('screen1')" data-help="Pulsa aquí para volver a la pantalla principal de Beval.">
                     <span class="icon material-symbols-outlined">home</span> Inicio
                 </li>
-                <li onclick="toggleScreens('screen2')" data-help="Haz clic para ver el catálogo y promociones de Beval/Mayorista.">
-                    <span class="icon material-symbols-outlined">storefront</span> Beval/Mayorista
-                </li>
                 <li data-help="Accede a la información de tu empresa, como datos de contacto y fiscal.">
                     <span class="icon material-symbols-outlined">business</span> Mi Compañía
                 </li>
-                <li data-help="Revisa las notificaciones importantes, como pedidos confirmados o nuevos mensajes.">
+                <li data-help="Revisa las notificaciones importantes, cambios en el invenrtario de productos seleccionados.">
                     <span class="icon material-symbols-outlined">notifications</span> Notificaciones <span class="notification-count" id="notificationCount">211</span>
                 </li>
-                <li data-help="Crea y gestiona tus propias listas de productos favoritos para futuros pedidos.">
+                <li data-help="Crea y gestiona tus propias listas de productos, agrupados segun sea el caso.">
                     <span class="icon material-symbols-outlined">format_list_bulleted</span> Listas de Productos
                 </li>
                 <li data-help="Encuentra productos recomendados según tu historial de compras y preferencias.">
                     <span class="icon material-symbols-outlined">recommend</span> Recomendados
                 </li>
-                <li data-help="Visualiza la lista de tus clientes y gestiona sus perfiles.">
+                <li data-help="Crea y Visualiza la lista de tus clientes.">
                     <span class="icon material-symbols-outlined">group</span> Clientes
                 </li>
             </ul>
@@ -400,7 +402,7 @@
         <div class="main-content">
             <div class="header" id="appHeader">
                 <span class="menu-toggle" id="menuToggle" onclick="toggleMenu()" data-help="Haz clic para abrir o cerrar el menú lateral y navegar entre las secciones.">&#9776;</span>
-                <span class="back-button" id="backButton" onclick="goBack()" data-help="Vuelve a la pantalla principal del catálogo.">&larr;</span>
+                <span class="back-button hidden" id="backButton" onclick="goBack()" data-help="Vuelve a la pantalla principal del catálogo.">&larr;</span>
                 <span class="app-logo">beval</span>
                 <div class="search-bar" data-help="Utiliza la barra de búsqueda para encontrar productos por nombre o código.">
                     <input type="text" placeholder="Buscar">
@@ -413,21 +415,19 @@
             <div class="home-screen" id="screen1">
                 <div class="welcome-message">
                     <p>¡Bienvenido!, NOMBRE CLIENTE -</p>
-                    <img src="paginabeval.png" alt="Visita nuestra Página Web">
+                    <img src="https://i.ibb.co/68jQdJd/sds.jpg" alt="Visita nuestra Página Web">
                 </div>
-                
                 <div class="product-section">
                     <h3>Marcas Destacadas</h3>
                     <div class="product-grid">
                         <div class="product-card" data-help="Explora todos los productos de la marca Fraco Gaskets disponibles en nuestro catálogo.">
-                            <img src="fraco.png" alt="Fraco Gaskets">
+                            <img src="https://i.ibb.co/N2H3t14/sds2.jpg" alt="Fraco Gaskets">
                             <p>Fraco</p>
                             <p style="font-size: 0.8em; color: #555;">Conoce todo el surtido disponible<br>¡Haz clic aquí!</p>
                         </div>
                     </div>
                     <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><a href="#">VER TODOS</a></p>
                 </div>
-
                 <div class="product-section">
                     <h3>Nuevas Existencias</h3>
                     <div class="product-grid">
@@ -475,15 +475,15 @@
                 </div>
             </div>
             <div class="home-screen hidden" id="screen2">
-                 <div class="welcome-message" style="background-color: #e0f7fa; color: #333;">
-                     <p>¡Bienvenido!, Cliente Nombre -</p>
-                     <img src="https://i.ibb.co/K2JjP69/febeca-pago-qr.png" alt="Pago con Criptomoneda">
-                 </div>
-                 <div class="product-section">
-                     <h3>Nuevas Existencias</h3>
-                     <div class="product-grid">
-                     </div>
-                 </div>
+                <div class="welcome-message" style="background-color: #e0f7fa; color: #333;">
+                    <p>¡Bienvenido!, Cliente Nombre -</p>
+                    <img src="https://i.ibb.co/K2JjP69/febeca-pago-qr.png" alt="Pago con Criptomoneda">
+                </div>
+                <div class="product-section">
+                    <h3>Nuevas Existencias</h3>
+                    <div class="product-grid">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -495,8 +495,8 @@
             <ul style="text-align: left; list-style-type: disc; margin-left: 20px;">
                 <li><strong>Menú lateral:</strong> Utiliza el icono de las tres líneas <span class="material-symbols-outlined">menu</span> en la esquina superior izquierda para abrir el menú de navegación y acceder a las diferentes secciones.</li>
                 <li><strong>Búsqueda:</strong> Usa la barra de búsqueda para encontrar productos rápidamente por nombre o código.</li>
-                <li><strong>Navegación:</strong> Puedes ver entre los catálogos de **Beval** y **Beval/Mayorista** desde el menú lateral.</li>
-                <li><strong>Tarjetas de productos:</strong> En la pantalla principal, cada producto tiene iconos para **añadir a favoritos** <span class="material-symbols-outlined">favorite</span>, **agregar al carrito** <span class="material-symbols-outlined">shopping_cart</span> y **compartir** <span class="material-symbols-outlined">share</span>.</li>
+                <li><strong>Navegación:</strong> Puedes ver entre los catálogos de <strong>Beval</strong> y <strong>Beval/Mayorista</strong> desde el menú lateral.</li>
+                <li><strong>Tarjetas de productos:</strong> En la pantalla principal, cada producto tiene iconos para <strong>añadir a favoritos</strong> <span class="material-symbols-outlined">favorite</span>, <strong>agregar al carrito</strong> <span class="material-symbols-outlined">shopping_cart</span> y <strong>compartir</strong> <span class="material-symbols-outlined">share</span>.</li>
                 <li><strong>Ayudas interactivas:</strong> Pasa el ratón (en PC) o toca los elementos (en móvil) que tengan un recuadro de ayuda para ver una breve descripción de su función.</li>
             </ul>
             <p>¡Explora y disfruta tu experiencia de compra digital!</p>
@@ -516,6 +516,7 @@
         };
         const notificationCount = document.getElementById('notificationCount');
         let currentScreen = 'screen1';
+
         // Add event listeners for help tooltips
         document.addEventListener('DOMContentLoaded', () => {
             const helpElements = document.querySelectorAll('[data-help]');
@@ -549,24 +550,18 @@
                 }
             });
         });
+
         function toggleMenu() {
             sideMenu.classList.toggle('open');
             overlay.classList.toggle('active');
-            if (sideMenu.classList.contains('open')) {
-                backButton.classList.remove('active');
-                menuToggle.classList.add('active');
-            } else {
-                if (currentScreen !== 'screen1') {
-                    backButton.classList.add('active');
-                    menuToggle.classList.remove('active');
-                }
-            }
         }
+
         function goBack() {
             if (currentScreen !== 'screen1') {
                 toggleScreens('screen1');
             }
         }
+
         function toggleScreens(screenId) {
             currentScreen = screenId;
             for (const key in screens) {
@@ -579,18 +574,18 @@
                             appHeader.classList.add('green');
                             menuHeader.classList.add('green');
                             appLogo.textContent = 'beval';
-                            notificationCount.textContent = '19';
-                            backButton.classList.remove('active');
-                            menuToggle.classList.add('active');
+                            notificationCount.textContent = '211';
+                            backButton.classList.add('hidden');
+                            menuToggle.classList.remove('hidden');
                         } else {
                             appHeader.classList.add('blue');
                             menuHeader.classList.add('blue');
                             appHeader.classList.remove('green');
                             menuHeader.classList.remove('green');
-                            appLogo.textContent = 'Beval';
-                            notificationCount.textContent = '211';
-                            backButton.classList.add('active');
-                            menuToggle.classList.remove('active');
+                            appLogo.textContent = 'Beval/Mayorista';
+                            notificationCount.textContent = '19';
+                            backButton.classList.remove('hidden');
+                            menuToggle.classList.add('hidden');
                         }
                     } else {
                         screens[key].classList.add('hidden');
@@ -601,14 +596,17 @@
                 toggleMenu();
             }
         }
+
         // --- Funciones para el Modal de Ayuda ---
         function openModal() {
             document.getElementById('helpModal').style.display = 'block';
             toggleMenu(); // Cierra el menú lateral si está abierto
         }
+
         function closeModal() {
             document.getElementById('helpModal').style.display = 'none';
         }
+
         // Cierra el modal si se hace clic fuera del contenido
         window.onclick = function(event) {
             const modal = document.getElementById('helpModal');
