@@ -80,22 +80,6 @@
             font-size: 0.7em;
             margin-left: auto;
         }
-        .menu-buttons {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .menu-buttons button {
-            flex-grow: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: white;
-            font-size: 0.9em;
-        }
         /* Main Content */
         .content-overlay {
             position: fixed;
@@ -318,10 +302,6 @@
             <div class="menu-header" id="menuHeader">
                 beval
             </div>
-            <div class="menu-buttons">
-                <button class="btn-beval" onclick="toggleScreens('screen1')">beval</button>
-                <button class="btn-mayorista" onclick="toggleScreens('screen2')">Mayorista</button>
-            </div>
             <ul>
                 <li onclick="toggleScreens('screen1')" data-help="Pulsa aquí para volver a la pantalla principal de Beval.">
                     <span class="icon material-symbols-outlined">home</span> Inicio
@@ -395,8 +375,7 @@
 
         <div class="main-content">
             <div class="header" id="appHeader">
-                <span class="menu-toggle" id="menuToggle" onclick="toggleMenu()" data-help="Haz clic para abrir o cerrar el menú lateral y navegar entre las secciones.">&#9776;</span>
-                <span class="back-button hidden" id="backButton" onclick="goBack()" data-help="Vuelve a la pantalla principal del catálogo.">&larr;</span>
+                <span class="back-button" id="backButton" onclick="window.location.href = 'index.html';" data-help="Haz clic para regresar a la página de inicio.">&larr;</span>
                 <span class="app-logo">beval</span>
                 <div class="search-bar" data-help="Utiliza la barra de búsqueda para encontrar productos por nombre o código.">
                     <input type="text" placeholder="Buscar">
@@ -468,17 +447,6 @@
                     </div>
                 </div>
             </div>
-            <div class="home-screen hidden" id="screen2">
-                <div class="welcome-message" style="background-color: #e0f7fa; color: #333;">
-                    <p>¡Bienvenido!, Cliente Nombre -</p>
-                    <img src="https://i.ibb.co/K2JjP69/febeca-pago-qr.png" alt="Pago con Criptomoneda">
-                </div>
-                <div class="product-section">
-                    <h3>Nuevas Existencias</h3>
-                    <div class="product-grid">
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div id="helpModal" class="modal">
@@ -489,7 +457,6 @@
             <ul style="text-align: left; list-style-type: disc; margin-left: 20px;">
                 <li><strong>Menú lateral:</strong> Utiliza el icono de las tres líneas <span class="material-symbols-outlined">menu</span> en la esquina superior izquierda para abrir el menú de navegación y acceder a las diferentes secciones.</li>
                 <li><strong>Búsqueda:</strong> Usa la barra de búsqueda para encontrar productos rápidamente por nombre o código.</li>
-                <li><strong>Navegación:</strong> Puedes ver entre los catálogos de <strong>Beval</strong> y <strong>Beval/Mayorista</strong> desde el menú lateral.</li>
                 <li><strong>Tarjetas de productos:</strong> En la pantalla principal, cada producto tiene iconos para <strong>añadir a favoritos</strong> <span class="material-symbols-outlined">favorite</span>, <strong>agregar al carrito</strong> <span class="material-symbols-outlined">shopping_cart</span> y <strong>compartir</strong> <span class="material-symbols-outlined">share</span>.</li>
                 <li><strong>Ayudas interactivas:</strong> Pasa el ratón (en PC) o toca los elementos (en móvil) que tengan un recuadro de ayuda para ver una breve descripción de su función.</li>
             </ul>
@@ -499,18 +466,8 @@
     <script>
         const sideMenu = document.getElementById('sideMenu');
         const overlay = document.getElementById('overlay');
-        const appHeader = document.getElementById('appHeader');
-        const menuHeader = document.getElementById('menuHeader');
-        const appLogo = document.querySelector('.app-logo');
-        const menuToggle = document.getElementById('menuToggle');
-        const backButton = document.getElementById('backButton');
-        const screens = {
-            'screen1': document.getElementById('screen1'),
-            'screen2': document.getElementById('screen2')
-        };
         const notificationCount = document.getElementById('notificationCount');
-        let currentScreen = 'screen1';
-
+        
         // Add event listeners for help tooltips
         document.addEventListener('DOMContentLoaded', () => {
             const helpElements = document.querySelectorAll('[data-help]');
@@ -520,7 +477,7 @@
                 tooltip.textContent = el.getAttribute('data-help');
                 el.style.position = 'relative';
                 el.appendChild(tooltip);
-
+        
                 // Show on hover (desktop)
                 el.addEventListener('mouseenter', () => {
                     tooltip.classList.add('visible');
@@ -528,7 +485,7 @@
                 el.addEventListener('mouseleave', () => {
                     tooltip.classList.remove('visible');
                 });
-
+        
                 // Show on touch (mobile)
                 el.addEventListener('touchstart', (e) => {
                     e.stopPropagation();
@@ -544,63 +501,22 @@
                 }
             });
         });
-
+        
         function toggleMenu() {
             sideMenu.classList.toggle('open');
             overlay.classList.toggle('active');
         }
-
-        function goBack() {
-            if (currentScreen !== 'screen1') {
-                toggleScreens('screen1');
-            }
-        }
-
-        function toggleScreens(screenId) {
-            currentScreen = screenId;
-            for (const key in screens) {
-                if (screens.hasOwnProperty(key)) {
-                    if (key === screenId) {
-                        screens[key].classList.remove('hidden');
-                        if (key === 'screen1') {
-                            appHeader.classList.remove('blue');
-                            menuHeader.classList.remove('blue');
-                            appHeader.classList.add('green');
-                            menuHeader.classList.add('green');
-                            appLogo.textContent = 'beval';
-                            notificationCount.textContent = '211';
-                            backButton.classList.add('hidden');
-                            menuToggle.classList.remove('hidden');
-                        } else {
-                            appHeader.classList.add('blue');
-                            menuHeader.classList.add('blue');
-                            appHeader.classList.remove('green');
-                            menuHeader.classList.remove('green');
-                            appLogo.textContent = 'Beval/Mayorista';
-                            notificationCount.textContent = '19';
-                            backButton.classList.remove('hidden');
-                            menuToggle.classList.add('hidden');
-                        }
-                    } else {
-                        screens[key].classList.add('hidden');
-                    }
-                }
-            }
-            if (sideMenu.classList.contains('open')) {
-                toggleMenu();
-            }
-        }
-
+        
         // --- Funciones para el Modal de Ayuda ---
         function openModal() {
             document.getElementById('helpModal').style.display = 'block';
             toggleMenu(); // Cierra el menú lateral si está abierto
         }
-
+        
         function closeModal() {
             document.getElementById('helpModal').style.display = 'none';
         }
-
+        
         // Cierra el modal si se hace clic fuera del contenido
         window.onclick = function(event) {
             const modal = document.getElementById('helpModal');
@@ -608,7 +524,6 @@
                 modal.style.display = "none";
             }
         }
-        toggleScreens('screen1');
     </script>
 </body>
 </html>
