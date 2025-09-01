@@ -145,11 +145,35 @@
         .button-section button:hover {
             background-color: #0056b3;
         }
+
+        .back-button-container {
+            text-align: right;
+        }
+
+        .back-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
 <div class="manual-container">
+    <div class="back-button-container">
+        <button class="back-button" onclick="history.back()">Volver</button>
+    </div>
+    
     <h1>Manual de Usuario - S.D.S. Febeca</h1>
 
     <div class="section">
@@ -166,7 +190,7 @@
 
         <div class="sds-text">
             <h3 class="tooltip-container">Última Sinc. Exitosa<span class="tooltip-text">Muestra la fecha y hora de la última sincronización completada con éxito. Esto te asegura que tu información está al día.</span></h3>
-            <p>1/09/2025 03:55:36 A. M.</p>
+            <p>01/09/2025 03:55:36 A. M.</p>
         </div>
         
         <div class="sds-text">
