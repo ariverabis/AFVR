@@ -468,6 +468,24 @@
             visibility: visible;
             opacity: 1;
         }
+        
+        /* --- Nuevo estilo para el botón de volver --- */
+        .back-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
 
         /* --- Media Queries for Mobile --- */
         @media (max-width: 768px) {
@@ -515,6 +533,8 @@
 </head>
 <body>
 
+<button class="back-button" onclick="history.back()">Volver</button>
+
 <div id="welcomeModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -561,7 +581,7 @@
     <div class="section-title">Comunicación</div>
     <a href="#" class="tooltip">Contáctanos<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
     <a href="mailto:arivera@mayoreo,biz" class="tooltip">
-     Escribir a Soporte
+      Escribir a Soporte
     <span class="tooltiptext">Envíanos un correo electrónico para soporte o recomendaciones.</span>
     </a>
     <a href="tel:+584244444066" class="tooltip">
