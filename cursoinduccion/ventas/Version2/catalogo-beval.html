@@ -3,527 +3,873 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicación de Catálogo - beval</title>
+    <title>Beval - Catálogo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: hwb(120 12% 13%);
+            --secondary-color: #ffc107;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --success-color: #28a745;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-            overflow-x: hidden;
+            color: var(--text-color);
+            line-height: 1.6;
         }
-        /* Main Container */
-        .app-container {
-            display: flex;
-            height: 100vh;
+
+        .container {
             transition: transform 0.3s ease-in-out;
         }
-        /* Menu */
-        .menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 75%;
-            max-width: 250px;
+
+        /* --- Sidebar --- */
+        .sidebar {
             height: 100%;
-            background-color: #fff;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
+            width: 0;
+            position: fixed;
             z-index: 1000;
-            overflow-y: auto;
-        }
-        .menu.open {
-            transform: translateX(0);
-        }
-        .menu-header {
-            background-color: #6cbf18;
-            color: white;
-            padding: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        .menu-header.blue {
-            background-color: #007bff;
-        }
-        .menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .menu ul li {
-            padding: 15px 20px;
-            border-bottom: 1px solid #eee;
-            color: #333;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-        }
-        .menu ul li:hover {
-            background-color: #f9f9f9;
-        }
-        .menu ul li .icon {
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-        .menu .section-title {
-            color: #777;
-            font-size: 0.9em;
-            padding: 15px 20px 5px;
-            font-weight: bold;
-        }
-        .menu .notification-count {
-            background-color: #dc3545;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 7px;
-            font-size: 0.7em;
-            margin-left: auto;
-        }
-        /* Main Content */
-        .content-overlay {
-            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 999;
-            display: none;
+            background-color: var(--card-background);
+            overflow-x: hidden;
+            transition: width 0.3s;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            padding-top: 60px;
         }
-        .content-overlay.active {
-            display: block;
+
+        .sidebar.open {
+            width: 250px;
         }
-        .main-content {
-            flex-grow: 1;
-            padding: 0;
-            position: relative;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            padding: 10px 15px;
-            background-color: #6cbf18;
+
+        .sidebar-header {
+            background-color: var(--primary-color);
             color: white;
-            position: relative;
-        }
-        .header.blue {
-            background-color: #007bff;
-        }
-        .header .menu-toggle, .header .back-button {
-            font-size: 24px;
-            cursor: pointer;
-            margin-right: 15px;
-        }
-        .header .back-button.hidden {
-            display: none;
-        }
-        .header .menu-toggle.hidden {
-            display: none;
-        }
-        .header .search-bar {
-            flex-grow: 1;
-            position: relative;
-        }
-        .header .search-bar input {
-            width: calc(100% - 40px);
-            padding: 8px 10px;
-            border: none;
-            border-radius: 20px;
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-        .header .search-bar input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
-        }
-        .header .search-bar .search-icon {
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
             position: absolute;
-            right: 10px;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .sidebar-header h3, .sidebar-header span {
+            margin: 0;
+        }
+
+        .sidebar a {
+            padding: 12px 15px;
+            text-decoration: none;
+            font-size: 1em;
+            color: var(--text-color);
+            display: block;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebar .new-notifications {
+            background-color: var(--secondary-color);
+            color: black;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            position: absolute;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 20px;
         }
-        .header .app-logo {
-            font-size: 1.5em;
+
+        .sidebar .section-title {
+            padding: 12px 15px;
             font-weight: bold;
-            flex-grow: 1;
-        }
-        .home-screen {
-            padding: 20px;
-            overflow-y: auto;
-            height: calc(100vh - 58px);
-        }
-        .welcome-message {
-            background-color: #d8ecbd;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .welcome-message h2 {
-            margin-top: 0;
-            font-size: 1.2em;
-        }
-        .welcome-message img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-        }
-        .product-section h3 {
+            color: var(--primary-color);
             border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-            margin-bottom: 15px;
-            color: #555;
+            background-color: #e9ecef;
         }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-        }
-        .product-card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-            text-align: center;
+
+        /* --- Top Bar --- */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
             padding: 10px;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            box-shadow: var(--shadow-light);
         }
+
+        .top-bar .menu-button {
+            font-size: 2em;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .top-bar .search-container {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .top-bar .search-container input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1em;
+        }
+
+        .top-bar .search-container .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* --- Main Content Sections --- */
+        .content-section {
+            padding: 15px;
+            margin: 15px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .crypto-container {
+            text-align: center;
+        }
+
+        .crypto-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .crypto-info .crypto-text {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .crypto-info .crypto-text h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .crypto-info .crypto-text p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+        .crypto-img {
+            width: 80px;
+            height: auto;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .qr-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .qr-item img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        
+        .qr-item p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+        
+        .product-section {
+            margin-top: 20px;
+        }
+
+        .product-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .product-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .product-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            padding: 10px;
+            flex-shrink: 0;
+            width: 150px;
+            text-align: center;
+        }
+
         .product-card img {
             width: 100%;
-            height: 100px;
-            object-fit: contain;
-            margin-bottom: 10px;
+            height: auto;
+            border-radius: 5px;
         }
+
         .product-card .price {
             font-weight: bold;
-            color: #2e8b57;
-            margin: 5px 0;
+            color: var(--success-color);
+            margin-top: 8px;
+            font-size: 1.1em;
         }
-        .product-card .icons {
+        
+        .product-card .product-title {
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 5px;
+        }
+
+        .product-card .icon-row {
             display: flex;
             justify-content: space-around;
-            padding-top: 10px;
-            border-top: 1px solid #eee;
-            color: #777;
+            margin-top: 10px;
         }
-        /* Generic styles for Material Symbols Icons */
-        .material-symbols-outlined {
-            font-variation-settings:
-            'FILL' 0,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24
+
+        .product-card .icon-row span {
+            cursor: pointer;
+            font-size: 1.4em;
+            color: var(--primary-color);
+            transition: color 0.2s;
         }
-        /* Helper for showing only one home screen */
-        .home-screen.hidden {
-            display: none;
+
+        .product-card .icon-row span:hover {
+            color: #0056b3;
         }
-        /* --- Tooltip Styles --- */
-        .help-tooltip {
-            position: absolute;
-            background-color: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            z-index: 1010;
-            max-width: 250px;
-            pointer-events: none;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
+
+        .section-title-products, .section-title-arrivals {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
         }
-        .help-tooltip::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: -5px;
-            transform: translateX(-50%) rotate(45deg);
-            width: 10px;
-            height: 10px;
-            background-color: #333;
+
+        .see-all-button {
+            text-align: right;
+            padding-right: 15px;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .help-tooltip.visible {
-            display: block;
-            opacity: 1;
-        }
-        /* --- Modal Styles --- */
+
+        /* --- Modals --- */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1020;
+            z-index: 2000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
         }
+        
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
+            background-color: var(--card-background);
             padding: 20px;
-            border: 1px solid #888;
+            border-radius: 8px;
             width: 90%;
-            max-width: 500px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
-            text-align: center;
         }
-        @media (max-width: 600px) {
-            .modal-content {
-                margin: 5% auto;
-            }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+            text-align: left;
         }
+
         .close-button {
-            color: #aaa;
+            color: white;
             float: right;
             font-size: 28px;
             font-weight: bold;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: #000;
-            text-decoration: none;
             cursor: pointer;
+            position: relative;
+            z-index: 2;
         }
-    </style>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-</head>
-<body>
-    <div class="app-container">
-        <div class="menu" id="sideMenu">
-            <div class="menu-header" id="menuHeader">
-                beval
-            </div>
-            <ul>
-                <li onclick="toggleScreens('screen1')" data-help="Pulsa aquí para volver a la pantalla principal de Beval.">
-                    <span class="icon material-symbols-outlined">home</span> Inicio
-                </li>
-                <li data-help="Accede a la información de tu empresa, como datos de contacto y fiscal.">
-                    <span class="icon material-symbols-outlined">business</span> Mi Compañía
-                </li>
-                <li data-help="Revisa las notificaciones importantes, cambios en el invenrtario de productos seleccionados.">
-                    <span class="icon material-symbols-outlined">notifications</span> Notificaciones <span class="notification-count" id="notificationCount">211</span>
-                </li>
-                <li data-help="Crea y gestiona tus propias listas de productos, agrupados segun sea el caso.">
-                    <span class="icon material-symbols-outlined">format_list_bulleted</span> Listas de Productos
-                </li>
-                <li data-help="Encuentra productos recomendados según tu historial de compras y preferencias.">
-                    <span class="icon material-symbols-outlined">recommend</span> Recomendados
-                </li>
-                <li data-help="Crea y Visualiza la lista de tus clientes.">
-                    <span class="icon material-symbols-outlined">group</span> Clientes
-                </li>
-            </ul>
-            <div class="section-title">Solicitudes de Cotización</div>
-            <ul>
-                <li data-help="Aquí verás las cotizaciones que aún están en proceso de respuesta.">
-                    <span class="icon material-symbols-outlined">drafts</span> Solicitud Abierta
-                </li>
-                <li data-help="Revisa las cotizaciones que ya han sido respondidas o cerradas.">
-                    <span class="icon material-symbols-outlined">check_circle</span> Solicitudes Cerradas
-                </li>
-            </ul>
-            <div class="section-title">Mis Cotizaciones</div>
-            <ul>
-                <li data-help="Consulta el estado de tus cotizaciones enviadas, en espera de respuesta.">
-                    <span class="icon material-symbols-outlined">pending_actions</span> Cotizaciones Abiertas
-                </li>
-                <li data-help="Accede al historial de cotizaciones que ya has recibido o finalizado.">
-                    <span class="icon material-symbols-outlined">fact_check</span> Cotizaciones Cerradas
-                </li>
-            </ul>
-            <div class="section-title">Comunicación</div>
-            <ul>
-                <li data-help="Envía un mensaje directo a nuestro equipo de soporte para cualquier consulta.">
-                    <span class="icon material-symbols-outlined">mail</span> Contáctanos
-                </li>
-                <li data-help="Comparte un enlace para invitar a nuevos amigos a unirse al catálogo.">
-                    <span class="icon material-symbols-outlined">person_add</span> Invitar Amigos
-                </li>
-            </ul>
-            <div class="section-title">Configuración</div>
-            <ul>
-                <li data-help="Actualiza tu información personal, contraseña o detalles de la cuenta.">
-                    <span class="icon material-symbols-outlined">account_circle</span> Mi Cuenta
-                </li>
-                <li data-help="Sube, edita o elimina imágenes relacionadas con tu perfil o productos.">
-                    <span class="icon material-symbols-outlined">image</span> Manejo de Imágenes
-                </li>
-            </ul>
-            <div class="section-title">Ayuda</div>
-            <ul>
-                <li onclick="openModal()" data-help="Vuelve a ver este mensaje de bienvenida para entender las funciones básicas.">
-                    <span class="icon material-symbols-outlined">info</span> Mensaje Bienvenida
-                </li>
-                <li data-help="Si encuentras un problema en la aplicación, puedes reportarlo aquí.">
-                    <span class="icon material-symbols-outlined">bug_report</span> Reportar Error
-                </li>
-                <li data-help="Conoce más sobre la aplicación, su versión y los desarrolladores.">
-                    <span class="icon material-symbols-outlined">help_center</span> Acerca de
-                </li>
-            </ul>
-            <br>
-        </div>
 
-        <div class="main-content">
-            <div class="header" id="appHeader">
-                <span class="back-button" id="backButton" onclick="window.location.href = 'index.html';" data-help="Haz clic para regresar a la página de inicio.">&larr;</span>
-                <span class="app-logo">beval</span>
-                <div class="search-bar" data-help="Utiliza la barra de búsqueda para encontrar productos por nombre o código.">
-                    <input type="text" placeholder="Buscar">
-                    <span class="search-icon material-symbols-outlined">search</span>
-                </div>
-            </div>
+        .modal-body {
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-            <div class="content-overlay" id="overlay" onclick="toggleMenu()"></div>
+        .detail-row label {
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+        
+        .detail-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            background-color: #d3d3d3;
+        }
 
-            <div class="home-screen" id="screen1">
-                <div class="welcome-message">
-                    <p>¡Bienvenido!, NOMBRE CLIENTE -</p>
-                    <img src="https://i.ibb.co/68jQdJd/sds.jpg" alt="Visita nuestra Página Web">
-                </div>
-                <div class="product-section">
-                    <h3>Marcas Destacadas</h3>
-                    <div class="product-grid">
-                        <div class="product-card" data-help="Explora todos los productos de la marca Fraco Gaskets disponibles en nuestro catálogo.">
-                            <img src="https://i.ibb.co/N2H3t14/sds2.jpg" alt="Fraco Gaskets">
-                            <p>Fraco</p>
-                            <p style="font-size: 0.8em; color: #555;">Conoce todo el surtido disponible<br>¡Haz clic aquí!</p>
-                        </div>
-                    </div>
-                    <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><a href="#">VER TODOS</a></p>
-                </div>
-                <div class="product-section">
-                    <h3>Nuevas Existencias</h3>
-                    <div class="product-grid">
-                        <div class="product-card">
-                            <img src="borne4.png" alt="Borne de Camión">
-                            <p>BORNE DE PLOMO PARA BATERIA DE CAMION 195 PONI - 5806010</p>
-                            <p class="price">USD 2,43</p>
-                            <div class="icons">
-                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
-                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
-                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <img src="borne2.png" alt="Borne de Carro">
-                            <p>BORNE DE PLOMO PARA BATERIA DE CARRO 194 PONI - 5806011</p>
-                            <p class="price">USD 2,05</p>
-                            <div class="icons">
-                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
-                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
-                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <img src="goma.png" alt="Lubricante especial">
-                            <p>LUBRICANTE ESPECIAL PARA ARMADO DE MOTORES...</p>
-                            <p class="price">USD 10,7</p>
-                            <div class="icons">
-                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
-                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
-                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
-                            </div>
-                        </div>
-                        <div class="product-card">
-                            <img src="borne1.png" alt="Borne de Caja">
-                            <p>BORNE DE CARRO 194-C PONI CAJA 100 UNIDADES GRANEL - 0106045</p>
-                            <p class="price">USD 1,82</p>
-                            <div class="icons">
-                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
-                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
-                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="helpModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h2>¿Cómo funciona el Catálogo Digital?</h2>
-            <p>¡Bienvenido a tu catálogo digital! Para sacar el máximo provecho a la aplicación, sigue estos consejos:</p>
-            <ul style="text-align: left; list-style-type: disc; margin-left: 20px;">
-                <li><strong>Menú lateral:</strong> Utiliza el icono de las tres líneas <span class="material-symbols-outlined">menu</span> en la esquina superior izquierda para abrir el menú de navegación y acceder a las diferentes secciones.</li>
-                <li><strong>Búsqueda:</strong> Usa la barra de búsqueda para encontrar productos rápidamente por nombre o código.</li>
-                <li><strong>Tarjetas de productos:</strong> En la pantalla principal, cada producto tiene iconos para <strong>añadir a favoritos</strong> <span class="material-symbols-outlined">favorite</span>, <strong>agregar al carrito</strong> <span class="material-symbols-outlined">shopping_cart</span> y <strong>compartir</strong> <span class="material-symbols-outlined">share</span>.</li>
-                <li><strong>Ayudas interactivas:</strong> Pasa el ratón (en PC) o toca los elementos (en móvil) que tengan un recuadro de ayuda para ver una breve descripción de su función.</li>
-            </ul>
-            <p>¡Explora y disfruta tu experiencia de compra digital!</p>
-        </div>
-    </div>
-    <script>
-        const sideMenu = document.getElementById('sideMenu');
-        const overlay = document.getElementById('overlay');
-        const notificationCount = document.getElementById('notificationCount');
-        
-        // Add event listeners for help tooltips
-        document.addEventListener('DOMContentLoaded', () => {
-            const helpElements = document.querySelectorAll('[data-help]');
-            helpElements.forEach(el => {
-                let tooltip = document.createElement('div');
-                tooltip.classList.add('help-tooltip');
-                tooltip.textContent = el.getAttribute('data-help');
-                el.style.position = 'relative';
-                el.appendChild(tooltip);
-        
-                // Show on hover (desktop)
-                el.addEventListener('mouseenter', () => {
-                    tooltip.classList.add('visible');
-                });
-                el.addEventListener('mouseleave', () => {
-                    tooltip.classList.remove('visible');
-                });
-        
-                // Show on touch (mobile)
-                el.addEventListener('touchstart', (e) => {
-                    e.stopPropagation();
-                    // Hide all other tooltips
-                    document.querySelectorAll('.help-tooltip.visible').forEach(t => t.classList.remove('visible'));
-                    tooltip.classList.add('visible');
-                });
-            });
-            // Hide tooltips when tapping anywhere else on the screen
-            document.addEventListener('touchstart', (e) => {
-                if (!e.target.closest('[data-help]')) {
-                    document.querySelectorAll('.help-tooltip.visible').forEach(t => t.classList.remove('visible'));
-                }
-            });
-        });
-        
-        function toggleMenu() {
-            sideMenu.classList.toggle('open');
-            overlay.classList.toggle('active');
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
         }
         
-        // --- Funciones para el Modal de Ayuda ---
-        function openModal() {
-            document.getElementById('helpModal').style.display = 'block';
-            toggleMenu(); // Cierra el menú lateral si está abierto
+        .ok-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #ccc;
+            color: var(--text-color);
+        }
+
+        .modal-retenciones .modal-body {
+            display: block;
+        }
+
+        .modal-retenciones .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
         }
         
-        function closeModal() {
-            document.getElementById('helpModal').style.display = 'none';
+        .modal-retenciones .modal-body th, .modal-retenciones .modal-body td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
         }
         
-        // Cierra el modal si se hace clic fuera del contenido
-        window.onclick = function(event) {
-            const modal = document.getElementById('helpModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
+        .modal-retenciones .modal-body th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-retenciones .modal-body tr.selected {
+            background-color: #e0f7fa;
+        }
+
+        .total-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .total-section .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .total-section input {
+            width: 100px;
+            text-align: right;
+        }
+
+        .total-section button {
+            margin-left: auto;
+        }
+        
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* --- Nuevo estilo para el botón de volver --- */
+        .back-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Media Queries for Mobile --- */
+        @media (max-width: 768px) {
+            .container.shift {
+                transform: translateX(250px);
+            }
+            .sidebar {
+                box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            .top-bar {
+                padding: 10px 15px;
+            }
+            .crypto-info {
+                flex-direction: column;
+            }
+            .crypto-info .crypto-text {
+                text-align: center;
+            }
+            .qr-container {
+                flex-direction: column;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .tooltip .tooltiptext {
+                /* Larger tooltip for better touch interaction */
+                bottom: 110%;
+                left: 0;
+                transform: none;
+                width: 150px;
+                white-space: normal;
+            }
+            .tooltip:not(:hover) .tooltiptext {
+                visibility: hidden;
+                opacity: 0;
+            }
+            /* Show tooltips by default on elements with 'mobile-tooltip' class */
+            .mobile-tooltip .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: none; /* No interaction */
             }
         }
-    </script>
+    </style>
+</head>
+<body>
+
+<button class="back-button" onclick="history.back()">Volver</button>
+
+<div id="welcomeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            Bienvenido a Beval
+            <span class="close-button" onclick="closeModal('welcomeModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>¡Hola!</strong> Te damos la bienvenida a tu catálogo digital. Aquí tienes algunas ayudas para empezar:</p>
+            <ul>
+                <li>Usa el botón de menú <strong style="font-size: 1.2em;">&#9776;</strong> para ver las opciones. ¡Desliza el dedo a la derecha desde el borde de la pantalla para abrir el menú!</li>
+                <li>En la barra superior, puedes buscar productos por nombre o código.</li>
+                <li>Explora los productos en las secciones de "Marcas Destacadas" "Productos Recientemente Vistos" "Nuevas Existencias" y más abajo.</li>
+                <li>Si tienes dudas, los <span style="font-weight: bold; border-bottom: 2px dashed #007bff;">mensajes de ayuda</span> (tooltips) te guiarán.</li>
+                <li>Aprende a usar este catalogo ya que los clientes lo tienen instalado en sus telefonos<span style="font-weight: bold; border-bottom: 2px dashed #007bff;">y si tienen dudas sobre él, podemos ayudarlos</span> Excelente!!!</li>
+                <li>Recuerda el cliente puede crear un registro de sus clientes y en el carrito amarillo puede generar una cotizacion con sus datos para sus clientes finales<span style="font-weight: bold; border-bottom: 2px dashed #007bff;"></span></li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button" onclick="closeModal('welcomeModal')">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-header" onclick="toggleSidebar()">
+        <h3>Mayorista de Valor</h3>
+        <span>Bienvenido RIf0000000</span>
+    </div>
+    <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
+    <a href="#" class="tooltip">Mi Compañía<span class="tooltiptext">Carga información de su empresa.</span></a>
+    <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes (cambios de existencia).</span></a>
+    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar listas de productos creadas según la necesidad del usuario.</span></a>
+    <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados.</span></a>
+    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes. Crear o seleccionar clientes.</span></a>
+    
+    <div class="section-title">Solicitudes de Cotización(Creadas Carrito Azul)</div>
+    <a href="#" class="tooltip">Solicitud Abierta<span class="tooltiptext">Ver cotizaciones pendientes.</span></a>
+    <a href="#" class="tooltip">Solicitudes Cerradas<span class="tooltiptext">Ver cotizaciones finalizadas.</span></a>
+    
+    <div class="section-title">Mis Cotizaciones(Creadas Carrito amarillo)</div>
+    <a href="#" class="tooltip">Cotizaciones Abiertas<span class="tooltiptext">Ver mis cotizaciones pendientes. Las cotizaciones se crean al seleccionar el carrito azul.</span></a>
+    <a href="#" class="tooltip">Cotizaciones Cerradas<span class="tooltiptext">Ver mis cotizaciones finalizadas.</span></a>
+
+    <div class="section-title">Comunicación</div>
+    <a href="#" class="tooltip">Contáctanos<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
+    <a href="mailto:arivera@mayoreo,biz" class="tooltip">
+      Escribir a Soporte
+    <span class="tooltiptext">Envíanos un correo electrónico para soporte o recomendaciones.</span>
+    </a>
+    <a href="tel:+584244444066" class="tooltip">
+    Llamar a Soporte
+    <span class="tooltiptext">Llámanos por teléfono para una atención directa.</span>
+    </a>
+    <a href="#" class="tooltip">Invitar Amigos<span class="tooltiptext">Invitar a otros a usar la aplicación.</span></a>
+
+    <div class="section-title">Configuración</div>
+    <a href="#" class="tooltip">Mi Cuenta<span class="tooltiptext">Configurar perfil sincroniza y detalles de la cuenta.</span></a>
+    <a href="#" class="tooltip">Manejo de Imágenes<span class="tooltiptext">Administrar imágenes de productos.</span></a>
+
+    <div class="section-title">Ayuda</div>
+    <a href="#" class="tooltip">Mensaje Bienvenida<span class="tooltiptext">Ver el mensaje de bienvenida.</span></a>
+    <a href="#" class="tooltip">Reportar Error<span class="tooltiptext">Enviar un reporte de error.</span></a>
+    <a href="#" class="tooltip">Acerca de<span class="tooltiptext">Ver información de la aplicación.</span></a>
+</div>
+
+<div class="container" id="main-content">
+    
+    <div class="top-bar">
+        <button class="menu-button tooltip mobile-tooltip" onclick="toggleSidebar()">&#9776;<span class="tooltiptext">Abre el menú lateral para navegar por el catálogo.</span></button>
+        <div class="search-container tooltip mobile-tooltip">
+            <input type="text" placeholder="Buscar productos...">
+            <span class="search-icon">&#128269;</span>
+            <span class="tooltiptext">Busca productos por nombre o código.</span>
+        </div>
+    </div>
+    
+    <div class="content-section crypto-container mobile-tooltip">
+        <div class="crypto-info">
+            <div class="crypto-text">
+                <h3>¡Paga con Tether (USDT)!</h3>
+                <p>Aprovecha los descuentos por pago con criptomoneda.</p>
+            </div>
+            <img src="cripto.png" alt="Logo de Tether" class="crypto-img">
+        </div>
+        <p style="font-size: 0.9em; color: var(--light-text);">Escanea el código QR o usa las direcciones de nuestra Wallet para pagar:</p>
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="codigoqr.png" alt="QR ERC20">
+                <p>ERC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">0x0AF8eBeD4800d7B8EaE0db7feC7c9Efb60FAc193A</p>
+            </div>
+            <div class="qr-item">
+                <img src="cripto.png" alt="QR TRC20">
+                <p>TRC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">TD6CrQk3BcPPeFLqZJm2NptEQLQZM9H4Cd</p>
+            </div>
+        </div>
+        <p style="text-align: right; font-size: 0.8em; color: var(--light-text);">Publicado: 10/06/2025</p>
+    </div>
+
+    <div class="product-section">
+        <h2 class="section-title-products">Productos Destacados</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="borne2.png" alt="Borne de Carro">
+                <div class="product-title">BORNE DE PLOMO PARA BATERIA DE CARRO 194 PONI - 5806011</div>
+                <div class="price">USD 100,39</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="borne4.png" alt="Borne de Camión">
+                <div class="product-title">BORNE DE PLOMO PARA BATERIA DE CAMION 195 PONI - 5806010</div>
+                <div class="price">USD 31,07</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Válvula de Aire">
+                <div class="product-title">Válvula Inser...</div>
+                <div class="price">USD 20,50</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="see-all-button">VER TODOS</div>
+    </div>
+
+    <div class="product-section">
+        <h2 class="section-title-arrivals">Nuevas Existencias</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="pinturanaranja.png" alt="Pintura Naranja">
+                <div class="product-title">Pintura Esmalte Brillante Naranja</div>
+                <div class="price">USD 36,40</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="pinturanegra.png" alt="Pintura Negra">
+                <div class="product-title">Pintura Esmalte Brillante Negro</div>
+                <div class="price">USD 10,66</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="teflonliquido.png" alt="Teflón Líquido">
+                <div class="product-title">Teflón Líquido Sellador</div>
+                <div class="price">USD 5,75</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="retencionModal" class="modal" onclick="closeModal('retencionModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            098 - Detalle Retencion
+            <span class="close-button" onclick="closeModal('retencionModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <label>Comprobante:</label>
+                <input type="text" value="20250800000000" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Tipo Doc:</label>
+                <input type="text" value="FAC" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Doc:</label>
+                <input type="text" value="06886193" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Control:</label>
+                <input type="text" value="" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Alicuota (%):</label>
+                <input type="text" value="16,00% Ret: 75.0%" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Base:</label>
+                <input type="text" value="20.808,38" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Impuesto:</label>
+                <input type="text" value="2.869,93" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Retención:</label>
+                <input type="text" value="2.152,44" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button">OK</button>
+            <button class="cancel-button">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="retencionesIVAModal" class="modal modal-retenciones" onclick="closeModal('retencionesIVAModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            124 - Retenciones de IVA
+            <span class="close-button" onclick="closeModal('retencionesIVAModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tipo</th>
+                        <th>No. Fiscal</th>
+                        <th>Monto (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886186</td>
+                        <td>9,60</td>
+                    </tr>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886193</td>
+                        <td>18,92</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="total-section">
+                <span>--Seleccione--</span>
+                <select>
+                    <option>Escanear Retención</option>
+                    <option>Cargar PDF</option>
+                    <option>Cargar Imagen</option>
+                    <option>Cargar Manual</option>
+                </select>
+                <label>Total retenido:</label>
+                <input type="text" value="0" readonly>
+                <div class="modal-footer">
+                    <button class="ok-button">Validar</button>
+                    <button class="ok-button">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+            mainContent.classList.remove('shift');
+        } else {
+            sidebar.style.width = '250px';
+            mainContent.classList.add('shift');
+        }
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    function toggleSelection(row) {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        row.classList.toggle('selected', checkbox.checked);
+    }
+
+    // Mostrar el modal de bienvenida al cargar la página si es la primera vez
+    window.onload = function() {
+        const hasVisited = localStorage.getItem('hasVisitedBeval');
+        if (!hasVisited) {
+            openModal('welcomeModal');
+            localStorage.setItem('hasVisitedBeval', 'true');
+        }
+
+        // Agregar evento de arrastrar para el menú lateral en móviles
+        let startX = 0;
+        let isDragging = false;
+        const mainContent = document.getElementById('main-content');
+        const sidebar = document.getElementById('sidebar');
+
+        mainContent.addEventListener('touchstart', (e) => {
+            if (!sidebar.classList.contains('open')) {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }
+        });
+
+        mainContent.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const currentX = e.touches[0].clientX;
+                const diffX = currentX - startX;
+                if (diffX > 50) { // Si arrastra más de 50px a la derecha
+                    toggleSidebar();
+                    isDragging = false; // Evitar que se active de nuevo hasta el próximo toque
+                }
+            }
+        });
+
+        mainContent.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+    };
+</script>
+
 </body>
 </html>

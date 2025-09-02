@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Catálogo - J-00002329-19</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow-x: hidden;
+        }
+        /* Main Container */
+        .app-container {
+            display: flex;
+            height: 100vh;
+            transition: transform 0.3s ease-in-out;
+        }
+        /* Menu */
+        .menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 75%;
+            max-width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .menu.open {
+            transform: translateX(0);
+        }
+        .menu-header {
+            background-color: #6cbf18;
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .menu-header.blue {
+            background-color: #007bff;
+        }
+        .menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .menu ul li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            color: #333;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .menu ul li:hover {
+            background-color: #f9f9f9;
+        }
+        .menu ul li .icon {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .menu .section-title {
+            color: #777;
+            font-size: 0.9em;
+            padding: 15px 20px 5px;
+            font-weight: bold;
+        }
+        .menu .notification-count {
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.7em;
+            margin-left: auto;
+        }
+        /* Main Content */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        .content-overlay.active {
+            display: block;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 0;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #6cbf18;
+            color: white;
+            position: relative;
+        }
+        .header.blue {
+            background-color: #007bff;
+        }
+        .header .menu-toggle, .header .back-button {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+        }
+        .header .back-button.hidden {
+            display: none;
+        }
+        .header .menu-toggle.hidden {
+            display: none;
+        }
+        .header .search-bar {
+            flex-grow: 1;
+            position: relative;
+        }
+        .header .search-bar input {
+            width: calc(100% - 40px);
+            padding: 8px 10px;
+            border: none;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        .header .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .header .search-bar .search-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+        }
+        .header .app-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+        .home-screen {
+            padding: 20px;
+            overflow-y: auto;
+            height: calc(100vh - 58px);
+        }
+        .welcome-message {
+            background-color: #d8ecbd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .welcome-message h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+        }
+        .welcome-message img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+        }
+        .product-section h3 {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+            color: #555;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            overflow: hidden;
+            text-align: center;
+            padding: 10px;
+        }
+        .product-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            font-weight: bold;
+            color: #2e8b57;
+            margin: 5px 0;
+        }
+        .product-card .icons {
+            display: flex;
+            justify-content: space-around;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+            color: #777;
+        }
+        /* Generic styles for Material Symbols Icons */
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        /* Helper for showing only one home screen */
+        .home-screen.hidden {
+            display: none;
+        }
+        /* --- Tooltip Styles --- */
+        .help-tooltip {
+            position: absolute;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            z-index: 1010;
+            max-width: 250px;
+            pointer-events: none;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        .help-tooltip::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -5px;
+            transform: translateX(-50%) rotate(45deg);
+            width: 10px;
+            height: 10px;
+            background-color: #333;
+        }
+        .help-tooltip.visible {
+            display: block;
+            opacity: 1;
+        }
+        /* --- Modal Styles --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1020;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .modal-content {
+                margin: 5% auto;
+            }
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+    <div class="app-container">
+        <div class="menu" id="sideMenu">
+            <div class="menu-header" id="menuHeader">
+                Bienvenido J-00002329-19
+            </div>
+            <ul>
+                <li onclick="toggleScreens('screen1')" data-help="Pulsa aquí para volver a la pantalla principal de J-00002329-19.">
+                    <span class="icon material-symbols-outlined">home</span> Inicio
+                </li>
+                <li data-help="Accede a la información de tu empresa, como datos de contacto y fiscal.">
+                    <span class="icon material-symbols-outlined">business</span> Mi Compañía
+                </li>
+                <li data-help="Revisa las notificaciones importantes, cambios en el invenrtario de productos seleccionados.">
+                    <span class="icon material-symbols-outlined">notifications</span> Notificaciones <span class="notification-count" id="notificationCount">211</span>
+                </li>
+                <li data-help="Crea y gestiona tus propias listas de productos, agrupados segun sea el caso.">
+                    <span class="icon material-symbols-outlined">format_list_bulleted</span> Listas de Productos
+                </li>
+                <li data-help="Encuentra productos recomendados según tu historial de compras y preferencias.">
+                    <span class="icon material-symbols-outlined">recommend</span> Recomendados
+                </li>
+                <li data-help="Crea y Visualiza la lista de tus clientes.">
+                    <span class="icon material-symbols-outlined">group</span> Clientes
+                </li>
+            </ul>
+            <div class="section-title">Solicitudes de Cotización</div>
+            <ul>
+                <li data-help="Aquí verás las cotizaciones que aún están en proceso de respuesta.">
+                    <span class="icon material-symbols-outlined">drafts</span> Solicitud Abierta
+                </li>
+                <li data-help="Revisa las cotizaciones que ya han sido respondidas o cerradas.">
+                    <span class="icon material-symbols-outlined">check_circle</span> Solicitudes Cerradas
+                </li>
+            </ul>
+            <div class="section-title">Mis Cotizaciones</div>
+            <ul>
+                <li data-help="Consulta el estado de tus cotizaciones enviadas, en espera de respuesta.">
+                    <span class="icon material-symbols-outlined">pending_actions</span> Cotizaciones Abiertas
+                </li>
+                <li data-help="Accede al historial de cotizaciones que ya has recibido o finalizado.">
+                    <span class="icon material-symbols-outlined">fact_check</span> Cotizaciones Cerradas
+                </li>
+            </ul>
+            <div class="section-title">Comunicación</div>
+            <ul>
+                <li data-help="Envía un mensaje directo a nuestro equipo de soporte para cualquier consulta.">
+                    <span class="icon material-symbols-outlined">mail</span> Contáctanos
+                </li>
+                <li data-help="Comparte un enlace para invitar a nuevos amigos a unirse al catálogo.">
+                    <span class="icon material-symbols-outlined">person_add</span> Invitar Amigos
+                </li>
+            </ul>
+            <div class="section-title">Configuración</div>
+            <ul>
+                <li data-help="Actualiza tu información personal, contraseña o detalles de la cuenta.">
+                    <span class="icon material-symbols-outlined">account_circle</span> Mi Cuenta
+                </li>
+                <li data-help="Sube, edita o elimina imágenes relacionadas con tu perfil o productos.">
+                    <span class="icon material-symbols-outlined">image</span> Manejo de Imágenes
+                </li>
+            </ul>
+            <div class="section-title">Ayuda</div>
+            <ul>
+                <li onclick="openModal()" data-help="Vuelve a ver este mensaje de bienvenida para entender las funciones básicas.">
+                    <span class="icon material-symbols-outlined">info</span> Mensaje Bienvenida
+                </li>
+                <li data-help="Si encuentras un problema en la aplicación, puedes reportarlo aquí.">
+                    <span class="icon material-symbols-outlined">bug_report</span> Reportar Error
+                </li>
+                <li data-help="Conoce más sobre la aplicación, su versión y los desarrolladores.">
+                    <span class="icon material-symbols-outlined">help_center</span> Acerca de
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="main-content">
+            <div class="header" id="appHeader">
+                <span class="menu-toggle" id="menuToggle" onclick="toggleMenu()" data-help="Haz clic para abrir o cerrar el menú lateral y navegar entre las secciones.">&#9776;</span>
+                <span class="app-logo">Bienvenido J-00002329-19</span>
+                <div class="search-bar" data-help="Utiliza la barra de búsqueda para encontrar productos por nombre o código.">
+                    <input type="text" placeholder="Buscar">
+                    <span class="search-icon material-symbols-outlined">search</span>
+                </div>
+            </div>
+            <div class="content-overlay" id="overlay" onclick="toggleMenu()"></div>
+            <div class="home-screen" id="screen1">
+                <div class="welcome-message">
+                    <p>¡Bienvenido!, NOMBRE CLIENTE -</p>
+                    <img src="https://i.ibb.co/68jQdJd/sds.jpg" alt="Visita nuestra Página Web">
+                </div>
+                <div class="product-section">
+                    <h3>Marcas Destacadas</h3>
+                    <div class="product-grid">
+                        <div class="product-card" data-help="Explora todos los productos de la marca Fraco Gaskets disponibles en nuestro catálogo.">
+                            <img src="https://i.ibb.co/N2H3t14/sds2.jpg" alt="Fraco Gaskets">
+                            <p>Fraco</p>
+                            <p style="font-size: 0.8em; color: #555;">Conoce todo el surtido disponible<br>¡Haz clic aquí!</p>
+                        </div>
+                    </div>
+                    <p style="text-align: right; font-size: 0.9em; margin-top: 10px;"><a href="#">VER TODOS</a></p>
+                </div>
+                <div class="product-section">
+                    <h3>Nuevas Existencias</h3>
+                    <div class="product-grid">
+                        <div class="product-card">
+                            <img src="borne4.png" alt="Borne de Camión">
+                            <p>BORNE DE PLOMO PARA BATERIA DE CAMION 195 PONI - 5806010</p>
+                            <p class="price">USD 2,43</p>
+                            <div class="icons">
+                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
+                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
+                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="borne2.png" alt="Borne de Carro">
+                            <p>BORNE DE PLOMO PARA BATERIA DE CARRO 194 PONI - 5806011</p>
+                            <p class="price">USD 2,05</p>
+                            <div class="icons">
+                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
+                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
+                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="goma.png" alt="Lubricante especial">
+                            <p>LUBRICANTE ESPECIAL PARA ARMADO DE MOTORES...</p>
+                            <p class="price">USD 10,7</p>
+                            <div class="icons">
+                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
+                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
+                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="borne1.png" alt="Borne de Caja">
+                            <p>BORNE DE CARRO 194-C PONI CAJA 100 UNIDADES GRANEL - 0106045</p>
+                            <p class="price">USD 1,82</p>
+                            <div class="icons">
+                                <span class="material-symbols-outlined" data-help="Añade este producto a tu lista de favoritos.">favorite</span>
+                                <span class="material-symbols-outlined" data-help="Añade este producto al carrito para comprarlo.">shopping_cart</span>
+                                <span class="material-symbols-outlined" data-help="Comparte este producto con un contacto.">share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h2>¿Cómo funciona el Catálogo Digital?</h2>
+            <p>¡Bienvenido a tu catálogo digital! Para sacar el máximo provecho a la aplicación, sigue estos consejos:</p>
+            <ul style="text-align: left; list-style-type: disc; margin-left: 20px;">
+                <li><strong>Menú lateral:</strong> Utiliza el icono de las tres líneas <span class="material-symbols-outlined">menu</span> en la esquina superior izquierda para abrir el menú de navegación y acceder a las diferentes secciones.</li>
+                <li><strong>Búsqueda:</strong> Usa la barra de búsqueda para encontrar productos rápidamente por nombre o código.</li>
+                <li><strong>Tarjetas de productos:</strong> En la pantalla principal, cada producto tiene iconos para <strong>añadir a favoritos</strong> <span class="material-symbols-outlined">favorite</span>, <strong>agregar al carrito</strong> <span class="material-symbols-outlined">shopping_cart</span> y <strong>compartir</strong> <span class="material-symbols-outlined">share</span>.</li>
+                <li><strong>Ayudas interactivas:</strong> Pasa el ratón (en PC) o toca los elementos (en móvil) que tengan un recuadro de ayuda para ver una breve descripción de su función.</li>
+            </ul>
+            <p>¡Explora y disfruta tu experiencia de compra digital!</p>
+        </div>
+    </div>
+    <script>
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const notificationCount = document.getElementById('notificationCount');
+        
+        // Add event listeners for help tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            const helpElements = document.querySelectorAll('[data-help]');
+            helpElements.forEach(el => {
+                let tooltip = document.createElement('div');
+                tooltip.classList.add('help-tooltip');
+                tooltip.textContent = el.getAttribute('data-help');
+                el.style.position = 'relative';
+                el.appendChild(tooltip);
+        
+                // Show on hover (desktop)
+                el.addEventListener('mouseenter', () => {
+                    tooltip.classList.add('visible');
+                });
+                el.addEventListener('mouseleave', () => {
+                    tooltip.classList.remove('visible');
+                });
+        
+                // Show on touch (mobile)
+                el.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                    // Hide all other tooltips
+                    document.querySelectorAll('.help-tooltip.visible').forEach(t => t.classList.remove('visible'));
+                    tooltip.classList.add('visible');
+                });
+            });
+            // Hide tooltips when tapping anywhere else on the screen
+            document.addEventListener('touchstart', (e) => {
+                if (!e.target.closest('[data-help]')) {
+                    document.querySelectorAll('.help-tooltip.visible').forEach(t => t.classList.remove('visible'));
+                }
+            });
+        });
+        
+        function toggleMenu() {
+            sideMenu.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+        
+        // --- Funciones para el Modal de Ayuda ---
+        function openModal() {
+            document.getElementById('helpModal').style.display = 'block';
+            toggleMenu(); // Cierra el menú lateral si está abierto
+        }
+        
+        function closeModal() {
+            document.getElementById('helpModal').style.display = 'none';
+        } 
+        // Cierra el modal si se hace clic fuera del contenido
+        window.onclick = function(event) {
+            const modal = document.getElementById('helpModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
