@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>088 - Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .header img {
+            height: 30px;
+        }
+
+        .toolbar {
+            padding: 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .toolbar-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .toolbar-top label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .toolbar-top select {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .client-search {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+
+        .client-search input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .client-search button {
+            padding: 8px 12px;
+            margin-left: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #eee;
+        }
+
+        .client-list {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+        }
+
+        .client-item {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .client-item:first-child {
+            background-color: #b3e0ff;
+            font-weight: bold;
+        }
+
+        .client-name {
+            font-weight: bold;
+        }
+
+        .client-details {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 5px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #ccc;
+        }
+
+        .keyboard-row {
+            display: contents;
+        }
+
+        .key {
+            background-color: #ddd;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px 5px;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .help-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            background-color: #fffacd;
+            border: 1px solid #ffebcd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 1em;
+            line-height: 1.4;
+            z-index: 1000;
+        }
+
+        .help-message h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #a0522d;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="help-message">
+        <h4>AYUDA</h4>
+        <p>
+            Pasos para ingresar:
+            <ol>
+                <li><strong>Seleccione un cliente</strong> de la lista.</li>
+                <li>También puede <strong>seleccionar una letra</strong> en la parte inferior para ubicar un cliente que empiece por la tecla pulsada.</li>
+                <li>Puede colocar el nombre del cliente en el campo de búsqueda que aparece cuando pulsa la letra "B".</li>
+                <li>Al pulsar el botón <strong>"CONSULT."</strong>, se mostrarán opciones generales relacionadas a la cobranza, como estados de cuenta y relación de depósitos.</li>
+            </ol>
+        </p>
+    </div>
+
+    <div class="container" onclick="location.href='menu.html'">
+        <div class="header">
+            <img src="https://i.imgur.com/K3f6SjL.png" alt="Logo">
+            <span>088 - Clientes</span>
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-top">
+                <label for="route">Ruta:</label>
+                <select id="route">
+                    <option>--- Todas ---</option>
+                </select>
+            </div>
+            <div class="client-search">
+                <input type="text" placeholder="2131133" readonly>
+                <input type="text" placeholder="O.P." readonly>
+                <input type="text" placeholder="B." readonly>
+                <button>CONSUL.</button>
+            </div>
+        </div>
+
+        <div class="client-list">
+            <div class="client-item">
+                <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
+                <div class="client-details">A-40, C.A - 2565065</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">BIKE MARKET REPUESTOS & ACCESORIOS, C.A - 2531304</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">BIUKOR MARKET, C.A -</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">COLORMAR C.A. - 2541013</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">COMERCIAL EL SAMAN 2007, C.A. - 2532008</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">DISMARKET EXPRESS, C.A -</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">DISTORMAR C.A - 2541132</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">DISTRIBUIDORA S.C GUACARA, C.A. - 2531122</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">FERRE COMERC DE LA CHIQ C.A - 2531019</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">FERRE MATERIALES EL TRONO DE DIOS 2024, C.A -</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">FERRE MIXTOR, C.A -</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">FERRE REPUESTO PADUA C.A - 2580030</div>
+            </div>
+            <div class="client-item">
+                <div class="client-name">FERRECENTRO GUACARA C.A. - 2531024</div>
+            </div>
+        </div>
+
+        <div class="keyboard">
+            <div class="keyboard-row">
+                <div class="key">A</div>
+                <div class="key">B</div>
+                <div class="key">C</div>
+                <div class="key">D</div>
+                <div class="key">E</div>
+                <div class="key">F</div>
+                <div class="key">G</div>
+                <div class="key">H</div>
+                <div class="key">I</div>
+                <div class="key">J</div>
+                <div class="key">K</div>
+                <div class="key">L</div>
+                <div class="key">M</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="key">N</div>
+                <div class="key">O</div>
+                <div class="key">P</div>
+                <div class="key">Q</div>
+                <div class="key">R</div>
+                <div class="key">S</div>
+                <div class="key">T</div>
+                <div class="key">U</div>
+                <div class="key">V</div>
+                <div class="key">W</div>
+                <div class="key">X</div>
+                <div class="key">Y</div>
+                <div class="key">Z</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
