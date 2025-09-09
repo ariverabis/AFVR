@@ -97,7 +97,7 @@
                         </tr>
                     </thead>
                     <tbody id="retencion-table-body">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -140,6 +140,19 @@
             </div>
         </div>
     </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <h4>Editar Monto de Retención</h4>
+            <div class="info-row" style="margin-top: 20px;">
+                <span>Monto (USD):</span>
+                <input type="number" step="0.01" id="editMontoInput" style="text-align: right;">
+            </div>
+            <button onclick="saveEditedMonto()" style="margin-top: 20px; padding: 10px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">Guardar</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const fechaCompInput = document.getElementById('fecha-comp');
@@ -147,9 +160,13 @@
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
             const totalRetenidoUSD = document.getElementById('totalRetenidoUSD');
             const btnFinalizar = document.getElementById('btnFinalizar');
-            const modal = document.getElementById('helpModal');
+            const helpModal = document.getElementById('helpModal');
+            const editModal = document.getElementById('editModal');
+            const editMontoInput = document.getElementById('editMontoInput');
             const tableBody = document.getElementById('retencion-table-body');
             
+            let currentEditingRow = null;
+
             // Datos de facturas de ejemplo que se cargarán en la tabla
             const invoices = [
                 { tipo: 'A', noFiscal: '06880849', importe: 97.05 },
@@ -172,7 +189,7 @@
                         <td class="checkbox-cell"><input type="checkbox"></td>
                         <td>${invoice.tipo}</td>
                         <td>${invoice.noFiscal}</td>
-                        <td>${retencionMonto.toFixed(2).replace('.', ',')}</td>
+                        <td class="monto-cell">${retencionMonto.toFixed(2).replace('.', ',')}</td>
                     `;
                     tableBody.appendChild(row);
                 });
@@ -185,6 +202,18 @@
                         selectAllCheckbox.checked = allChecked;
                     });
                 });
+
+                const montoCells = document.querySelectorAll('#retencion-table-body .monto-cell');
+                montoCells.forEach(cell => {
+                    cell.addEventListener('click', (event) => {
+                        event.stopPropagation();
+                        currentEditingRow = cell.closest('tr');
+                        const currentMonto = parseFloat(currentEditingRow.dataset.monto);
+                        editMontoInput.value = currentMonto;
+                        editModal.style.display = 'block';
+                    });
+                });
+
                 updateTotal();
             }
 
@@ -222,9 +251,25 @@
             });
             
             window.toggleHelpModal = function() {
-                modal.style.display = 'block';
+                helpModal.style.display = 'block';
             }
-            document.querySelector('.close-button').onclick = () => modal.style.display = 'none';
+            document.querySelector('#helpModal .close-button').onclick = () => helpModal.style.display = 'none';
+
+            window.closeEditModal = function() {
+                editModal.style.display = 'none';
+            }
+
+            window.saveEditedMonto = function() {
+                if (currentEditingRow) {
+                    const newMonto = parseFloat(editMontoInput.value);
+                    if (!isNaN(newMonto) && newMonto >= 0) {
+                        currentEditingRow.dataset.monto = newMonto.toFixed(2);
+                        currentEditingRow.querySelector('.monto-cell').textContent = newMonto.toFixed(2).replace('.', ',');
+                        updateTotal();
+                    }
+                    closeEditModal();
+                }
+            }
 
             fechaCompInput.addEventListener('change', () => {
                 const date = fechaCompInput.value;
@@ -279,7 +324,7 @@
                 localStorage.setItem('appliedRetentions', JSON.stringify(appliedRetentions));
                 
                 alert('Retenciones guardadas. Redirigiendo al menú principal.');
-                window.location.href = 'menu.html'; // Cambio aquí
+                window.location.href = 'menu.html';
             });
             
             renderInvoicesTable();
