@@ -434,11 +434,11 @@
             const totalRetencion = parseFloat(urlParams.get('totalRetencion')) || 0;
             const formaDePago = urlParams.get('formaDePago');
             const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
-            let initialPayments = JSON.parse(sessionStorage.getItem('currentPayments')) || [];
 
             let subTotalDocumentos = 0;
             let totalFacturas = 0;
-
+            
+            // Cargar los items seleccionados de la URL
             if (selectedItemsJSON) {
                 const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
                 selectedItems.forEach(item => {
@@ -455,6 +455,7 @@
                 console.log('No se encontraron ítems seleccionados.');
             }
 
+            // Funciones del modal de ayuda
             window.showManual = function(title, content) {
                 modalTitle.textContent = title;
                 modalContent.textContent = content;
@@ -465,11 +466,14 @@
                 manualModal.style.display = 'none';
             }
 
+            // Funciones del modal de agregar pago
             window.showAddPaymentModal = function() {
                 addPaymentModal.style.display = 'block';
                 const remaining = totalFacturas - getPaymentsTotal();
                 if (remaining > 0) {
                     paymentAmountInput.value = remaining.toFixed(2);
+                } else {
+                    paymentAmountInput.value = '0.00';
                 }
             }
 
@@ -480,9 +484,9 @@
             window.addPayment = function() {
                 const paymentType = document.getElementById('paymentType').value;
                 const paymentCurrency = document.getElementById('paymentCurrency').value;
-                const paymentAmount = document.getElementById('paymentAmount').value;
+                const paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
 
-                if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
+                if (isNaN(paymentAmount) || paymentAmount <= 0) {
                     alert('Por favor, ingrese un monto válido.');
                     return;
                 }
@@ -508,6 +512,7 @@
                 }
             }
 
+            // Obtiene el total de los pagos registrados
             function getPaymentsTotal() {
                 const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
                 let paymentsTotal = 0;
@@ -517,6 +522,7 @@
                 return paymentsTotal;
             }
 
+            // Actualiza el resumen de los documentos
             function updateDocumentSummary() {
                 subTotalDocumentos = 0;
                 documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
@@ -560,6 +566,7 @@
                 }
             });
 
+            // Renderiza los pagos en la tabla
             function renderPayments() {
                 const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
                 paymentsTableBody.innerHTML = '';
@@ -576,6 +583,7 @@
                 updateRemainingAmounts();
             }
 
+            // Actualiza el monto restante
             function updateRemainingAmounts() {
                 let paymentsTotal = getPaymentsTotal();
 
@@ -585,14 +593,15 @@
                 // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
                 document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
 
-                // Activar el botón FIN si no hay monto restante
-                if (remaining <= 0) {
+                // Activar el botón FIN si el total de pagos es igual o mayor al total de la factura
+                if (paymentsTotal >= totalFacturas) {
                     btnFinish.classList.add('active');
                 } else {
                     btnFinish.classList.remove('active');
                 }
             }
 
+            // Inicialización al cargar la página
             updateDocumentSummary();
             renderPayments();
 
