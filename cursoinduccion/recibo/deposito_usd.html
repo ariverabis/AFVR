@@ -292,7 +292,7 @@
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.js"></script>
 
     <div class="screen-container">
         <div class="header">
@@ -623,84 +623,98 @@
                 doc.text("Recibo de Cobro", 100, yOffset, null, null, "center");
                 yOffset += 10;
                 doc.setFontSize(12);
-                doc.text(`Recibo Nro. ${Math.floor(Math.random() * 10000000) + 1}`, 10, yOffset);
+                doc.text("Recibo Nro. 00060312", 10, yOffset);
                 yOffset += 7;
-                doc.text(`CLIENTE: DISTRIBUIDORA V.P. HOGAR, C.A.`, 10, yOffset); // Usar datos de la página si están disponibles
+                doc.text("CLIENTE: 2579805 DISTRIBUIDORA V.P. HOGAR, C.A.", 10, yOffset);
                 yOffset += 7;
-                doc.text(`FECHA DE PAGO: ${new Date().toLocaleDateString('es-ES')}`, 10, yOffset);
+                doc.text("FECHA DE PAGO: 29-08-2025 Hora: 06:22:55", 10, yOffset);
                 yOffset += 7;
-                doc.text(`VENDEDOR: YENDER VOLCAN`, 10, yOffset);
+                doc.text("VENDEDOR: 2042 YENDER VOLCAN", 10, yOffset);
+                yOffset += 7;
+                doc.text("SALDO DEUDOR DEL CLIENTE (USD): 0,00", 10, yOffset);
+                yOffset += 5;
+                doc.text("Saldo antes de hacer el recibo de cobro.", 10, yOffset);
                 yOffset += 15;
 
                 // Tabla de Documentos
-                const documentRows = [];
-                documentTableBody.querySelectorAll('tr').forEach(row => {
-                    const rowData = [];
-                    const inputs = row.querySelectorAll('td input');
-                    const cells = row.querySelectorAll('td:not(:has(input))');
-                    cells.forEach(cell => rowData.push(cell.innerText));
-                    if (inputs.length > 0) {
-                        inputs.forEach(input => rowData.push(parseFloat(input.value).toFixed(2)));
-                    }
-                    documentRows.push(rowData);
-                });
-
+                const documentRows = [
+                    ["FAC 06627903", "288,05", "0,00", "9,79", "20,00"]
+                ];
+                
                 doc.autoTable({
                     startY: yOffset,
-                    head: [['Tipo', 'No. Fiscal', 'Forma de Pago', 'Monto USD']],
+                    head: [['NO. DOCUMENTO', 'IMP. ORIGINAL', 'OTORGADO', 'PAGO RECIBIDO', 'SALDO']],
                     body: documentRows,
                     theme: 'grid',
                     headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
                     styles: { fontSize: 10 },
                     columnStyles: {
-                        3: { halign: 'right' }
+                        1: { halign: 'right' },
+                        2: { halign: 'right' },
+                        3: { halign: 'right' },
+                        4: { halign: 'right' }
                     }
                 });
 
-                yOffset = doc.autoTable.previous.finalY + 10;
-
-                // Resumen de la factura
-                const subTotal = document.getElementById('subTotalDocument').innerText.replace(',', '.');
-                const retencion = document.getElementById('retencionDocument').innerText.replace(',', '.');
-                const total = document.getElementById('documentTotal').innerText.replace(',', '.');
-                
-                doc.setFontSize(12);
-                doc.text(`Sub-Total: ${subTotal} USD`, 190, yOffset, null, null, "right");
-                yOffset += 7;
-                doc.text(`Retención: ${retencion} USD`, 190, yOffset, null, null, "right");
-                yOffset += 7;
-                doc.text(`Total: ${total} USD`, 190, yOffset, null, null, "right");
-
+                yOffset = doc.autoTable.previous.finalY;
+                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset, null, null, "right");
                 yOffset += 15;
 
                 // Tabla de Pagos
-                const paymentRows = [];
-                paymentsTableBody.querySelectorAll('tr').forEach(row => {
-                    const rowData = [];
-                    row.querySelectorAll('td').forEach(cell => rowData.push(cell.innerText));
-                    paymentRows.push(rowData);
-                });
+                const paymentRows = [
+                    ["TRANSFERENCIA", "00000113524", "Bancamiga Banco U", "29-08-2025", "1.342,89"]
+                ];
 
                 doc.autoTable({
                     startY: yOffset,
-                    head: [['Forma de Pago', 'Moneda', 'Monto']],
+                    head: [['FORMA DE PAGO', 'NRO. DOCUMENTO', 'BANCO', 'FECHA', 'MONTO']],
                     body: paymentRows,
                     theme: 'grid',
                     headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
                     styles: { fontSize: 10 },
                     columnStyles: {
-                        2: { halign: 'right' }
+                        4: { halign: 'right' }
                     }
                 });
 
-                yOffset = doc.autoTable.previous.finalY + 10;
-                
+                yOffset = doc.autoTable.previous.finalY;
+                doc.text(`LA SUMA DE: Nueve con 79/100`, 10, yOffset + 5);
+                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset + 5, null, null, "right");
+                yOffset += 20;
+
                 // Firmas y notas legales
                 doc.setFontSize(10);
+                doc.text("Página 1 de 1", 190, yOffset, null, null, "right");
+                yOffset += 5;
+                doc.text("DEL TOTAL DE PAGOS REALIZADOS 994,12 BS CORRESPONDEN A DIFERENCIAL CAMBIARIO.", 10, yOffset);
+                yOffset += 10;
+                doc.text("OBSERVACIONES:", 10, yOffset);
+                yOffset += 5;
+                doc.text("NOTA: Los cajeros, cobradores o viajeros, quienes llevaran consigo autorizacion de cobro usaran exclusivamente", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("recibos para dejar constancia de dinero recibido por cuenta de esta compañia.", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("Por lo tanto no tiene validez la", 10, yOffset);
+                yOffset += 5;
+                doc.text("cancelacion que se hiciere en el cuerpo de facturas y similares documentos, exceptuando los giros emitidos por", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("la compañia por ventas a credito, los que se cancelaran en su reverso ademas de estos recibos.", 10, yOffset, { maxWidth: 180 });
+                yOffset += 10;
+                doc.text("Declaro que el dinero utilizado para el pago de la presente venta, proviene de una fuente licita y por lo tanto", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("no tiene relacion directa o indirecta con dinero, capitales, fondos, beneficios, haberes, excedentes, valores o", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("titulos producto de las actividades o acciones previstas y sancionadas en la ley Organica de Drogas, en la Ley", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("Organica contra la Delincuencia Organizada y Financiamiento al Terrorismo, y todas las demas contempladas en el", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("Codigo Penal y demas leyes especiales.", 10, yOffset, { maxWidth: 180 });
+
+                yOffset += 20;
                 doc.text("FIRMA Y SELLO DEL CLIENTE", 10, yOffset);
                 doc.text("FIRMA VENDEDOR", 150, yOffset);
                 yOffset += 15;
-                doc.text("Declaro que el dinero utilizado para el pago de la presente venta, proviene de una fuente lícita...", 10, yOffset, { maxWidth: 180 });
+                doc.text("COPIA ENVIADA POR CORREO ELECTRONICO", 10, yOffset);
                 
                 // Guardar el PDF
                 doc.save('Recibo_de_Cobro.pdf');
