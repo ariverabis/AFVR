@@ -188,10 +188,17 @@
             // Obtener el parámetro de la URL
             const urlParams = new URLSearchParams(window.location.search);
             const formaDePago = urlParams.get('formaDePago');
-            const aplicaDescuento = (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd');
             
-            // Mostrar u ocultar el campo de descuento según la forma de pago
-            if (aplicaDescuento) {
+            // Determinar el porcentaje de descuento basado en la forma de pago
+            let descuentoPorcentaje = 0;
+            if (formaDePago === 'transferencia_ves') {
+                descuentoPorcentaje = 0.10; // 10% para pagos en VES
+            } else if (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd') {
+                descuentoPorcentaje = 0.13; // 13% para pagos en USD
+            }
+            
+            // Mostrar u ocultar el campo de descuento solo si hay un porcentaje a aplicar
+            if (descuentoPorcentaje > 0) {
                 descuentoItem.style.display = 'flex';
             } else {
                 descuentoItem.style.display = 'none';
@@ -244,11 +251,9 @@
                     }
                 });
                 
-                // Calcular el descuento solo si aplica
-                if (aplicaDescuento) {
-                    totalDescuento = subTotal * 0.13;
-                }
-
+                // Calcular el descuento usando el porcentaje determinado
+                totalDescuento = subTotal * descuentoPorcentaje;
+                
                 subTotalSpan.textContent = subTotal.toFixed(2).replace('.', ',');
                 retencionSpan.textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
                 descuentoSpan.textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
@@ -290,9 +295,8 @@
                 });
                 
                 if (selectedItems.length > 0) {
-                    if (aplicaDescuento) {
-                        totalDescuento = subTotal * 0.13;
-                    }
+                    // Recalcular el descuento aquí para mayor seguridad antes de enviar
+                    totalDescuento = subTotal * descuentoPorcentaje;
                     
                     const selectedItemsJSON = JSON.stringify(selectedItems);
                     const encodedItems = encodeURIComponent(selectedItemsJSON);
