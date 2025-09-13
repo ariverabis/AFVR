@@ -285,30 +285,25 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             max-width: 300px;
         }
-
         .confirmation-modal-content h3 {
             color: #28a745;
             margin-top: 0;
         }
-
         .confirmation-modal-content p {
             margin: 15px 0;
         }
-
         .close-button {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
-
         .close-button:hover,
         .close-button:focus {
             color: #000;
             text-decoration: none;
             cursor: pointer;
         }
-
         /* Estilo para el botón + */
         #btnAddPayment {
             font-size: 30px; /* Tamaño más grande */
@@ -322,6 +317,14 @@
             align-items: center;
             cursor: pointer;
         }
+        /* NUEVAS REGLAS PARA COLORES */
+        .document-title {
+            color: red; /* O usa un código hexadecimal, por ejemplo: #FF0000 */
+        }
+
+        .payments-title {
+            color: blue; /* O usa un código hexadecimal, por ejemplo: #0000FF */
+        }       
     </style>
 </head>
 <body>
@@ -357,7 +360,7 @@
             </div>
         </div>
         <div class="content">
-            <div class="section-title">DOCUMENTOS</div>
+           <div class="section-title document-title">DOCUMENTOS</div>
             <div class="table-container">
                 <table id="documentTable">
                     <thead>
@@ -397,7 +400,7 @@
             </div>
 
             <div class="payments-header">
-                <div class="section-title" style="border-bottom: none;">PAGOS</div>
+                <div class="section-title payments-title" style="border-bottom: none;">PAGOS</div>
                 <div class="buttons">
                     <div id="btnAddPayment">+</div>
                     <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">x</span>
