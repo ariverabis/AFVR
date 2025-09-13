@@ -39,7 +39,7 @@
         .footer-buttons .tooltiptext { bottom: 100%; left: 50%; margin-left: -75px; }
         th .tooltiptext { bottom: auto; top: 125%; }
         tfoot .tooltiptext { bottom: auto; top: 125%; }
-
+        
         /* Modal styles */
         .modal {
             display: none;
@@ -89,6 +89,62 @@
             margin: 5px 0 0;
             font-size: 14px;
         }
+
+        /* Estilos específicos para la tabla de la imagen */
+        .table-container table thead th, .table-container table tbody td {
+            border: 1px solid #ccc; /* Añade bordes a las celdas */
+            padding: 8px; /* Reduce el padding para que quepa más contenido */
+        }
+        
+        .table-container table {
+            border-collapse: collapse;
+        }
+        
+        /* Ajuste de anchos de columna */
+        .table-container table th:nth-child(1),
+        .table-container table td:nth-child(1) {
+            width: 5%; /* Columna E */
+        }
+        .table-container table th:nth-child(2),
+        .table-container table td:nth-child(2) {
+            width: 25%; /* Columna No. */
+        }
+        .table-container table th:nth-child(3),
+        .table-container table td:nth-child(3) {
+            width: 30%; /* Columna Fecha */
+        }
+        .table-container table th:nth-child(4),
+        .table-container table td:nth-child(4) {
+            width: 35%; /* Columna Monto */
+        }
+        
+        /* Centrar contenido en las celdas de las columnas E y No. */
+        .table-container table td:nth-child(1),
+        .table-container table td:nth-child(2) {
+            text-align: center;
+        }
+        
+        /* Alinear a la izquierda el Monto y la Fecha */
+        .table-container table td:nth-child(3),
+        .table-container table td:nth-child(4) {
+            text-align: left;
+        }
+
+        /* Estilos para el pie de tabla */
+        .table-container tfoot td {
+            text-align: right;
+            font-weight: bold;
+        }
+        .table-container tfoot td:first-child {
+            text-align: right;
+            border-right: none;
+        }
+
+        /* Alineación del "Total:" */
+        #totalCell {
+            text-align: right !important;
+            padding-right: 15px; /* Un poco de espacio para que no esté pegado al borde */
+        }
     </style>
 </head>
 <body>
@@ -123,14 +179,15 @@
                     </thead>
                     <tbody id="receiptsTableBody">
                         <tr>
-                            <td><center>C</center></td> <td>00060312</td>
+                            <td>C</td>
+                            <td>00060312</td>
                             <td>29-08-2025</td>
                             <td>$9,79</td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="3" style="text-align: right;" class="tooltip">Total:<span class="tooltiptext">Suma de los montos de todos los recibos.</span></td>
+                            <td colspan="3" id="totalCell" class="tooltip">Total:<span class="tooltiptext">Suma de los montos de todos los recibos.</span></td>
                             <td>$9,79</td>
                         </tr>
                     </tfoot>
