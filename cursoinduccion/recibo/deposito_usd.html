@@ -20,7 +20,7 @@
             width: 360px;
             height: 640px;
             background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border-radius: 10px;
             overflow: hidden;
             display: flex;
@@ -36,7 +36,7 @@
             align-items: center;
             font-size: 18px;
             font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header .back-arrow {
@@ -247,7 +247,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.4);
         }
 
         .modal-content {
@@ -259,6 +259,40 @@
             max-width: 400px;
             border-radius: 8px;
             position: relative;
+        }
+
+        /* Estilo para el modal de confirmación */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirmation-modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+        }
+
+        .confirmation-modal-content h3 {
+            color: #28a745;
+            margin-top: 0;
+        }
+
+        .confirmation-modal-content p {
+            margin: 15px 0;
         }
 
         .close-button {
@@ -296,13 +330,13 @@
 
     <div class="screen-container">
         <div class="header">
-            <span class="back-arrow" onclick="history.back()">&larr;</span>
+            <span class="back-arrow" onclick="history.back()">&lt;-</span>
             <span class="header-title">059 - Detalle Recibo</span>
             <div class="header-actions">
                 <div class="finish-button active" id="btnFinish">FIN</div>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&times;</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x2714;</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar ( + ), eliminar ( \u2716 ) o guardar ( \u2714 ).')">&#x271A;</span>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">x</span>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">v</span>
+                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">+</span>
             </div>
         </div>
         <div class="step-messages">
@@ -313,7 +347,7 @@
             </div>
             <div class="step-item">
                 <span class="step-icon">2</span>
-                <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+"" En el area PAGOS.</span>
+                <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+" En el area PAGOS.</span>
                 <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')"></span>
             </div>
             <div class="step-item">
@@ -342,10 +376,22 @@
             <div class="summary-table-container">
                 <table>
                     <tbody>
-                        <tr><td>Sub-Total:</td><td id="subTotalDocument">0,00</td></tr>
-                        <tr id="descuentoRow" style="display:none;"><td>Descuento:</td><td id="descuentoDocument">0,00</td></tr>
-                        <tr><td>Retención:</td><td id="retencionDocument">0,00</td></tr>
-                        <tr class="total-row-summary"><td>Total:</td><td id="documentTotal">0,00</td></tr>
+                        <tr>
+                            <td>Sub-Total:</td>
+                            <td id="subTotalDocument">0,00</td>
+                        </tr>
+                        <tr id="descuentoRow" style="display:none;">
+                            <td>Descuento:</td>
+                            <td id="descuentoDocument">0,00</td>
+                        </tr>
+                        <tr>
+                            <td>Retención:</td>
+                            <td id="retencionDocument">0,00</td>
+                        </tr>
+                        <tr class="total-row-summary">
+                            <td>Total:</td>
+                            <td id="documentTotal">0,00</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -354,7 +400,7 @@
                 <div class="section-title" style="border-bottom: none;">PAGOS</div>
                 <div class="buttons">
                     <div id="btnAddPayment">+</div>
-                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">&times;</span>
+                    <span id="btnDeletePayment" style="font-size: 24px; cursor: pointer;">x</span>
                 </div>
             </div>
             <div class="payments-table-container">
@@ -415,6 +461,13 @@
         </div>
     </div>
 
+    <div id="confirmationModal" class="confirmation-modal" style="display: none;">
+        <div class="confirmation-modal-content">
+            <h3>¡Éxito!</h3>
+            <p>El recibo de cobro ha sido generado correctamente.</p>
+        </div>
+    </div>
+
     <script>
         const { jsPDF } = window.jspdf;
 
@@ -425,6 +478,7 @@
             const modalTitle = document.getElementById('modalTitle');
             const modalContent = document.getElementById('modalContent');
             const addPaymentModal = document.getElementById('addPaymentModal');
+            const confirmationModal = document.getElementById('confirmationModal');
             const paymentAmountInput = document.getElementById('paymentAmount');
             const btnFinish = document.getElementById('btnFinish');
 
@@ -437,7 +491,7 @@
 
             let subTotalDocumentos = 0;
             let totalFacturas = 0;
-            
+
             // Cargar los items seleccionados de la URL
             if (selectedItemsJSON) {
                 const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
@@ -589,7 +643,7 @@
 
                 const remaining = totalFacturas - paymentsTotal;
                 document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
-                
+
                 // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
                 document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
 
@@ -640,7 +694,7 @@
                 const documentRows = [
                     ["FAC 06627903", "288,05", "0,00", "9,79", "20,00"]
                 ];
-                
+
                 doc.autoTable({
                     startY: yOffset,
                     head: [['NO. DOCUMENTO', 'IMP. ORIGINAL', 'OTORGADO', 'PAGO RECIBIDO', 'SALDO']],
@@ -692,9 +746,7 @@
                 yOffset += 5;
                 doc.text("NOTA: Los cajeros, cobradores o viajeros, quienes llevaran consigo autorizacion de cobro usaran exclusivamente", 10, yOffset, { maxWidth: 180 });
                 yOffset += 5;
-                doc.text("recibos para dejar constancia de dinero recibido por cuenta de esta compañia.", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("Por lo tanto no tiene validez la", 10, yOffset);
+                doc.text("recibos para dejar constancia de dinero recibido por cuenta de esta compañia. Por lo tanto no tiene validez la", 10, yOffset, { maxWidth: 180 });
                 yOffset += 5;
                 doc.text("cancelacion que se hiciere en el cuerpo de facturas y similares documentos, exceptuando los giros emitidos por", 10, yOffset, { maxWidth: 180 });
                 yOffset += 5;
@@ -715,9 +767,17 @@
                 doc.text("FIRMA VENDEDOR", 150, yOffset);
                 yOffset += 15;
                 doc.text("COPIA ENVIADA POR CORREO ELECTRONICO", 10, yOffset);
-                
+
                 // Guardar el PDF
                 doc.save('Recibo_de_Cobro.pdf');
+
+                // Mostrar el modal de confirmación
+                confirmationModal.style.display = 'flex';
+
+                // Ocultar el modal después de 3 segundos
+                setTimeout(() => {
+                    confirmationModal.style.display = 'none';
+                }, 3000);
             });
         });
     </script>
