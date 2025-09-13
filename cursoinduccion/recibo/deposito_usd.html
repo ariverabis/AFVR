@@ -774,9 +774,10 @@
                 // Mostrar el modal de confirmación
                 confirmationModal.style.display = 'flex';
 
-                // Ocultar el modal después de 3 segundos
+                // Ocultar el modal después de 3 segundos y redirigir
                 setTimeout(() => {
                     confirmationModal.style.display = 'none';
+                    window.location.href = 'listado_recibos.html';
                 }, 3000);
             });
         });
