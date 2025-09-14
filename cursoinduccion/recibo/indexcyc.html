@@ -15,38 +15,16 @@
             height: 100vh;
         }
 
-        .phone-container {
+        .screen {
             width: 360px;
             height: 640px;
-            background-color: rgb(28, 15, 206);
-            border-radius: 40px;
-            box-shadow: 0 0 20px rgba(62, 12, 202, 0.5);
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .screen {
-            flex: 1;
             background-color: white;
-            border-radius: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-
-        .phone-status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 15px;
-            color: white;
-            font-size: 0.8em;
-        }
-
-        .phone-status-bar img {
-            height: 16px;
+            position: relative;
         }
 
         .header {
@@ -60,15 +38,10 @@
             font-size: 1.2em;
         }
 
-        .header img {
-            height: 30px;
-        }
-
-        /* Estilo para el nuevo ícono de ayuda */
         .help-icon {
             font-size: 24px;
             font-weight: bold;
-            margin-left: auto; /* Empuja el ícono al extremo derecho */
+            margin-left: auto;
             cursor: pointer;
             background-color: #0066d9;
             border-radius: 50%;
@@ -121,9 +94,14 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #eee;
-            /* Se ajustó el tamaño de la fuente para los botones */
-            font-size: 14px;
+            font-size: 14px; /* Tamaño por defecto */
             cursor: pointer;
+        }
+
+        /* Estilo específico para el botón CONSULTA */
+        .client-search button:nth-child(4) {
+            font-size: 11px;
+            padding: 8px 6px;
         }
 
         .client-list {
@@ -191,8 +169,7 @@
             font-size: 0.9em;
             line-height: 1.4;
             z-index: 1000;
-            /* Se oculta la ayuda por defecto */
-            display: none; 
+            display: none;
         }
 
         .help-message h4 {
@@ -206,113 +183,111 @@
 </head>
 <body>
 
-    <div class="phone-container">
-        <div class="screen">
-            <div class="header">
-                <span>088 - Clientes</span>
-                <span class="help-icon" id="help-icon">?</span>
+    <div class="screen">
+        <div class="header">
+            <span>088 - Clientes</span>
+            <span class="help-icon" id="help-icon">?</span>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar-top">
+                <label for="route">Ruta:</label>
+                <select id="route">
+                    <option>--- Todas ---</option>
+                </select>
             </div>
-            <div class="toolbar">
-                <div class="toolbar-top">
-                    <label for="route">Ruta:</label>
-                    <select id="route">
-                        <option>--- Todas ---</option>
-                    </select>
-                </div>
-                <div class="client-search">
-                    <input type="text" value="2131133" readonly>
-                    <button>O.P.</button>
-                    <button>B.</button>
-                    <button onclick="window.location.href='MenuCobranza.html'">CONSUL.</button>
-                </div>
+            <div class="client-search">
+                <input type="text" value="2131133" readonly>
+                <button>O.P.</button>
+                <button>B.</button>
+                <button onclick="window.location.href='MenuCobranza.html'">CONSUL.</button>
             </div>
+        </div>
 
-            <div class="client-list">
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
-                    <div class="client-details">A-40, C.A - 2565065</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">BIKE MARKET REPUESTOS & ACCESORIOS, C.A - 2531304</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">BIUKOR MARKET, C.A -</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">COLORMAR C.A. - 2541013</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">COMERCIAL EL SAMAN 2007, C.A. - 2532008</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">DISMARKET EXPRESS, C.A -</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">DISTORMAR C.A - 2541132</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">DISTRIBUIDORA S.C GUACARA, C.A. - 2531122</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">FERRE COMERC DE LA CHIQ C.A - 2531019</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">FERRE MATERIALES EL TRONO DE DIOS 2024, C.A -</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">FERRE MIXTOR, C.A -</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">FERRE REPUESTO PADUA C.A - 2580030</div>
-                </div>
-                <div class="client-item" onclick="location.href='menu.html'">
-                    <div class="client-name">FERRECENTRO GUACARA C.A. - 2531024</div>
-                </div>
+        <div class="client-list">
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
+                <div class="client-details">A-40, C.A - 2565065</div>
             </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">ALTAMIRA FERRE-INDUSTRIAL - 2131133</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">BIKE MARKET REPUESTOS & ACCESORIOS, C.A - 2531304</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">BIUKOR MARKET, C.A -</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">COLORMAR C.A. - 2541013</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">COMERCIAL EL SAMAN 2007, C.A. - 2532008</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">DISMARKET EXPRESS, C.A -</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">DISTORMAR C.A - 2541132</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">DISTRIBUIDORA S.C GUACARA, C.A. - 2531122</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">FERRE COMERC DE LA CHIQ C.A - 2531019</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">FERRE MATERIALES EL TRONO DE DIOS 2024, C.A -</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">FERRE MIXTOR, C.A -</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">FERRE REPUESTO PADUA C.A - 2580030</div>
+            </div>
+            <div class="client-item" onclick="location.href='menu.html'">
+                <div class="client-name">FERRECENTRO GUACARA C.A. - 2531024</div>
+            </div>
+        </div>
 
-            <div class="keyboard">
-                <div class="keyboard-row">
-                    <div class="key">A</div>
-                    <div class="key">B</div>
-                    <div class="key">C</div>
-                    <div class="key">D</div>
-                    <div class="key">E</div>
-                    <div class="key">F</div>
-                    <div class="key">G</div>
-                    <div class="key">H</div>
-                    <div class="key">I</div>
-                    <div class="key">J</div>
-                    <div class="key">K</div>
-                    <div class="key">L</div>
-                    <div class="key">M</div>
-                </div>
-                <div class="keyboard-row">
-                    <div class="key">N</div>
-                    <div class="key">O</div>
-                    <div class="key">P</div>
-                    <div class="key">Q</div>
-                    <div class="key">R</div>
-                    <div class="key">S</div>
-                    <div class="key">T</div>
-                    <div class="key">U</div>
-                    <div class="key">V</div>
-                    <div class="key">W</div>
-                    <div class="key">X</div>
-                    <div class="key">Y</div>
-                    <div class="key">Z</div>
-                </div>
+        <div class="keyboard">
+            <div class="keyboard-row">
+                <div class="key">A</div>
+                <div class="key">B</div>
+                <div class="key">C</div>
+                <div class="key">D</div>
+                <div class="key">E</div>
+                <div class="key">F</div>
+                <div class="key">G</div>
+                <div class="key">H</div>
+                <div class="key">I</div>
+                <div class="key">J</div>
+                <div class="key">K</div>
+                <div class="key">L</div>
+                <div class="key">M</div>
+            </div>
+            <div class="keyboard-row">
+                <div class="key">N</div>
+                <div class="key">O</div>
+                <div class="key">P</div>
+                <div class="key">Q</div>
+                <div class="key">R</div>
+                <div class="key">S</div>
+                <div class="key">T</div>
+                <div class="key">U</div>
+                <div class="key">V</div>
+                <div class="key">W</div>
+                <div class="key">X</div>
+                <div class="key">Y</div>
+                <div class="key">Z</div>
             </div>
         </div>
     </div>
