@@ -18,9 +18,9 @@
         .phone-container {
             width: 360px;
             height: 640px;
-            background-color: black;
+            background-color: rgb(28, 15, 206);
             border-radius: 40px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(62, 12, 202, 0.5);
             padding: 10px;
             display: flex;
             flex-direction: column;
@@ -62,6 +62,20 @@
 
         .header img {
             height: 30px;
+        }
+
+        /* Estilo para el nuevo ícono de ayuda */
+        .help-icon {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: auto; /* Empuja el ícono al extremo derecho */
+            cursor: pointer;
+            background-color: #0066d9;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
         }
 
         .toolbar {
@@ -107,6 +121,9 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #eee;
+            /* Se ajustó el tamaño de la fuente para los botones */
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .client-list {
@@ -174,6 +191,8 @@
             font-size: 0.9em;
             line-height: 1.4;
             z-index: 1000;
+            /* Se oculta la ayuda por defecto */
+            display: none; 
         }
 
         .help-message h4 {
@@ -191,6 +210,7 @@
         <div class="screen">
             <div class="header">
                 <span>088 - Clientes</span>
+                <span class="help-icon" id="help-icon">?</span>
             </div>
             <div class="toolbar">
                 <div class="toolbar-top">
@@ -303,11 +323,27 @@
             Pasos para ingresar:
             <ol>
                 <li><strong>Seleccione un cliente</strong> de la lista.</li>
+                <li>Al seleccionar un cliente, podrá visualizar las opciones de **recibos**, **retenciones** y **estados de cuenta** de ese cliente.</li>
                 <li>También puede <strong>seleccionar una letra</strong> en la parte inferior para ubicar un cliente que empiece por la tecla pulsada.</li>
                 <li>Puede colocar el nombre del cliente en el campo de búsqueda que aparece cuando pulsa la letra "B".</li>
-                <li>Al pulsar el botón <strong>"CONSULT."</strong>, se mostrarán opciones generales relacionadas a la cobranza, como estados de cuenta y relación de depósitos.</li>
+                <li>Al pulsar el botón **"CONSUL."**, se mostrarán opciones generales relacionadas a la cobranza, como estados de cuenta y relación de depósitos.</li>
             </ol>
         </p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const helpIcon = document.getElementById('help-icon');
+            const helpMessage = document.getElementById('help-message');
+
+            helpIcon.addEventListener('click', () => {
+                if (helpMessage.style.display === 'none' || helpMessage.style.display === '') {
+                    helpMessage.style.display = 'block';
+                } else {
+                    helpMessage.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
