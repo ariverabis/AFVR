@@ -215,7 +215,6 @@
             background-color: #dc3545;
             color: white;
         }
-
     </style>
 </head>
 <body>
@@ -257,6 +256,7 @@
                 <table id="recibosTable">
                     <thead>
                         <tr>
+                            <th>Sel.</th>
                             <th>Cliente</th>
                             <th>Forma Pago</th>
                             <th>Nro.Doc</th>
@@ -267,7 +267,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
 
@@ -318,6 +318,7 @@
                     const row = document.createElement('tr');
                     row.dataset.id = recibo.id;
                     row.innerHTML = `
+                        <td><input type="radio" name="recibo-select" data-id="${recibo.id}"></td>
                         <td>${recibo.cliente}</td>
                         <td>${recibo.formaPago}</td>
                         <td>${recibo.nroDoc}</td>
@@ -334,23 +335,22 @@
                 });
                 totalRelacionSpan.textContent = total.toFixed(2).replace('.', ',');
 
-                // Mostrar el botón FIN si todos los recibos tienen un monto asignado
                 const allAssigned = recibos.every(recibo => recibo.montoActual !== null);
                 btnFinish.style.display = allAssigned ? 'block' : 'none';
             }
 
-            recibosTableBody.addEventListener('click', (event) => {
-                const row = event.target.closest('tr');
-                if (!row) return;
+            recibosTableBody.addEventListener('change', (event) => {
+                const radio = event.target;
+                if (radio.type === 'radio' && radio.checked) {
+                    selectedReciboId = parseInt(radio.dataset.id);
+                    const recibo = recibos.find(r => r.id === selectedReciboId);
 
-                selectedReciboId = parseInt(row.dataset.id);
-                const recibo = recibos.find(r => r.id === selectedReciboId);
-
-                if (recibo) {
-                    reciboNroSpan.textContent = recibo.recibo;
-                    reciboMontoSpan.textContent = recibo.montoOriginal.toFixed(2).replace('.', ',');
-                    planillaInput.value = '';
-                    assignModal.style.display = 'flex';
+                    if (recibo) {
+                        reciboNroSpan.textContent = recibo.recibo;
+                        reciboMontoSpan.textContent = recibo.montoOriginal.toFixed(2).replace('.', ',');
+                        planillaInput.value = '';
+                        assignModal.style.display = 'flex';
+                    }
                 }
             });
 
@@ -361,6 +361,11 @@
 
                 if (!planilla || !nDeposito) {
                     alert('Por favor, ingrese el número de depósito y la referencia de la planilla.');
+                    return;
+                }
+
+                if (selectedReciboId === null) {
+                    alert('Por favor, seleccione un recibo para asignar la planilla.');
                     return;
                 }
 
@@ -378,6 +383,11 @@
             window.closeModal = function() {
                 assignModal.style.display = 'none';
                 selectedReciboId = null;
+                // Deseleccionar el radio button al cerrar el modal
+                const checkedRadio = document.querySelector('input[name="recibo-select"]:checked');
+                if (checkedRadio) {
+                    checkedRadio.checked = false;
+                }
             };
 
             btnFinish.addEventListener('click', () => {
