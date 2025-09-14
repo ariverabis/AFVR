@@ -278,20 +278,6 @@
         </div>
     </div>
     
-    <div id="assignModal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeModal()">&times;</span>
-            <h3>Asignar Planilla</h3>
-            <p>Recibo: <span id="reciboNro"></span></p>
-            <p>Monto: <span id="reciboMonto"></span></p>
-            <input type="text" id="planillaInput" placeholder="Número de planilla" style="width: 100%; padding: 8px; margin-top: 10px;">
-            <div class="modal-buttons">
-                <button class="cancel" onclick="closeModal()">Cancelar</button>
-                <button class="confirm" onclick="assignPlanilla()">Asignar</button>
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const recibos = [
@@ -303,10 +289,7 @@
 
             const recibosTableBody = document.querySelector('#recibosTable tbody');
             const totalRelacionSpan = document.getElementById('totalRelacion');
-            const assignModal = document.getElementById('assignModal');
-            const reciboNroSpan = document.getElementById('reciboNro');
-            const reciboMontoSpan = document.getElementById('reciboMonto');
-            const planillaInput = document.getElementById('planillaInput');
+            const nDepositoInput = document.getElementById('nDepositoInput');
             const btnFinish = document.getElementById('btnFinish');
 
             let selectedReciboId = null;
@@ -346,52 +329,40 @@
                     const recibo = recibos.find(r => r.id === selectedReciboId);
 
                     if (recibo) {
-                        reciboNroSpan.textContent = recibo.recibo;
-                        reciboMontoSpan.textContent = recibo.montoOriginal.toFixed(2).replace('.', ',');
-                        planillaInput.value = '';
-                        assignModal.style.display = 'flex';
+                        nDepositoInput.value = recibo.recibo;
                     }
                 }
             });
 
-            window.assignPlanilla = function() {
-                const planilla = planillaInput.value.trim();
+            btnFinish.addEventListener('click', () => {
+                if (selectedReciboId === null) {
+                    alert('Por favor, seleccione un recibo para asignar.');
+                    return;
+                }
+                const recibo = recibos.find(r => r.id === selectedReciboId);
                 const banco = document.getElementById('bancoSelect').value;
                 const nDeposito = document.getElementById('nDepositoInput').value.trim();
-
-                if (!planilla || !nDeposito) {
-                    alert('Por favor, ingrese el número de depósito y la referencia de la planilla.');
+                
+                if (!nDeposito) {
+                    alert('Por favor, ingrese el número de depósito.');
                     return;
                 }
 
-                if (selectedReciboId === null) {
-                    alert('Por favor, seleccione un recibo para asignar la planilla.');
-                    return;
-                }
-
-                const recibo = recibos.find(r => r.id === selectedReciboId);
                 if (recibo) {
                     recibo.montoActual = recibo.montoOriginal;
                     recibo.banco = banco;
                     recibo.nroDep = nDeposito;
                 }
                 
-                closeModal();
-                renderRecibos();
-            };
-
-            window.closeModal = function() {
-                assignModal.style.display = 'none';
-                selectedReciboId = null;
-                // Deseleccionar el radio button al cerrar el modal
+                // Deseleccionar el radio button y el input después de asignar
                 const checkedRadio = document.querySelector('input[name="recibo-select"]:checked');
                 if (checkedRadio) {
                     checkedRadio.checked = false;
                 }
-            };
+                nDepositoInput.value = '';
 
-            btnFinish.addEventListener('click', () => {
-                alert('Proceso de relación de recibos finalizado.');
+                renderRecibos();
+                alert(`Recibo ${recibo.recibo} asignado al Depósito ${nDeposito} del Banco ${banco.split('-')[0].trim()}`);
             });
 
             renderRecibos();
