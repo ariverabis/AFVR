@@ -57,17 +57,19 @@
 
         .action-button {
             padding: 5px 15px;
-            background-color: #28a745;
+            background-color: #a0a0a0; /* Color gris para deshabilitado */
             color: white;
             border-radius: 5px;
             font-size: 14px;
             font-weight: bold;
-            cursor: pointer;
-            display: none;
+            cursor: not-allowed;
+            pointer-events: none; /* Deshabilita el click */
         }
 
-        .finish-button {
-            background-color: #28a745;
+        .action-button.enabled {
+            background-color: #28a745; /* Color verde para habilitado */
+            cursor: pointer;
+            pointer-events: auto;
         }
 
         .action-icon {
@@ -156,65 +158,6 @@
         .total-section span {
             margin-left: 10px;
         }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 300px;
-        }
-        .modal .close-button {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        .modal .close-button:hover,
-        .modal .close-button:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .modal-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
-        .modal-buttons button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .modal-buttons .confirm {
-            background-color: #28a745;
-            color: white;
-        }
-        .modal-buttons .cancel {
-            background-color: #dc3545;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -224,7 +167,7 @@
             <span class="back-arrow" onclick="history.back()">&lt;-</span>
             <span class="header-title">070 - Detalle Relación de Depósito</span>
             <div class="header-actions">
-                <div id="btnFinish" class="action-button finish-button">FIN</div>
+                <div id="btnFinish" class="action-button">FIN</div>
                 <span class="action-icon">?</span>
                 <span class="action-icon">&lt;-</span>
             </div>
@@ -248,7 +191,7 @@
                 </div>
                 <div>
                     <label for="nDepositoInput">N. Depósito:</label>
-                    <input type="text" id="nDepositoInput" placeholder="07260011">
+                    <input type="text" id="nDepositoInput" placeholder="Nro de Planilla">
                 </div>
             </div>
 
@@ -291,17 +234,22 @@
             const totalRelacionSpan = document.getElementById('totalRelacion');
             const nDepositoInput = document.getElementById('nDepositoInput');
             const btnFinish = document.getElementById('btnFinish');
+            const bancoSelect = document.getElementById('bancoSelect');
 
             let selectedReciboId = null;
 
             function renderRecibos() {
                 recibosTableBody.innerHTML = '';
                 let total = 0;
+                let isAnyReciboSelected = false;
+
                 recibos.forEach(recibo => {
                     const row = document.createElement('tr');
                     row.dataset.id = recibo.id;
+                    const isReciboSelected = (recibo.id === selectedReciboId);
+                    
                     row.innerHTML = `
-                        <td><input type="radio" name="recibo-select" data-id="${recibo.id}"></td>
+                        <td><input type="radio" name="recibo-select" data-id="${recibo.id}" ${isReciboSelected ? 'checked' : ''}></td>
                         <td>${recibo.cliente}</td>
                         <td>${recibo.formaPago}</td>
                         <td>${recibo.nroDoc}</td>
@@ -315,54 +263,68 @@
                     if (recibo.montoActual) {
                         total += recibo.montoActual;
                     }
-                });
-                totalRelacionSpan.textContent = total.toFixed(2).replace('.', ',');
 
-                const allAssigned = recibos.every(recibo => recibo.montoActual !== null);
-                btnFinish.style.display = allAssigned ? 'block' : 'none';
+                    if(isReciboSelected) {
+                        isAnyReciboSelected = true;
+                    }
+                });
+
+                if (isAnyReciboSelected) {
+                    const selectedRecibo = recibos.find(r => r.id === selectedReciboId);
+                    totalRelacionSpan.textContent = selectedRecibo.montoOriginal.toFixed(2).replace('.', ',');
+                } else {
+                    totalRelacionSpan.textContent = '0,00';
+                }
+
+                // Deshabilitar/Habilitar el botón FIN
+                const nDepositoValue = nDepositoInput.value.trim();
+                if (selectedReciboId !== null && nDepositoValue.length > 0) {
+                    btnFinish.classList.add('enabled');
+                } else {
+                    btnFinish.classList.remove('enabled');
+                }
             }
 
             recibosTableBody.addEventListener('change', (event) => {
                 const radio = event.target;
                 if (radio.type === 'radio' && radio.checked) {
                     selectedReciboId = parseInt(radio.dataset.id);
-                    const recibo = recibos.find(r => r.id === selectedReciboId);
+                    renderRecibos();
+                }
+            });
 
-                    if (recibo) {
-                        nDepositoInput.value = recibo.recibo;
-                    }
+            nDepositoInput.addEventListener('input', () => {
+                const nDepositoValue = nDepositoInput.value.trim();
+                if (selectedReciboId !== null && nDepositoValue.length > 0) {
+                    btnFinish.classList.add('enabled');
+                } else {
+                    btnFinish.classList.remove('enabled');
                 }
             });
 
             btnFinish.addEventListener('click', () => {
-                if (selectedReciboId === null) {
-                    alert('Por favor, seleccione un recibo para asignar.');
+                const nDeposito = nDepositoInput.value.trim();
+                if (!btnFinish.classList.contains('enabled')) {
+                    alert('Por favor, seleccione un recibo e ingrese el número de depósito.');
                     return;
                 }
-                const recibo = recibos.find(r => r.id === selectedReciboId);
-                const banco = document.getElementById('bancoSelect').value;
-                const nDeposito = document.getElementById('nDepositoInput').value.trim();
                 
-                if (!nDeposito) {
-                    alert('Por favor, ingrese el número de depósito.');
-                    return;
-                }
-
+                const recibo = recibos.find(r => r.id === selectedReciboId);
+                const banco = bancoSelect.value;
+                
                 if (recibo) {
                     recibo.montoActual = recibo.montoOriginal;
                     recibo.banco = banco;
                     recibo.nroDep = nDeposito;
                 }
-                
-                // Deseleccionar el radio button y el input después de asignar
-                const checkedRadio = document.querySelector('input[name="recibo-select"]:checked');
-                if (checkedRadio) {
-                    checkedRadio.checked = false;
-                }
-                nDepositoInput.value = '';
 
+                // Aquí podrías enviar los datos al servidor para guardar la asignación
+                alert(`Recibo ${recibo.recibo} asignado a la planilla ${nDeposito} del Banco ${banco.split('-')[0].trim()}`);
+                
+                // Restablecer los campos y la selección después de asignar
+                selectedReciboId = null;
+                nDepositoInput.value = '';
                 renderRecibos();
-                alert(`Recibo ${recibo.recibo} asignado al Depósito ${nDeposito} del Banco ${banco.split('-')[0].trim()}`);
             });
 
             renderRecibos();
