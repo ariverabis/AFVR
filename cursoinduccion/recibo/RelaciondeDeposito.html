@@ -318,13 +318,11 @@
                     recibo.nroDep = nDeposito;
                 }
 
-                // Aquí podrías enviar los datos al servidor para guardar la asignación
+                // Muestra un mensaje de confirmación y luego redirige
                 alert(`Recibo ${recibo.recibo} asignado a la planilla ${nDeposito} del Banco ${banco.split('-')[0].trim()}`);
                 
-                // Restablecer los campos y la selección después de asignar
-                selectedReciboId = null;
-                nDepositoInput.value = '';
-                renderRecibos();
+                // Redirige a la página de la lista de relaciones
+                window.location.href = 'ListaRelacionDeposito.html';
             });
 
             renderRecibos();
