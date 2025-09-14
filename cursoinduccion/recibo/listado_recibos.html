@@ -90,10 +90,10 @@
             font-size: 14px;
         }
 
-        /* Estilos específicos para la tabla de la imagen */
+        /* Estilos específicos para la tabla, ajustados para que los títulos quepan */
         .table-container table thead th, .table-container table tbody td {
-            border: 1px solid #ccc; /* Añade bordes a las celdas */
-            padding: 8px; /* Reduce el padding para que quepa más contenido */
+            border: 1px solid #ccc;
+            padding: 8px;
         }
         
         .table-container table {
@@ -103,33 +103,25 @@
         /* Ajuste de anchos de columna */
         .table-container table th:nth-child(1),
         .table-container table td:nth-child(1) {
-            width: 15%; /* Columna E */
+            width: 10%; /* E */
+            text-align: left;
         }
         .table-container table th:nth-child(2),
         .table-container table td:nth-child(2) {
-            width: 5%; /* Columna No. */
+            width: 25%; /* No. */
+            text-align: left;
         }
         .table-container table th:nth-child(3),
         .table-container table td:nth-child(3) {
-            width: 30%; /* Columna Fecha */
+            width: 35%; /* Fecha */
+            text-align: left;
         }
         .table-container table th:nth-child(4),
         .table-container table td:nth-child(4) {
-            width: 100%; /* Columna Monto */
+            width: 30%; /* Monto USD */
+            text-align: right;
         }
         
-        /* Centrar contenido en las celdas de las columnas E y No. */
-        .table-container table td:nth-child(1),
-        .table-container table td:nth-child(2) {
-            text-align: left;
-        }
-        
-        /* Alinear a la izquierda el Monto y la Fecha */
-        .table-container table td:nth-child(3),
-        .table-container table td:nth-child(4) {
-            text-align: left;
-        }
-
         /* Estilos para el pie de tabla */
         .table-container tfoot td {
             text-align: right;
@@ -143,7 +135,7 @@
         /* Alineación del "Total:" */
         #totalCell {
             text-align: right !important;
-            padding-right: 15px; /* Un poco de espacio para que no esté pegado al borde */
+            padding-right: 15px;
         }
     </style>
 </head>
