@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>070 - Detalle Relación de Depósito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .header-title {
+            flex-grow: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-button {
+            padding: 5px 15px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+        }
+
+        .finish-button {
+            background-color: #28a745;
+        }
+
+        .action-icon {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-section div {
+            font-size: 14px;
+        }
+
+        .info-section select,
+        .info-section input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .table-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: auto;
+            flex-grow: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #f8f8f8;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+        
+        tbody tr {
+            cursor: pointer;
+        }
+
+        tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .total-section {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #f8f8f8;
+            border-top: 1px solid #ccc;
+        }
+
+        .total-section span {
+            margin-left: 10px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
+        }
+        .modal .close-button {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+        .modal .close-button:hover,
+        .modal .close-button:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .modal-buttons button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .modal-buttons .confirm {
+            background-color: #28a745;
+            color: white;
+        }
+        .modal-buttons .cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&lt;-</span>
+            <span class="header-title">070 - Detalle Relación de Depósito</span>
+            <div class="header-actions">
+                <div id="btnFinish" class="action-button finish-button">FIN</div>
+                <span class="action-icon">?</span>
+                <span class="action-icon">&lt;-</span>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="info-section">
+                <div>Relación Nro. <span id="relacionNro">60011</span></div>
+                <div>
+                    <label for="bancoSelect">Banco:</label>
+                    <select id="bancoSelect">
+                        <option value="BNC USD-01910127452300011105">BNC USD-01910127452300011105</option>
+                        <option value="BVC Cayman Branch USD-01040107118107250973">BVC Cayman Branch USD-01040107118107250973</option>
+                        <option value="Banesco USD-01341740730001121220">Banesco USD-01341740730001121220</option>
+                        <option value="Banplus USD-01740720117204311299">Banplus USD-01740720117204311299</option>
+                        <option value="Mercantil USD-01050699905699042245">Mercantil USD-01050699905699042245</option>
+                        <option value="Provincial USD-01080942820100026386">Provincial USD-01080942820100026386</option>
+                        <option value="Venezuela EUR-01020501860000373392">Venezuela EUR-01020501860000373392</option>
+                        <option value="Venezuela USD-01020114440000868284">Venezuela USD-01020114440000868284</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="nDepositoInput">N. Depósito:</label>
+                    <input type="text" id="nDepositoInput" placeholder="07260011">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="recibosTable">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Forma Pago</th>
+                            <th>Nro.Doc</th>
+                            <th>Monto Original(Usd)</th>
+                            <th>Monto Actual(Usd)</th>
+                            <th># Recibo</th>
+                            <th>Banco</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="total-section">
+                <span>Total:</span>
+                <span id="totalRelacion">0,00</span>
+            </div>
+        </div>
+    </div>
+    
+    <div id="assignModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3>Asignar Planilla</h3>
+            <p>Recibo: <span id="reciboNro"></span></p>
+            <p>Monto: <span id="reciboMonto"></span></p>
+            <input type="text" id="planillaInput" placeholder="Número de planilla" style="width: 100%; padding: 8px; margin-top: 10px;">
+            <div class="modal-buttons">
+                <button class="cancel" onclick="closeModal()">Cancelar</button>
+                <button class="confirm" onclick="assignPlanilla()">Asignar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const recibos = [
+                { id: 1, cliente: 'ALTAMIRA FERRE-INDUSTRIAL', formaPago: 'Efectivo', nroDoc: '00060312', montoOriginal: 9.79, montoActual: null, recibo: '00060312', banco: null },
+                { id: 2, cliente: 'FERRETERIA LA CLAVE, C.A.', formaPago: 'Efectivo', nroDoc: '00060313', montoOriginal: 50.00, montoActual: null, recibo: '00060313', banco: null },
+                { id: 3, cliente: 'DISTRIBUIDORA VALENCIA', formaPago: 'Efectivo', nroDoc: '00060314', montoOriginal: 15.50, montoActual: null, recibo: '00060314', banco: null },
+                { id: 4, cliente: 'COMERCIAL EL SOL, C.A.', formaPago: 'Efectivo', nroDoc: '00060315', montoOriginal: 75.00, montoActual: null, recibo: '00060315', banco: null }
+            ];
+
+            const recibosTableBody = document.querySelector('#recibosTable tbody');
+            const totalRelacionSpan = document.getElementById('totalRelacion');
+            const assignModal = document.getElementById('assignModal');
+            const reciboNroSpan = document.getElementById('reciboNro');
+            const reciboMontoSpan = document.getElementById('reciboMonto');
+            const planillaInput = document.getElementById('planillaInput');
+            const btnFinish = document.getElementById('btnFinish');
+
+            let selectedReciboId = null;
+
+            function renderRecibos() {
+                recibosTableBody.innerHTML = '';
+                let total = 0;
+                recibos.forEach(recibo => {
+                    const row = document.createElement('tr');
+                    row.dataset.id = recibo.id;
+                    row.innerHTML = `
+                        <td>${recibo.cliente}</td>
+                        <td>${recibo.formaPago}</td>
+                        <td>${recibo.nroDoc}</td>
+                        <td>${recibo.montoOriginal.toFixed(2).replace('.', ',')}</td>
+                        <td>${recibo.montoActual ? recibo.montoActual.toFixed(2).replace('.', ',') : ''}</td>
+                        <td>${recibo.recibo}</td>
+                        <td>${recibo.banco ? recibo.banco.split('-')[0].trim() : ''}</td>
+                    `;
+                    recibosTableBody.appendChild(row);
+
+                    if (recibo.montoActual) {
+                        total += recibo.montoActual;
+                    }
+                });
+                totalRelacionSpan.textContent = total.toFixed(2).replace('.', ',');
+
+                // Mostrar el botón FIN si todos los recibos tienen un monto asignado
+                const allAssigned = recibos.every(recibo => recibo.montoActual !== null);
+                btnFinish.style.display = allAssigned ? 'block' : 'none';
+            }
+
+            recibosTableBody.addEventListener('click', (event) => {
+                const row = event.target.closest('tr');
+                if (!row) return;
+
+                selectedReciboId = parseInt(row.dataset.id);
+                const recibo = recibos.find(r => r.id === selectedReciboId);
+
+                if (recibo) {
+                    reciboNroSpan.textContent = recibo.recibo;
+                    reciboMontoSpan.textContent = recibo.montoOriginal.toFixed(2).replace('.', ',');
+                    planillaInput.value = '';
+                    assignModal.style.display = 'flex';
+                }
+            });
+
+            window.assignPlanilla = function() {
+                const planilla = planillaInput.value.trim();
+                const banco = document.getElementById('bancoSelect').value;
+                const nDeposito = document.getElementById('nDepositoInput').value.trim();
+
+                if (!planilla || !nDeposito) {
+                    alert('Por favor, ingrese el número de depósito y la referencia de la planilla.');
+                    return;
+                }
+
+                const recibo = recibos.find(r => r.id === selectedReciboId);
+                if (recibo) {
+                    recibo.montoActual = recibo.montoOriginal;
+                    recibo.banco = banco;
+                    recibo.nroDep = nDeposito;
+                }
+                
+                closeModal();
+                renderRecibos();
+            };
+
+            window.closeModal = function() {
+                assignModal.style.display = 'none';
+                selectedReciboId = null;
+            };
+
+            btnFinish.addEventListener('click', () => {
+                alert('Proceso de relación de recibos finalizado.');
+            });
+
+            renderRecibos();
+        });
+    </script>
+</body>
+</html>
