@@ -123,6 +123,11 @@
         .bottom-bar-text {
             font-size: 12px;
             color: #555;
+            flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+        }
+        .bottom-bar .buttons {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones */
         }
         .bottom-bar button {
             padding: 8px 12px;
@@ -131,6 +136,7 @@
             background-color: #eee;
             font-size: 12px;
             cursor: pointer;
+            width: 80px; /* Ancho fijo para los botones */
         }
         .modal {
             display: none;
@@ -195,13 +201,13 @@
                     <option>RECV VIUDA</option>
                     <option>RETV VIUDA</option>
                 </select>
-                <button id="dateFilterBtn" onclick="alert('Criterio de búsqueda por fecha aplicado')">C</button>
             </div>
             <div class="toolbar-group">
                 <label>Desde:</label>
                 <input type="date" id="dateFrom" class="date-input">
                 <label>Hasta:</label>
                 <input type="date" id="dateTo" class="date-input">
+                <button id="dateFilterBtn" onclick="alert('Criterio de búsqueda por fecha aplicado')">C</button>
             </div>
         </div>
 
@@ -244,7 +250,10 @@
 
         <div class="bottom-bar">
             <span class="bottom-bar-text" id="client-info"></span>
-            <button onclick="alert('Se envió a la impresora')">IMPRIMIR</button>
+            <div class="buttons">
+                <button onclick="window.location.href='MenuCobranza.html'">DEVOLVER</button>
+                <button onclick="alert('Se envió a la impresora')">IMPRIMIR</button>
+            </div>
         </div>
     </div>
 
@@ -258,6 +267,7 @@
                 <li><strong>Rango de Fechas:</strong> Seleccione la fecha de inicio y de fin. Haga clic en el botón <strong>'C'</strong> para aplicar el filtro.</li>
                 <li><strong>Selección de Factura:</strong> Haga clic sobre una fila de la tabla para ver el código y nombre del cliente.</li>
                 <li><strong>Botón Imprimir:</strong> Presione para generar un reporte.</li>
+                <li><strong>Botón Devolver:</strong> Regresa a la pantalla del menú principal de Cobranza.</li>
             </ul>
         </div>
     </div>
