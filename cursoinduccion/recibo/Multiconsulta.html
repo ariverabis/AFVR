@@ -65,6 +65,11 @@
             font-size: 14px;
             margin-right: 5px;
         }
+        /* Nuevo estilo para los campos de fecha */
+        .toolbar-group .date-input {
+            font-size: 12px; 
+            padding: 3px;
+        }
         .toolbar-group button {
             padding: 5px 10px;
             border: 1px solid #ccc;
@@ -77,7 +82,7 @@
             flex-grow: 1;
             overflow-y: auto;
             border-top: 1px solid #ddd;
-            display: none; /* Oculta la tabla por defecto */
+            display: none; 
         }
         table {
             width: 100%;
@@ -102,17 +107,6 @@
         tbody tr.selected {
             background-color: #cce0ff;
         }
-        .table-totals {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            font-weight: bold;
-            border-top: 1px solid #ddd;
-        }
-        .table-totals span {
-            font-size: 12px;
-        }
         .bottom-bar {
             display: flex;
             justify-content: space-between;
@@ -133,6 +127,46 @@
             font-size: 12px;
             cursor: pointer;
         }
+        .help-link {
+            font-size: 12px;
+            color: #007BFF;
+            text-decoration: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        /* Estilos para el modal de ayuda */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            border-radius: 10px;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -141,7 +175,8 @@
         <div class="header">
             <span class="logo">f</span>
             <span>065 - Multi Consulta</span>
-            <span class="back-arrow">&lt;-</span>
+            <span class="back-arrow" onclick="history.back()">&lt;-</span>
+            <a href="#" class="help-link" id="help-link">Ayuda</a>
         </div>
 
         <div class="toolbar">
@@ -168,9 +203,9 @@
             </div>
             <div class="toolbar-group">
                 <label>Desde:</label>
-                <input type="date" id="dateFrom">
+                <input type="date" id="dateFrom" class="date-input">
                 <label>Hasta:</label>
-                <input type="date" id="dateTo">
+                <input type="date" id="dateTo" class="date-input">
                 <button id="dateFilterBtn">C</button>
             </div>
         </div>
@@ -218,6 +253,20 @@
         </div>
     </div>
 
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Ayuda - Consulta de Documentos</h2>
+            <p><strong>Funcionalidad de la pantalla:</strong></p>
+            <ul>
+                <li><strong>Tipo Doc:</strong> Utilice este menú desplegable para seleccionar el tipo de documento que desea consultar (por ejemplo, "FACTURAS", "NC_DEVOLUCION", etc.). Solo las "FACTURAS" se mostrarán en la tabla. Si se selecciona otro tipo, la tabla se ocultará.</li>
+                <li><strong>Rango de Fechas:</strong> Seleccione la fecha de inicio en el campo "Desde" y la fecha de fin en el campo "Hasta". Haga clic en el botón **'C'** (Consultar) que está al lado para aplicar el filtro de fechas. Esto mostrará solo los documentos emitidos dentro de ese período.</li>
+                <li><strong>Selección de Factura:</strong> Haga clic sobre una fila de la tabla para seleccionarla. El código y nombre del cliente asociado a esa factura se mostrarán en la barra inferior.</li>
+                <li><strong>Botón Imprimir:</strong> Presione este botón para generar un reporte de la consulta.</li>
+            </ul>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const docTypeSelect = document.getElementById('docType');
@@ -229,16 +278,20 @@
             const clientInfoSpan = document.getElementById('client-info');
             const allRows = invoiceList.querySelectorAll('tr');
 
-            // Función para mostrar solo las filas de factura
+            const helpLink = document.getElementById('help-link');
+            const modal = document.getElementById('helpModal');
+            const closeModalBtn = document.getElementsByClassName('close-btn')[0];
+
+            // Función para mostrar la tabla de facturas
             const showInvoices = () => {
                 tableContainer.style.display = 'block';
                 allRows.forEach(row => {
                     row.style.display = '';
                 });
-                clientInfoSpan.textContent = ''; // Limpiar la barra inferior
+                clientInfoSpan.textContent = '';
             };
 
-            // Función para ocultar todas las filas
+            // Función para ocultar todo el contenido
             const hideAllContent = () => {
                 tableContainer.style.display = 'none';
                 clientInfoSpan.textContent = '';
@@ -274,22 +327,32 @@
 
                 allRows.forEach(row => {
                     const rowDate = new Date(row.getAttribute('data-date'));
-                    // Verifica que las fechas sean válidas antes de comparar
                     if (dateFromInput.value && dateToInput.value && !isNaN(dateFrom) && !isNaN(dateTo)) {
-                        // Compara la fecha de la fila con el rango
                         if (rowDate >= dateFrom && rowDate <= dateTo) {
-                            row.style.display = ''; // Muestra la fila
+                            row.style.display = '';
                         } else {
-                            row.style.display = 'none'; // Oculta la fila
+                            row.style.display = 'none';
                         }
                     } else {
-                        // Si las fechas están vacías, muestra todas las filas
                         row.style.display = '';
                     }
                 });
             });
 
-            // Llamada inicial para ocultar la tabla, ya que el valor por defecto ya es "FACTURAS"
+            // Lógica para el modal de ayuda
+            helpLink.onclick = function() {
+                modal.style.display = "block";
+            }
+            closeModalBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Llamada inicial para mostrar la tabla de facturas
             showInvoices();
         });
     </script>
