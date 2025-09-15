@@ -20,31 +20,30 @@
         .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
         .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow: auto; }
         table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        thead { display: none; } /* Oculta toda la cabecera de la tabla */
+        thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
         tfoot { background-color: #f8f8f8; font-weight: bold; position: sticky; bottom: 0; }
-        th, td { padding: 4px; border-bottom: 1px solid #eee; white-space: nowrap; }
+        th, td { padding: 4px; border-bottom: 1px solid #eee; white-space: nowrap; border: 1px solid #ccc; }
         tbody tr:nth-child(even) { background-color: #f9f9f9; }
 
-        /* Estilos de la tabla optimizados para mejor visualización */
-        .table-container table thead th, .table-container table tbody td {
-            border: 1px solid #ccc;
-        }
-        
         /* Ajuste de anchos de columna para que todo quepa en una línea */
+        .table-container table th:nth-child(1),
         .table-container table td:nth-child(1) {
-            width: 5%;
+            width: 5%; /* E */
             text-align: center;
         }
+        .table-container table th:nth-child(2),
         .table-container table td:nth-child(2) {
-            width: 35%;
+            width: 35%; /* N */
             text-align: left;
         }
+        .table-container table th:nth-child(3),
         .table-container table td:nth-child(3) {
-            width: 25%;
+            width: 25%; /* F */
             text-align: left;
         }
+        .table-container table th:nth-child(4),
         .table-container table td:nth-child(4) {
-            width: 35%;
+            width: 35%; /* M */
             text-align: right;
         }
         
@@ -150,9 +149,9 @@
                     <thead>
                         <tr>
                             <th class="tooltip">E<span class="tooltiptext">Indica el estado del recibo.</span></th>
-                            <th class="tooltip">No.<span class="tooltiptext">Número de recibo.</span></th>
-                            <th class="tooltip">F. Emi<span class="tooltiptext">Fecha de emisión del recibo.</span></th>
-                            <th class="tooltip">Monto (USD)<span class="tooltiptext">Monto total del recibo.</span></th>
+                            <th class="tooltip">N<span class="tooltiptext">Número de recibo.</span></th>
+                            <th class="tooltip">F<span class="tooltiptext">Fecha de emisión del recibo.</span></th>
+                            <th class="tooltip">M<span class="tooltiptext">Monto total del recibo.</span></th>
                         </tr>
                     </thead>
                     <tbody id="receiptsTableBody">
