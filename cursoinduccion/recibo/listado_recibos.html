@@ -58,6 +58,33 @@
             text-align: right !important;
         }
 
+        /* Estilos para la tabla de cabeceras verticales */
+        .vertical-header {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+        .vertical-header .header-col {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f8f8;
+            border-right: 1px solid #ccc;
+            padding: 5px;
+            font-weight: bold;
+        }
+        .vertical-header .header-col:last-child {
+            border-right: none;
+        }
+        
+        /* Ocultar los thead y thead del HTML original para el diseño de la imagen */
+        thead, thead th {
+            display: none;
+        }
+
         .footer-buttons { display: flex; justify-content: space-around; padding: 10px 15px; background-color: white; border-top: 1px solid #ccc; gap: 10px; }
         .footer-buttons button { flex-grow: 1; padding: 12px 10px; font-size: 14px; font-weight: bold; color: #444; background-color: #e0e0e0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .footer-buttons button:hover { background-color: #d0d0d0; }
@@ -130,9 +157,9 @@
 
     <div class="screen-container">
         <div class="header">
-            <span class="back-arrow tooltip" onclick="history.back()">&lt;-<span class="tooltiptext">Volver a la pantalla anterior.</span></span>
+            <span class="back-arrow tooltip" onclick="history.back()">&lt;<span class="tooltiptext">Volver a la pantalla anterior.</span></span>
             <span class="tooltip">060 - Recibos de Cobro<span class="tooltiptext">Listado de recibos de cobro del cliente.</span></span>
-            <span class="menu-icon tooltip" onclick="toggleHelpModal()">&#x22EE;<span class="tooltiptext">Opciones de menú.</span></span>
+            <span class="menu-icon tooltip" onclick="toggleHelpModal()">&#8942;<span class="tooltiptext">Opciones de menú.</span></span>
         </div>
 
         <div class="message-bar tooltip">Genera recibos de cobro. Presione 'Nuevo' para agregar uno.<span class="tooltiptext">Mensaje general de la pantalla.</span></div>
@@ -144,6 +171,12 @@
         </div>
 
         <div class="main-content">
+            <div class="vertical-header">
+                <div class="header-col tooltip">E<span class="tooltiptext">Indica el estado del recibo.</span></div>
+                <div class="header-col tooltip">N<span class="tooltiptext">Número de recibo.</span></div>
+                <div class="header-col tooltip">F<span class="tooltiptext">Fecha de emisión del recibo.</span></div>
+                <div class="header-col tooltip">M<span class="tooltiptext">Monto total del recibo.</span></div>
+            </div>
             <div class="table-container">
                 <table>
                     <thead>
