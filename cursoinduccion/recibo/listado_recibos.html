@@ -22,8 +22,54 @@
         table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
         thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
         tfoot { background-color: #f8f8f8; font-weight: bold; position: sticky; bottom: 0; }
-        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        th, td { padding: 5px; border-bottom: 1px solid #eee; }
         tbody tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* Estilos de la tabla optimizados para mejor visualización */
+        .table-container table thead th, .table-container table tbody td {
+            border: 1px solid #ccc;
+        }
+        
+        /* Ajuste de anchos de columna para que todo quepa en una línea */
+        .table-container table th:nth-child(1),
+        .table-container table td:nth-child(1) {
+            width: 10%; /* E */
+        }
+        .table-container table th:nth-child(2),
+        .table-container table td:nth-child(2) {
+            width: 30%; /* No. */
+        }
+        .table-container table th:nth-child(3),
+        .table-container table td:nth-child(3) {
+            width: 35%; /* Fecha */
+        }
+        .table-container table th:nth-child(4),
+        .table-container table td:nth-child(4) {
+            width: 25%; /* Monto */
+        }
+        
+        /* Alineación del texto en las celdas */
+        .table-container table td:nth-child(1) {
+            text-align: center;
+        }
+        .table-container table td:nth-child(2),
+        .table-container table td:nth-child(3) {
+            text-align: left;
+        }
+        .table-container table td:nth-child(4) {
+            text-align: right;
+        }
+        
+        /* Estilos para el pie de tabla */
+        .table-container tfoot td {
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        /* Alineación del "Total:" */
+        #totalCell {
+            text-align: right !important;
+        }
 
         .footer-buttons { display: flex; justify-content: space-around; padding: 10px 15px; background-color: white; border-top: 1px solid #ccc; gap: 10px; }
         .footer-buttons button { flex-grow: 1; padding: 12px 10px; font-size: 14px; font-weight: bold; color: #444; background-color: #e0e0e0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -89,51 +135,6 @@
             margin: 5px 0 0;
             font-size: 14px;
         }
-
-        /* Estilos de la tabla optimizados para mejor visualización */
-        .table-container table thead th, .table-container table tbody td {
-            border: 1px solid #ccc;
-            padding: 5px; /* Reducido para más espacio */
-        }
-        
-        /* Ajuste de anchos de columna para que todo quepa en una línea */
-        .table-container table th:nth-child(1),
-        .table-container table td:nth-child(1) {
-            width: 10%; /* E */
-        }
-        .table-container table th:nth-child(2),
-        .table-container table td:nth-child(2) {
-            width: 25%; /* No. */
-        }
-        .table-container table th:nth-child(3),
-        .table-container table td:nth-child(3) {
-            width: 35%; /* Fecha */
-        }
-        .table-container table th:nth-child(4),
-        .table-container table td:nth-child(4) {
-            width: 30%; /* Monto (USD) */
-        }
-        
-        /* Alineación del texto en las celdas */
-        .table-container table td:nth-child(1),
-        .table-container table td:nth-child(2),
-        .table-container table td:nth-child(3) {
-            text-align: left;
-        }
-        .table-container table td:nth-child(4) {
-            text-align: right;
-        }
-        
-        /* Estilos para el pie de tabla */
-        .table-container tfoot td {
-            text-align: right;
-            font-weight: bold;
-        }
-        
-        /* Alineación del "Total:" */
-        #totalCell {
-            text-align: right !important;
-        }
     </style>
 </head>
 <body>
@@ -163,7 +164,7 @@
                             <th class="tooltip">E<span class="tooltiptext">Indica el estado del recibo.</span></th>
                             <th class="tooltip">No.<span class="tooltiptext">Número de recibo.</span></th>
                             <th class="tooltip">Fecha<span class="tooltiptext">Fecha de emisión del recibo.</span></th>
-                            <th class="tooltip">Monto (USD)<span class="tooltiptext">Monto total del recibo en dólares.</span></th>
+                            <th class="tooltip">Monto<span class="tooltiptext">Monto total del recibo.</span></th>
                         </tr>
                     </thead>
                     <tbody id="receiptsTableBody">
