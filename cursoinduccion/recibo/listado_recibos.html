@@ -90,35 +90,37 @@
             font-size: 14px;
         }
 
-        /* Estilos específicos para la tabla, ajustados para que los títulos quepan */
+        /* Estilos de la tabla optimizados para mejor visualización */
         .table-container table thead th, .table-container table tbody td {
             border: 1px solid #ccc;
-            padding: 8px;
+            padding: 5px; /* Reducido para más espacio */
         }
         
-        .table-container table {
-            border-collapse: collapse;
-        }
-        
-        /* Ajuste de anchos de columna */
+        /* Ajuste de anchos de columna para que todo quepa en una línea */
         .table-container table th:nth-child(1),
         .table-container table td:nth-child(1) {
             width: 10%; /* E */
-            text-align: left;
         }
         .table-container table th:nth-child(2),
         .table-container table td:nth-child(2) {
             width: 25%; /* No. */
-            text-align: left;
         }
         .table-container table th:nth-child(3),
         .table-container table td:nth-child(3) {
             width: 35%; /* Fecha */
-            text-align: left;
         }
         .table-container table th:nth-child(4),
         .table-container table td:nth-child(4) {
-            width: 30%; /* Monto USD */
+            width: 30%; /* Monto (USD) */
+        }
+        
+        /* Alineación del texto en las celdas */
+        .table-container table td:nth-child(1),
+        .table-container table td:nth-child(2),
+        .table-container table td:nth-child(3) {
+            text-align: left;
+        }
+        .table-container table td:nth-child(4) {
             text-align: right;
         }
         
@@ -127,15 +129,10 @@
             text-align: right;
             font-weight: bold;
         }
-        .table-container tfoot td:first-child {
-            text-align: right;
-            border-right: none;
-        }
-
+        
         /* Alineación del "Total:" */
         #totalCell {
             text-align: right !important;
-            padding-right: 15px;
         }
     </style>
 </head>
