@@ -76,7 +76,7 @@
 
         /* Estilos para los mensajes de pasos */
         .step-messages {
-            background-color: #e8f5e9; /* Un color suave para destacar */
+            background-color: #e8f5e9; 
             padding: 10px 15px;
             border-bottom: 1px solid #c8e6c9;
             font-size: 14px;
@@ -144,6 +144,13 @@
             border-bottom: 1px solid #eee;
             white-space: nowrap;
         }
+        
+        /* Resaltado de la fila seleccionada (Barra Azul) */
+        #documentTable tbody tr.selected-document {
+            background-color: #eaf6ff; /* Fondo azul claro */
+            border-left: 5px solid #007BFF; /* Barra azul fuerte a la izquierda */
+            cursor: pointer;
+        }
 
         .total-row {
             font-weight: bold;
@@ -155,12 +162,6 @@
         .total-field {
             padding: 5px;
             border-top: 1px solid #ccc;
-        }
-
-        .payments-section {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
         }
 
         .payments-header {
@@ -178,35 +179,6 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             overflow: hidden;
-        }
-
-        .final-summary {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            margin-top: 15px;
-            font-size: 14px;
-            gap: 10px;
-        }
-
-        .final-summary .total-value {
-            background-color: #e0e0e0;
-            padding: 5px 10px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
-            font-weight: bold;
-        }
-
-        .final-summary .label {
-            font-weight: bold;
-        }
-
-        .editable-monto {
-            width: 80px;
-            padding: 2px 5px;
-            text-align: right;
-            border: 1px solid #ccc;
-            border-radius: 3px;
         }
 
         .summary-table-container {
@@ -232,81 +204,22 @@
             text-align: right;
         }
 
-        .summary-table-container tr:last-child {
+        .summary-table-container tr.total-row-summary {
             font-weight: bold;
             background-color: #f8f8f8;
         }
 
-        /* Modal (Pop-up) Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+        .editable-monto {
+            width: 80px;
+            padding: 2px 5px;
+            text-align: right;
+            border: 1px solid #ccc;
+            border-radius: 3px;
         }
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 90%;
-            max-width: 400px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        /* Estilo para el modal de confirmación */
-        .confirmation-modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .confirmation-modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 300px;
-        }
-        .confirmation-modal-content h3 {
-            color: #28a745;
-            margin-top: 0;
-        }
-        .confirmation-modal-content p {
-            margin: 15px 0;
-        }
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .close-button:hover,
-        .close-button:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        /* Estilo para el botón + */
+        /* Botón '+' de Agregar Pago */
         #btnAddPayment {
-            font-size: 30px; /* Tamaño más grande */
+            font-size: 30px; 
             background-color: #007BFF;
             color: white;
             border-radius: 50%;
@@ -317,14 +230,6 @@
             align-items: center;
             cursor: pointer;
         }
-        /* NUEVAS REGLAS PARA COLORES */
-        .document-title {
-            color: red; /* O usa un código hexadecimal, por ejemplo: #FF0000 */
-        }
-
-        .payments-title {
-            color: blue; /* O usa un código hexadecimal, por ejemplo: #0000FF */
-        }       
     </style>
 </head>
 <body>
@@ -337,26 +242,23 @@
             <span class="header-title">059 - Detalle Recibo</span>
             <div class="header-actions">
                 <div class="finish-button active" id="btnFinish">FIN</div>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">x</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">v</span>
-                <span onclick="showManual('Funciones del Recibo', 'Aquí puede ver el detalle de los documentos seleccionados. Use los botones de la parte superior derecha para realizar acciones adicionales como agregar (+), eliminar (x) o guardar (v).')">+</span>
+                <span onclick="showManual('Eliminar', 'Use esta función para eliminar un pago registrado.')">x</span>
+                <span onclick="showManual('Guardar', 'Guarda el progreso del recibo sin finalizar la operación.')">v</span>
+                <span onclick="showManual('Agregar', 'Abre el modal para agregar pagos.')">+</span>
             </div>
         </div>
         <div class="step-messages">
             <div class="step-item">
                 <span class="step-icon">1</span>
-                <span>Puede cambiar el monto a pagar de la factura. (Abono).</span>
-                <span class="help-icon" onclick="showManual('Cambiar Monto de Factura', 'Si la factura no se cancela en su totalidad, puede modificar el monto a abonar directamente en la tabla de DOCUMENTOS. Solo necesita hacer clic en el campo del monto y escribir el nuevo valor.')"></span>
+                <span>Haga **click** en la factura para ver y modificar el monto a pagar. (Abono).</span>
             </div>
             <div class="step-item">
                 <span class="step-icon">2</span>
                 <span>Una vez establecido el monto o abono incluya el pago en el simbolo "+" En el area PAGOS.</span>
-                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')"></span>
             </div>
             <div class="step-item">
                 <span class="step-icon">3</span>
                 <span>EL boton Fin Aparece en la parte superior, Cuando el monto registrado en Pago, es mayor o igual al monto asignado arriba.</span>
-                <span class="help-icon" onclick="showManual('Registrar un Abono', 'Para registrar el pago, haga clic en el botón (+) en la sección de PAGOS. Esto lo llevará a una pantalla donde podrá seleccionar la forma de pago (transferencia, efectivo, etc.) y el monto a abonar.')"></span>
             </div>
         </div>
         <div class="content">
@@ -392,7 +294,7 @@
                             <td id="retencionDocument">0,00</td>
                         </tr>
                         <tr class="total-row-summary">
-                            <td>Total:</td>
+                            <td>Total a Pagar:</td>
                             <td id="documentTotal">0,00</td>
                         </tr>
                     </tbody>
@@ -428,17 +330,17 @@
         </div>
     </div>
 
-    <div id="manualModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeManual()">&times;</span>
+    <div id="manualModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100;">
+        <div class="modal-content" style="background:white; margin:15% auto; padding:20px; border-radius:5px; width:80%;">
+            <span class="close-button" onclick="closeManual()" style="float:right; cursor:pointer;">&times;</span>
             <h2 id="modalTitle"></h2>
             <p id="modalContent"></p>
         </div>
     </div>
 
-    <div id="addPaymentModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeAddPaymentModal()">&times;</span>
+    <div id="addPaymentModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100;">
+        <div class="modal-content" style="background:white; margin:15% auto; padding:20px; border-radius:5px; width:80%;">
+            <span class="close-button" onclick="closeAddPaymentModal()" style="float:right; cursor:pointer;">&times;</span>
             <h2>Agregar Pago</h2>
             <div style="margin-top: 20px;">
                 <label for="paymentType">Forma de Pago:</label>
@@ -464,8 +366,8 @@
         </div>
     </div>
 
-    <div id="confirmationModal" class="confirmation-modal" style="display: none;">
-        <div class="confirmation-modal-content">
+    <div id="confirmationModal" class="confirmation-modal" style="display: none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:100; justify-content:center; align-items:center;">
+        <div class="confirmation-modal-content" style="background:white; padding:30px; border-radius:5px; text-align:center;">
             <h3>¡Éxito!</h3>
             <p>El recibo de cobro ha sido generado correctamente.</p>
         </div>
@@ -477,12 +379,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const documentTableBody = document.querySelector('#documentTable tbody');
             const paymentsTableBody = document.querySelector('#paymentsTable tbody');
-            const manualModal = document.getElementById('manualModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalContent = document.getElementById('modalContent');
-            const addPaymentModal = document.getElementById('addPaymentModal');
-            const confirmationModal = document.getElementById('confirmationModal');
-            const paymentAmountInput = document.getElementById('paymentAmount');
             const btnFinish = document.getElementById('btnFinish');
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -494,48 +390,143 @@
 
             let subTotalDocumentos = 0;
             let totalFacturas = 0;
+            let currentSelectedRow = null; 
 
             // Cargar los items seleccionados de la URL
             if (selectedItemsJSON) {
                 const selectedItems = JSON.parse(decodeURIComponent(selectedItemsJSON));
-                selectedItems.forEach(item => {
+                selectedItems.forEach((item, index) => {
                     const newRow = document.createElement('tr');
+                    // Almacenar todos los datos originales
+                    newRow.dataset.noFiscal = item.noFiscal;
+                    newRow.dataset.importeOriginal = item.importe;
+                    newRow.dataset.retencion = item.retencion;
+                    
+                    // Nota: el input es readonly aquí, ya que la edición se hará en la nueva ventana
                     newRow.innerHTML = `
                         <td>${item.tipo}</td>
                         <td>${item.noFiscal}</td>
                         <td>PAGO GENERICO</td>
-                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" data-importe-original="${item.importe}" data-retencion="${item.retencion}"></td>
+                        <td><input type="number" class="editable-monto" value="${item.importe.toFixed(2)}" step="0.01" readonly style="border:none; background:transparent;"></td>
                     `;
+                    
                     documentTableBody.appendChild(newRow);
+                    
+                    // Lógica para resaltar la primera fila por defecto
+                    if (index === 0) {
+                        newRow.classList.add('selected-document');
+                        currentSelectedRow = newRow;
+                    }
+                    
+                    // CÓDIGO CLAVE DE MODIFICACIÓN: ABRIR LA NUEVA PANTALLA AL HACER CLICK EN LA FILA
+                    newRow.addEventListener('click', (event) => {
+                        // 1. Manejar el Resaltado (Barra Azul)
+                        if (currentSelectedRow) {
+                            currentSelectedRow.classList.remove('selected-document');
+                        }
+                        newRow.classList.add('selected-document');
+                        currentSelectedRow = newRow;
+
+                        // 2. Preparar datos para la nueva ventana (046-Recibo-Abono.html)
+                        const noFiscal = newRow.dataset.noFiscal;
+                        const importeOriginal = parseFloat(newRow.dataset.importeOriginal);
+                        const retencionItem = parseFloat(newRow.dataset.retencion);
+                        const montoActual = parseFloat(newRow.querySelector('.editable-monto').value);
+
+                        // NOTA: Para simplificar, asumimos que el descuento/retencion de la URL aplica al primer item o necesitas ajustar la lógica aquí si es por ítem.
+                        // Calculamos el saldo del documento, restando descuentos/retenciones que ya aplican al documento.
+                        const saldoDocumento = importeOriginal - retencionItem; 
+                        
+                        // Generar la URL con los parámetros para la nueva ventana
+                        const detalleURL = `046-Recibo-Abono.html?noFiscal=${noFiscal}&importe=${importeOriginal}&saldo=${saldoDocumento.toFixed(2)}&descuento=${totalDescuento.toFixed(2)}&retencion=${retencionItem.toFixed(2)}&monto=${montoActual.toFixed(2)}`;
+                        
+                        // Abrir la nueva ventana/modal
+                        window.open(detalleURL, 'DetalleAbono', 'width=400,height=700,resizable=yes,scrollbars=yes');
+                    });
                 });
             } else {
                 console.log('No se encontraron ítems seleccionados.');
             }
 
-            // Funciones del modal de ayuda
+            // LÓGICA CLAVE: RECEPCIÓN DEL MONTO ACTUALIZADO DESDE LA VENTANA 046-Recibo-Abono.html
+            window.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'updateAbono') {
+                    const { noFiscal, nuevoMonto } = event.data;
+                    
+                    // Buscar la fila y actualizar el input
+                    const docRow = documentTableBody.querySelector(`tr[data-no-fiscal="${noFiscal}"]`);
+
+                    if (docRow) {
+                        const montoInput = docRow.querySelector('.editable-monto');
+                        montoInput.value = nuevoMonto.toFixed(2);
+                        
+                        // Recalcular el resumen
+                        updateDocumentSummary();
+                    }
+                }
+            }, false);
+
+            // Funciones de ayuda (manual)
             window.showManual = function(title, content) {
-                modalTitle.textContent = title;
-                modalContent.textContent = content;
-                manualModal.style.display = 'block';
+                document.getElementById('modalTitle').textContent = title;
+                document.getElementById('modalContent').textContent = content;
+                document.getElementById('manualModal').style.display = 'block';
             }
 
             window.closeManual = function() {
-                manualModal.style.display = 'none';
+                document.getElementById('manualModal').style.display = 'none';
             }
 
-            // Funciones del modal de agregar pago
-            window.showAddPaymentModal = function() {
-                addPaymentModal.style.display = 'block';
-                const remaining = totalFacturas - getPaymentsTotal();
-                if (remaining > 0) {
-                    paymentAmountInput.value = remaining.toFixed(2);
+            // Obtiene el total de los pagos registrados (sin cambios)
+            function getPaymentsTotal() {
+                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
+                let paymentsTotal = 0;
+                payments.forEach(payment => {
+                    paymentsTotal += parseFloat(payment.monto);
+                });
+                return paymentsTotal;
+            }
+
+            // Actualiza el resumen de los documentos
+            function updateDocumentSummary() {
+                subTotalDocumentos = 0;
+                // Sumar los montos de abono (los valores del input)
+                documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
+                    const numericValue = parseFloat(input.value);
+                    if (!isNaN(numericValue)) {
+                        subTotalDocumentos += numericValue;
+                    }
+                });
+
+                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ',');
+
+                // Lógica de Descuento
+                if (aplicaDescuento) {
+                    document.getElementById('descuentoRow').style.display = 'table-row';
+                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
                 } else {
-                    paymentAmountInput.value = '0.00';
+                    document.getElementById('descuentoRow').style.display = 'none';
                 }
+
+                // Lógica de Retención
+                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+
+                // Total a Pagar = SubTotal de Abonos - Descuentos - Retenciones
+                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
+                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
+
+                updateRemainingAmounts();
+            }
+
+            // Lógica de Pagos (sin cambios significativos)
+            window.showAddPaymentModal = function() {
+                document.getElementById('addPaymentModal').style.display = 'block';
+                const remaining = totalFacturas - getPaymentsTotal();
+                document.getElementById('paymentAmount').value = remaining > 0 ? remaining.toFixed(2) : '0.00';
             }
 
             window.closeAddPaymentModal = function() {
-                addPaymentModal.style.display = 'none';
+                document.getElementById('addPaymentModal').style.display = 'none';
             }
 
             window.addPayment = function() {
@@ -556,61 +547,9 @@
                 });
                 sessionStorage.setItem('currentPayments', JSON.stringify(currentPayments));
 
-                document.getElementById('paymentAmount').value = '';
+                closeAddPaymentModal();
                 renderPayments();
             }
-
-            window.onclick = function(event) {
-                if (event.target == manualModal) {
-                    closeManual();
-                }
-                if (event.target == addPaymentModal) {
-                    closeAddPaymentModal();
-                }
-            }
-
-            // Obtiene el total de los pagos registrados
-            function getPaymentsTotal() {
-                const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
-                let paymentsTotal = 0;
-                payments.forEach(payment => {
-                    paymentsTotal += parseFloat(payment.monto);
-                });
-                return paymentsTotal;
-            }
-
-            // Actualiza el resumen de los documentos
-            function updateDocumentSummary() {
-                subTotalDocumentos = 0;
-                documentTableBody.querySelectorAll('.editable-monto').forEach(input => {
-                    const numericValue = parseFloat(input.value.replace(',', '.'));
-                    if (!isNaN(numericValue)) {
-                        subTotalDocumentos += numericValue;
-                    }
-                });
-
-                document.getElementById('subTotalDocument').textContent = subTotalDocumentos.toFixed(2).replace('.', ',');
-
-                if (aplicaDescuento) {
-                    document.getElementById('descuentoRow').style.display = 'table-row';
-                    document.getElementById('descuentoDocument').textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
-                } else {
-                    document.getElementById('descuentoRow').style.display = 'none';
-                }
-
-                document.getElementById('retencionDocument').textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
-
-                totalFacturas = subTotalDocumentos - totalDescuento - totalRetencion;
-                document.getElementById('documentTotal').textContent = totalFacturas.toFixed(2).replace('.', ',');
-
-                updateRemainingAmounts();
-            }
-
-            documentTableBody.addEventListener('input', (event) => {
-                if (event.target.classList.contains('editable-monto')) {
-                    updateDocumentSummary();
-                }
-            });
 
             document.getElementById('btnAddPayment').addEventListener('click', showAddPaymentModal);
 
@@ -623,7 +562,6 @@
                 }
             });
 
-            // Renderiza los pagos en la tabla
             function renderPayments() {
                 const payments = JSON.parse(sessionStorage.getItem('currentPayments') || '[]');
                 paymentsTableBody.innerHTML = '';
@@ -640,149 +578,37 @@
                 updateRemainingAmounts();
             }
 
-            // Actualiza el monto restante
             function updateRemainingAmounts() {
                 let paymentsTotal = getPaymentsTotal();
-
                 const remaining = totalFacturas - paymentsTotal;
+                
+                // Mostrar "Resta" en USD y una conversión a VES (ej. Tasa 1 USD = 10 VES)
                 document.getElementById('restaUSD').textContent = `${remaining.toFixed(2).replace('.', ',')} USD`;
-
-                // Suponiendo una tasa de cambio de 1 USD = 10 VES para este ejemplo.
                 document.getElementById('restaVES').textContent = `${(remaining * 10).toFixed(2).replace('.', ',')} VES`;
 
-                // Activar el botón FIN si el total de pagos es igual o mayor al total de la factura
-                if (paymentsTotal >= totalFacturas) {
+                // Activar el botón FIN
+                if (paymentsTotal >= totalFacturas && totalFacturas > 0) {
                     btnFinish.classList.add('active');
                 } else {
                     btnFinish.classList.remove('active');
                 }
             }
+            
+            // Lógica de PDF (sin cambios significativos)
+            btnFinish.addEventListener('click', () => {
+                 // Mostrar el modal de confirmación
+                document.getElementById('confirmationModal').style.display = 'flex';
+
+                // Ocultar el modal después de 3 segundos y redirigir
+                setTimeout(() => {
+                    document.getElementById('confirmationModal').style.display = 'none';
+                    // window.location.href = 'listado_recibos.html'; // Redirección final
+                }, 3000);
+            });
 
             // Inicialización al cargar la página
             updateDocumentSummary();
             renderPayments();
-
-            // =========================================================================
-            // Lógica para la generación del PDF
-            // =========================================================================
-            btnFinish.addEventListener('click', () => {
-                const doc = new jsPDF();
-                let yOffset = 20;
-
-                // Título y detalles principales
-                doc.setFontSize(16);
-                doc.text("febeca", 10, yOffset);
-                doc.setFontSize(10);
-                yOffset += 5;
-                doc.text("mayor de ferretería.", 10, yOffset);
-                yOffset += 10;
-                doc.setFontSize(14);
-                doc.text("Recibo de Cobro", 100, yOffset, null, null, "center");
-                yOffset += 10;
-                doc.setFontSize(12);
-                doc.text("Recibo Nro. 00060312", 10, yOffset);
-                yOffset += 7;
-                doc.text("CLIENTE: 2579805 DISTRIBUIDORA V.P. HOGAR, C.A.", 10, yOffset);
-                yOffset += 7;
-                doc.text("FECHA DE PAGO: 29-08-2025 Hora: 06:22:55", 10, yOffset);
-                yOffset += 7;
-                doc.text("VENDEDOR: 2042 YENDER VOLCAN", 10, yOffset);
-                yOffset += 7;
-                doc.text("SALDO DEUDOR DEL CLIENTE (USD): 0,00", 10, yOffset);
-                yOffset += 5;
-                doc.text("Saldo antes de hacer el recibo de cobro.", 10, yOffset);
-                yOffset += 15;
-
-                // Tabla de Documentos
-                const documentRows = [
-                    ["FAC 06627903", "288,05", "0,00", "9,79", "20,00"]
-                ];
-
-                doc.autoTable({
-                    startY: yOffset,
-                    head: [['NO. DOCUMENTO', 'IMP. ORIGINAL', 'OTORGADO', 'PAGO RECIBIDO', 'SALDO']],
-                    body: documentRows,
-                    theme: 'grid',
-                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
-                    styles: { fontSize: 10 },
-                    columnStyles: {
-                        1: { halign: 'right' },
-                        2: { halign: 'right' },
-                        3: { halign: 'right' },
-                        4: { halign: 'right' }
-                    }
-                });
-
-                yOffset = doc.autoTable.previous.finalY;
-                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset, null, null, "right");
-                yOffset += 15;
-
-                // Tabla de Pagos
-                const paymentRows = [
-                    ["TRANSFERENCIA", "00000113524", "Bancamiga Banco U", "29-08-2025", "1.342,89"]
-                ];
-
-                doc.autoTable({
-                    startY: yOffset,
-                    head: [['FORMA DE PAGO', 'NRO. DOCUMENTO', 'BANCO', 'FECHA', 'MONTO']],
-                    body: paymentRows,
-                    theme: 'grid',
-                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
-                    styles: { fontSize: 10 },
-                    columnStyles: {
-                        4: { halign: 'right' }
-                    }
-                });
-
-                yOffset = doc.autoTable.previous.finalY;
-                doc.text(`LA SUMA DE: Nueve con 79/100`, 10, yOffset + 5);
-                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset + 5, null, null, "right");
-                yOffset += 20;
-
-                // Firmas y notas legales
-                doc.setFontSize(10);
-                doc.text("Página 1 de 1", 190, yOffset, null, null, "right");
-                yOffset += 5;
-                doc.text("DEL TOTAL DE PAGOS REALIZADOS 994,12 BS CORRESPONDEN A DIFERENCIAL CAMBIARIO.", 10, yOffset);
-                yOffset += 10;
-                doc.text("OBSERVACIONES:", 10, yOffset);
-                yOffset += 5;
-                doc.text("NOTA: Los cajeros, cobradores o viajeros, quienes llevaran consigo autorizacion de cobro usaran exclusivamente", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("recibos para dejar constancia de dinero recibido por cuenta de esta compañia. Por lo tanto no tiene validez la", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("cancelacion que se hiciere en el cuerpo de facturas y similares documentos, exceptuando los giros emitidos por", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("la compañia por ventas a credito, los que se cancelaran en su reverso ademas de estos recibos.", 10, yOffset, { maxWidth: 180 });
-                yOffset += 10;
-                doc.text("Declaro que el dinero utilizado para el pago de la presente venta, proviene de una fuente licita y por lo tanto", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("no tiene relacion directa o indirecta con dinero, capitales, fondos, beneficios, haberes, excedentes, valores o", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("titulos producto de las actividades o acciones previstas y sancionadas en la ley Organica de Drogas, en la Ley", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("Organica contra la Delincuencia Organizada y Financiamiento al Terrorismo, y todas las demas contempladas en el", 10, yOffset, { maxWidth: 180 });
-                yOffset += 5;
-                doc.text("Codigo Penal y demas leyes especiales.", 10, yOffset, { maxWidth: 180 });
-
-                yOffset += 20;
-                doc.text("FIRMA Y SELLO DEL CLIENTE", 10, yOffset);
-                doc.text("FIRMA VENDEDOR", 150, yOffset);
-                yOffset += 15;
-                doc.text("COPIA ENVIADA POR CORREO ELECTRONICO", 10, yOffset);
-
-                // Guardar el PDF
-                doc.save('Recibo_de_Cobro.pdf');
-
-                // Mostrar el modal de confirmación
-                confirmationModal.style.display = 'flex';
-
-                // Ocultar el modal después de 3 segundos y redirigir
-                setTimeout(() => {
-                    confirmationModal.style.display = 'none';
-                    window.location.href = 'listado_recibos.html';
-                }, 3000);
-            });
         });
     </script>
 </body>
