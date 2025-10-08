@@ -168,189 +168,263 @@
             </div>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const subTotalSpan = document.getElementById('subTotalValue');
-            const retencionSpan = document.getElementById('retencion-value');
-            const descuentoSpan = document.getElementById('descuento-value');
-            const descuentoItem = document.getElementById('descuentoItem');
-            const totalSpan = document.getElementById('totalValue');
-            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-            const btnIncluir = document.getElementById('btnIncluir');
-            const helpModal = document.getElementById('helpModal');
-            const closeButton = document.querySelector('.close-button');
-            const invoiceTableBody = document.getElementById('invoice-table-body');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const subTotalSpan = document.getElementById('subTotalValue');
+        const retencionSpan = document.getElementById('retencion-value');
+        const descuentoSpan = document.getElementById('descuento-value');
+        const descuentoItem = document.getElementById('descuentoItem');
+        const totalSpan = document.getElementById('totalValue');
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const btnIncluir = document.getElementById('btnIncluir');
+        const helpModal = document.getElementById('helpModal');
+        const closeButton = document.querySelector('.close-button');
+        const invoiceTableBody = document.getElementById('invoice-table-body');
+        
+        // --- INICIO DE MODIFICACIÓN CLAVE: INYECCIÓN DE DATOS Y CÁLCULO DE RETENCIÓN ---
+        const invoices = [
+            // Mantenemos la simulación del IVA para la retención (75% de IVA)
+            { tipo: 'A', noFiscal: '06880849', importe: 97.05, montoIVA: 13.38 }, 
+            { tipo: 'A', noFiscal: '06890830', importe: 64.66, montoIVA: 8.91 },
+            { tipo: 'A', noFiscal: '06895077', importe: 102.01, montoIVA: 14.07 },
+            // La factura 06919426 de la imagen 1:
+            { tipo: 'A', noFiscal: '06919426', importe: 818.88, montoIVA: 112.90 } 
+        ];
+        
+        const retencionPorIVA = 0.75; 
+        
+        const appliedRetentions = invoices.map(invoice => {
+            const montoRetenido = invoice.montoIVA * retencionPorIVA;
+            return {
+                noFiscal: invoice.noFiscal,
+                montoRetenido: parseFloat(montoRetenido.toFixed(2)) 
+            };
+        });
+        
+        localStorage.setItem('appliedRetentions', JSON.stringify(appliedRetentions));
+        // --- FIN DE MODIFICACIÓN CLAVE ---
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const formaDePago = urlParams.get('formaDePago');
+        
+        let descuentoPorcentaje = 0;
+        if (formaDePago === 'transferencia_ves') {
+            descuentoPorcentaje = 0.10; 
+        } else if (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd') {
+            descuentoPorcentaje = 0.13; 
+        }
+        
+        if (descuentoPorcentaje > 0) {
+            descuentoItem.style.display = 'flex';
+        } else {
+            descuentoItem.style.display = 'none';
+        }
+        
+        // --- NUEVA FUNCIÓN: ABRIR DETALLES DE RECIBO (simula pantalla2.jpg) ---
+        function openReceiptDetails(noFiscal) {
+            // Encuentra la factura seleccionada
+            const invoice = invoices.find(inv => inv.noFiscal === noFiscal);
+            if (!invoice) return;
+
+            // Simulación de los valores calculados que irían a la pantalla de detalle
+            const subTotalCalculado = invoice.importe;
+            const retencion = appliedRetentions.find(r => r.noFiscal === noFiscal)?.montoRetenido || 0;
+            const descuento = subTotalCalculado * descuentoPorcentaje;
+            const total = subTotalCalculado - retencion - descuento;
             
-            // --- INICIO DE MODIFICACIÓN CLAVE: INYECCIÓN DE DATOS Y CÁLCULO DE RETENCIÓN ---
-            // 1. Datos de las facturas (simulación de carga desde el servidor)
-            const invoices = [
-                // Se simula la inclusión del IVA (montoIVA). Este dato DEBE venir de su sistema real.
-                { tipo: 'A', noFiscal: '06880849', importe: 97.05, montoIVA: 13.38 }, 
-                { tipo: 'A', noFiscal: '06890830', importe: 64.66, montoIVA: 8.91 },
-                { tipo: 'A', noFiscal: '06895077', importe: 80.60, montoIVA: 11.09 },
-                { tipo: 'A', noFiscal: '06896835', importe: 102.01, montoIVA: 14.07 }
-            ];
+            // Simulación de navegación a la pantalla de detalle (pantalla2.jpg)
+            // Aquí deberías navegar a tu archivo de destino, por ejemplo:
+            // window.location.href = `pantalla2.html?noFiscal=${noFiscal}&total=${total.toFixed(2)}...`;
             
-            // 2. CÁLCULO DE LA RETENCIÓN (75% del IVA)
-            const retencionPorIVA = 0.75; // Porcentaje de Retención: 75%
+            // Usaremos un simple alert para simular la vista ya que no tenemos el HTML de pantalla2.jpg
+            alert(`
+                Abriendo Recibo de Cobro (Simulación Pantalla 2)
+                -------------------------------------------------
+                Nro. Doc: ${noFiscal}
+                Importe (USD): ${invoice.importe.toFixed(2)}
+                Retenciones (USD): ${retencion.toFixed(2)}
+                Descuento (USD): ${descuento.toFixed(2)}
+                Total (USD): ${total.toFixed(2)}
+            `);
+        }
+        // --- FIN NUEVA FUNCIÓN ---
+
+        function handleRowClick(event) {
+            const row = event.currentTarget;
+            const checkbox = row.querySelector('.invoice-checkbox');
             
-            // Calculamos la retención por cada factura y lo almacenamos en 'appliedRetentions'
-            const appliedRetentions = invoices.map(invoice => {
-                const montoRetenido = invoice.montoIVA * retencionPorIVA;
-                return {
-                    noFiscal: invoice.noFiscal,
-                    montoRetenido: parseFloat(montoRetenido.toFixed(2)) // Redondear a 2 decimales
-                };
-            });
+            // Si el clic es sobre el checkbox, deja que el listener del checkbox maneje la selección.
+            if (event.target === checkbox) return;
             
-            // Opcional: Almacenar en localStorage para que otras pantallas lo usen
-            localStorage.setItem('appliedRetentions', JSON.stringify(appliedRetentions));
-            // --- FIN DE MODIFICACIÓN CLAVE ---
+            // 1. Alterna el estado del checkbox
+            checkbox.checked = !checkbox.checked;
             
-            // Obtener el parámetro de la URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const formaDePago = urlParams.get('formaDePago');
-            
-            // Determinar el porcentaje de descuento basado en la forma de pago
-            let descuentoPorcentaje = 0;
-            if (formaDePago === 'transferencia_ves') {
-                descuentoPorcentaje = 0.10; // 10% para pagos en VES
-            } else if (formaDePago === 'deposito_usd' || formaDePago === 'deposito_en_transito_usd' || formaDePago === 'transferencia_internacional_usd') {
-                descuentoPorcentaje = 0.13; // 13% para pagos en USD
-            }
-            
-            // Mostrar u ocultar el campo de descuento solo si hay un porcentaje a aplicar
-            if (descuentoPorcentaje > 0) {
-                descuentoItem.style.display = 'flex';
+            // 2. Aplica el resaltado visual
+            if (checkbox.checked) {
+                row.classList.add('selected-row');
+                // Al hacer clic en la fila seleccionada, abrimos los detalles (pantalla2.jpg)
+                openReceiptDetails(row.dataset.noFiscal);
             } else {
-                descuentoItem.style.display = 'none';
+                row.classList.remove('selected-row');
             }
+            
+            // 3. Recalcula el resumen
+            updateSummary();
+        }
 
-            function renderInvoicesTable() {
-                invoiceTableBody.innerHTML = '';
-                invoices.forEach(invoice => {
-                    const row = document.createElement('tr');
-                    row.dataset.tipo = invoice.tipo;
-                    row.dataset.noFiscal = invoice.noFiscal;
-                    row.dataset.importe = invoice.importe;
-                    
-                    row.innerHTML = `
-                        <td class="checkbox-cell"><input type="checkbox" class="invoice-checkbox"></td>
-                        <td>${invoice.tipo}</td>
-                        <td>${invoice.noFiscal}</td>
-                        <td class="importe-value">${invoice.importe.toFixed(2).replace('.', ',')}</td>
-                    `;
-                    invoiceTableBody.appendChild(row);
-                });
-                
-                const checkboxes = document.querySelectorAll('.invoice-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', updateSummary);
-                });
-                updateSummary();
-            }
+        function handleCheckboxChange(event) {
+             const checkbox = event.currentTarget;
+             const row = checkbox.closest('tr');
+             
+             // Aplica el resaltado visual basado en el checkbox
+             if (checkbox.checked) {
+                 row.classList.add('selected-row');
+             } else {
+                 row.classList.remove('selected-row');
+             }
+             
+             // Recalcula el resumen
+             updateSummary();
+        }
 
-            function updateSummary() {
-                const checkboxes = document.querySelectorAll('.invoice-checkbox');
-                let subTotal = 0;
-                let totalRetencion = 0;
-                let totalDescuento = 0;
+        function renderInvoicesTable() {
+            invoiceTableBody.innerHTML = '';
+            invoices.forEach(invoice => {
+                const row = document.createElement('tr');
+                row.dataset.tipo = invoice.tipo;
+                row.dataset.noFiscal = invoice.noFiscal;
+                row.dataset.importe = invoice.importe;
                 
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        const row = checkbox.closest('tr');
-                        const noFiscal = row.dataset.noFiscal;
-                        const importe = parseFloat(row.dataset.importe);
-                        
-                        if (!isNaN(importe)) {
-                            subTotal += importe;
-                            
-                            // Busca y suma la retención previamente calculada (75% del IVA)
-                            const retencion = appliedRetentions.find(r => r.noFiscal === noFiscal);
-                            if (retencion) {
-                                totalRetencion += retencion.montoRetenido;
-                            }
-                        }
-                    }
-                });
+                row.innerHTML = `
+                    <td class="checkbox-cell"><input type="checkbox" class="invoice-checkbox"></td>
+                    <td>${invoice.tipo}</td>
+                    <td>${invoice.noFiscal}</td>
+                    <td class="importe-value">${invoice.importe.toFixed(2).replace('.', ',')}</td>
+                `;
                 
-                // Calcular el descuento usando el porcentaje determinado
-                totalDescuento = subTotal * descuentoPorcentaje;
+                // --- CAMBIO CLAVE: AÑADIR LISTENER A LA FILA ENTERA ---
+                row.addEventListener('click', handleRowClick);
                 
-                subTotalSpan.textContent = subTotal.toFixed(2).replace('.', ',');
-                // Se añade el signo negativo a la retención y el descuento en la vista
-                retencionSpan.textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
-                descuentoSpan.textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
-                
-                const total = subTotal - totalRetencion - totalDescuento;
-                totalSpan.textContent = total.toFixed(2).replace('.', ',');
-            }
+                // Asegurar que el checkbox también actualice el resumen y el estilo
+                const checkbox = row.querySelector('.invoice-checkbox');
+                checkbox.addEventListener('change', handleCheckboxChange);
 
-            selectAllCheckbox.addEventListener('change', () => {
-                const checkboxes = document.querySelectorAll('.invoice-checkbox');
-                checkboxes.forEach(checkbox => {
-                    checkbox.checked = selectAllCheckbox.checked;
-                });
-                updateSummary();
+                invoiceTableBody.appendChild(row);
             });
+            
+            updateSummary();
+        }
 
-            btnIncluir.addEventListener('click', function() {
-                const selectedItems = [];
-                let subTotal = 0;
-                let totalRetencion = 0;
-                let totalDescuento = 0;
-
-                document.querySelectorAll('.invoice-checkbox:checked').forEach(checkbox => {
-                    const row = checkbox.closest('tr');
+        function updateSummary() {
+            const checkboxes = document.querySelectorAll('.invoice-checkbox');
+            let subTotal = 0;
+            let totalRetencion = 0;
+            let totalDescuento = 0;
+            
+            checkboxes.forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                if (checkbox.checked) {
                     const noFiscal = row.dataset.noFiscal;
                     const importe = parseFloat(row.dataset.importe);
-                    const retencionAplicada = appliedRetentions.find(r => r.noFiscal === noFiscal); 
-
-                    subTotal += importe;
-                    const retencionMonto = retencionAplicada ? retencionAplicada.montoRetenido : 0;
-                    totalRetencion += retencionMonto;
-
-                    selectedItems.push({
-                        tipo: row.dataset.tipo,
-                        noFiscal: noFiscal,
-                        importe: importe,
-                        retencion: retencionMonto 
-                    });
-                });
-                
-                if (selectedItems.length > 0) {
-                    // Recalcular el descuento aquí para mayor seguridad antes de enviar
-                    totalDescuento = subTotal * descuentoPorcentaje;
                     
-                    const selectedItemsJSON = JSON.stringify(selectedItems);
-                    const encodedItems = encodeURIComponent(selectedItemsJSON);
-                    
-                    const urlParams = new URLSearchParams();
-                    urlParams.set('selectedItems', encodedItems);
-                    urlParams.set('formaDePago', formaDePago);
-                    urlParams.set('totalDescuento', totalDescuento.toFixed(2));
-                    urlParams.set('totalRetencion', totalRetencion.toFixed(2));
-                    
-                    // Se envía el valor totalRetencion (suma del 75% del IVA) a la siguiente pantalla
-                    window.location.href = `deposito_usd.html?${urlParams.toString()}`;
-
+                    if (!isNaN(importe)) {
+                        subTotal += importe;
+                        
+                        const retencion = appliedRetentions.find(r => r.noFiscal === noFiscal);
+                        if (retencion) {
+                            totalRetencion += retencion.montoRetenido;
+                        }
+                    }
                 } else {
-                    alert("Por favor, seleccione al menos una factura para incluir.");
+                    // Asegurar que las filas no seleccionadas no tengan el estilo azul
+                    row.classList.remove('selected-row');
                 }
             });
-
-            window.toggleHelpModal = function() {
-                helpModal.style.display = 'block';
-            }
-            closeButton.onclick = () => helpModal.style.display = 'none';
-            window.onclick = (event) => {
-                if (event.target == helpModal) {
-                    helpModal.style.display = 'none';
-                }
-            }
             
-            renderInvoicesTable();
+            // Calcular el descuento usando el porcentaje determinado
+            totalDescuento = subTotal * descuentoPorcentaje;
+            
+            subTotalSpan.textContent = subTotal.toFixed(2).replace('.', ',');
+            retencionSpan.textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
+            descuentoSpan.textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
+            
+            const total = subTotal - totalRetencion - totalDescuento;
+            totalSpan.textContent = total.toFixed(2).replace('.', ',');
+            
+            // Actualizar el estado de "Seleccionar todo"
+            selectAllCheckbox.checked = Array.from(checkboxes).every(cb => cb.checked);
+        }
+
+        selectAllCheckbox.addEventListener('change', () => {
+            const checkboxes = document.querySelectorAll('.invoice-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+                const row = checkbox.closest('tr');
+                if (checkbox.checked) {
+                    row.classList.add('selected-row');
+                } else {
+                    row.classList.remove('selected-row');
+                }
+            });
+            updateSummary();
         });
-    </script>
+
+        btnIncluir.addEventListener('click', function() {
+            // ... (La lógica de navegación a deposito_usd.html permanece igual)
+            const selectedItems = [];
+            let subTotal = 0;
+            let totalRetencion = 0;
+            let totalDescuento = 0;
+
+            document.querySelectorAll('.invoice-checkbox:checked').forEach(checkbox => {
+                const row = checkbox.closest('tr');
+                const noFiscal = row.dataset.noFiscal;
+                const importe = parseFloat(row.dataset.importe);
+                const retencionAplicada = appliedRetentions.find(r => r.noFiscal === noFiscal); 
+
+                subTotal += importe;
+                const retencionMonto = retencionAplicada ? retencionAplicada.montoRetenido : 0;
+                totalRetencion += retencionMonto;
+
+                selectedItems.push({
+                    tipo: row.dataset.tipo,
+                    noFiscal: noFiscal,
+                    importe: importe,
+                    retencion: retencionMonto 
+                });
+            });
+            
+            if (selectedItems.length > 0) {
+                totalDescuento = subTotal * descuentoPorcentaje;
+                
+                const selectedItemsJSON = JSON.stringify(selectedItems);
+                const encodedItems = encodeURIComponent(selectedItemsJSON);
+                
+                const urlParams = new URLSearchParams();
+                urlParams.set('selectedItems', encodedItems);
+                urlParams.set('formaDePago', formaDePago);
+                urlParams.set('totalDescuento', totalDescuento.toFixed(2));
+                urlParams.set('totalRetencion', totalRetencion.toFixed(2));
+                
+                window.location.href = `deposito_usd.html?${urlParams.toString()}`;
+
+            } else {
+                alert("Por favor, seleccione al menos una factura para incluir.");
+            }
+        });
+
+        window.toggleHelpModal = function() {
+            helpModal.style.display = 'block';
+        }
+        closeButton.onclick = () => helpModal.style.display = 'none';
+        window.onclick = (event) => {
+            if (event.target == helpModal) {
+                helpModal.style.display = 'none';
+            }
+        }
+        
+        renderInvoicesTable();
+    });
+</script>
 </body>
 </html>
