@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>046 - Recibo de Cobro (Detalle Abono)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+
+        .screen-container {
+            width: 360px;
+            /* Ajustado para mejor visualización, pero debe simular la altura de un móvil
+            height: 640px; 
+            */
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            background-color: #1E90FF; /* Azul intenso similar a la imagen */
+            color: white;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .logo {
+            font-size: 24px;
+            margin-right: 10px;
+            font-style: italic;
+        }
+
+        .content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .field-label {
+            font-weight: normal;
+            color: #555;
+            width: 35%;
+        }
+
+        .field-value, .editable-field {
+            background-color: #eee;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: right;
+            width: 65%;
+            box-sizing: border-box;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .editable-field {
+            border: 1px solid #007BFF;
+            background-color: #fff;
+        }
+
+        /* Estilo para los botones pequeños al lado de los campos */
+        .input-group {
+            display: flex;
+            align-items: center;
+            width: 65%;
+        }
+        .small-input {
+            width: 45%; 
+            margin-right: 5%;
+            text-align: right;
+        }
+        .small-input.padding {
+            width: 50%;
+            margin-right: 0;
+        }
+        .small-button {
+            background-color: #eee;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .check-button {
+            background-color: #28a745;
+            color: white;
+            border-color: #28a745;
+            margin-left: 5px;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            background-color: white;
+            border-top: 1px solid #ccc;
+        }
+
+        .action-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 45%;
+        }
+
+        .save-button {
+            background-color: #007BFF;
+            color: white;
+        }
+        .cancel-button {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="logo">f</span>
+            <span class="header-title">046 - Recibo de Cobro</span>
+        </div>
+        <div class="content">
+            <div class="field-row">
+                <span class="field-label">Tipo Doc:</span>
+                <span class="field-value" id="docTipo">FACTURAS</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Nro. Doc:</span>
+                <span class="field-value" id="docNro">00000000</span> <span style="background-color: #999; color: white; padding: 8px; border-radius: 5px; margin-left: 5px;">P</span>
+            </div>
+            
+            <div class="field-row">
+                <span class="field-label">Fecha:</span>
+                <span class="field-value" id="docFecha" style="width: 55%; margin-left: auto;">30-09-2025</span>
+            </div>
+            
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 5px 0 15px 0;">
+
+            <div class="field-row">
+                <span class="field-label">Importe (USD):</span>
+                <span class="field-value" id="docImporte">818,88</span> </div>
+            <div class="field-row">
+                <span class="field-label">Saldo (USD):</span>
+                <span class="field-value" id="docSaldo">734,17</span> </div>
+            
+            <div class="field-row">
+                <span class="field-label">Fecha Dep/Trans:</span>
+                <span class="field-value" style="width: 55%; margin-left: auto;"></span>
+                <span style="background-color: #999; color: white; padding: 8px; border-radius: 5px; margin-left: 5px;">X</span>
+            </div>
+
+            <div class="field-row">
+                <div class="field-label" style="display: flex; align-items: center; width: 35%;">
+                    <input type="checkbox" id="diasAdicCheck" checked style="margin-right: 5px;">
+                    <label for="diasAdicCheck">Días Adic</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" value="0,00" class="field-value small-input">
+                    <input type="number" value="13,00" class="field-value small-input padding">
+                    <span class="small-button check-button">✓</span>
+                </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 5px 0 15px 0;">
+
+            <div class="field-row">
+                <span class="field-label">Monto (USD):</span>
+                <input type="number" id="abonoMonto" value="638.73" step="0.01" class="editable-field">
+            </div>
+            <div class="field-row">
+                <span class="field-label">Descuento (USD):</span>
+                <span class="field-value" id="abonoDescuento">95,44</span>
+            </div>
+            <div class="field-row">
+                <span class="field-label">Retenciones (USD):</span>
+                <span class="field-value" id="abonoRetenciones">0,00</span>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid #ccc; margin: 5px 0 15px 0;">
+
+            <div class="field-row" style="font-size: 16px;">
+                <span class="field-label" style="color: black;">Total (USD):</span>
+                <span class="field-value" id="abonoTotal">734,17</span>
+            </div>
+            <div class="field-row" style="font-size: 16px;">
+                <span class="field-label" style="color: black;">Saldo Pend. (USD):</span>
+                <span class="field-value" id="abonoSaldoPend">0,00</span>
+            </div>
+        </div>
+
+        <div class="footer-buttons">
+            <button class="action-button cancel-button" onclick="window.close()">CANCELAR</button>
+            <button class="action-button save-button" id="btnGuardarAbono">GUARDAR</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // Datos de la factura recibidos del formulario anterior
+            const noFiscal = urlParams.get('noFiscal');
+            const importe = parseFloat(urlParams.get('importe')) || 0;
+            const saldo = parseFloat(urlParams.get('saldo')) || 0;
+            const descuento = parseFloat(urlParams.get('descuento')) || 0;
+            const retencion = parseFloat(urlParams.get('retencion')) || 0;
+            const montoInicial = parseFloat(urlParams.get('monto')) || saldo; 
+
+            // Referencias a los campos
+            const docNro = document.getElementById('docNro');
+            const docImporte = document.getElementById('docImporte');
+            const docSaldo = document.getElementById('docSaldo');
+            const abonoMonto = document.getElementById('abonoMonto');
+            const abonoDescuento = document.getElementById('abonoDescuento');
+            const abonoRetenciones = document.getElementById('abonoRetenciones');
+            const abonoTotal = document.getElementById('abonoTotal');
+            const abonoSaldoPend = document.getElementById('abonoSaldoPend');
+            const btnGuardarAbono = document.getElementById('btnGuardarAbono');
+
+            // Función para formatear a 2 decimales y usar coma
+            const format = (value) => value.toFixed(2).replace('.', ',');
+            
+            // Rellenar campos estáticos
+            docNro.textContent = noFiscal;
+            docImporte.textContent = format(importe);
+            docSaldo.textContent = format(saldo);
+            abonoDescuento.textContent = format(descuento);
+            abonoRetenciones.textContent = format(retencion);
+            
+            // Establecer el monto inicial de abono (el monto actual o el saldo total)
+            abonoMonto.value = montoInicial.toFixed(2);
+
+            // Función de cálculo
+            function calcularAbono() {
+                const montoAbono = parseFloat(abonoMonto.value) || 0;
+                
+                // El total aplicado a la factura es: Monto Abono + Descuentos + Retenciones
+                const totalAplicado = montoAbono + descuento + retencion;
+                
+                // Si el monto de abono supera el saldo pendiente real, lo ajustamos
+                if (totalAplicado > saldo) {
+                    abonoMonto.value = (saldo - descuento - retencion).toFixed(2);
+                    const newMontoAbono = parseFloat(abonoMonto.value);
+                    abonoTotal.textContent = format(saldo);
+                    abonoSaldoPend.textContent = format(0);
+                } else {
+                    const newSaldoPendiente = saldo - totalAplicado;
+                    abonoTotal.textContent = format(totalAplicado);
+                    abonoSaldoPend.textContent = format(newSaldoPendiente);
+                }
+
+                // Asegurar que el total no sea negativo
+                if (parseFloat(abonoTotal.textContent.replace(',', '.')) < 0) {
+                    abonoTotal.textContent = format(0);
+                    abonoMonto.value = format(0);
+                }
+            }
+
+            // Listeners para recalcular al cambiar el monto de abono
+            abonoMonto.addEventListener('input', calcularAbono);
+            
+            // Evento para guardar el abono y volver
+            btnGuardarAbono.addEventListener('click', () => {
+                const nuevoMonto = parseFloat(abonoMonto.value);
+                
+                // Enviar el nuevo monto a la ventana principal (059 - Detalle Recibo)
+                if (window.opener && !window.opener.closed) {
+                    window.opener.postMessage({ 
+                        type: 'updateAbono', 
+                        noFiscal: noFiscal, 
+                        nuevoMonto: nuevoMonto 
+                    }, '*');
+                }
+                window.close();
+            });
+
+            // Inicializar cálculos
+            calcularAbono(); 
+        });
+    </script>
+</body>
+</html>
