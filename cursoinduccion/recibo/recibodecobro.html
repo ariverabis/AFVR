@@ -176,14 +176,31 @@
             const closeButton = document.querySelector('.close-button');
             const invoiceTableBody = document.getElementById('invoice-table-body');
             
+            // --- INICIO DE MODIFICACIÓN CLAVE: INYECCIÓN DE DATOS Y CÁLCULO DE RETENCIÓN ---
+            // 1. Datos de las facturas (simulación de carga desde el servidor)
             const invoices = [
-                { tipo: 'A', noFiscal: '06880849', importe: 97.05 },
-                { tipo: 'A', noFiscal: '06890830', importe: 64.66 },
-                { tipo: 'A', noFiscal: '06895077', importe: 80.60 },
-                { tipo: 'A', noFiscal: '06896835', importe: 102.01 }
+                // Se simula la inclusión del IVA (montoIVA). Este dato DEBE venir de su sistema real.
+                { tipo: 'A', noFiscal: '06880849', importe: 97.05, montoIVA: 13.38 }, 
+                { tipo: 'A', noFiscal: '06890830', importe: 64.66, montoIVA: 8.91 },
+                { tipo: 'A', noFiscal: '06895077', importe: 80.60, montoIVA: 11.09 },
+                { tipo: 'A', noFiscal: '06896835', importe: 102.01, montoIVA: 14.07 }
             ];
             
-            const appliedRetentions = JSON.parse(localStorage.getItem('appliedRetentions') || '[]');
+            // 2. CÁLCULO DE LA RETENCIÓN (75% del IVA)
+            const retencionPorIVA = 0.75; // Porcentaje de Retención: 75%
+            
+            // Calculamos la retención por cada factura y lo almacenamos en 'appliedRetentions'
+            const appliedRetentions = invoices.map(invoice => {
+                const montoRetenido = invoice.montoIVA * retencionPorIVA;
+                return {
+                    noFiscal: invoice.noFiscal,
+                    montoRetenido: parseFloat(montoRetenido.toFixed(2)) // Redondear a 2 decimales
+                };
+            });
+            
+            // Opcional: Almacenar en localStorage para que otras pantallas lo usen
+            localStorage.setItem('appliedRetentions', JSON.stringify(appliedRetentions));
+            // --- FIN DE MODIFICACIÓN CLAVE ---
             
             // Obtener el parámetro de la URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -243,6 +260,7 @@
                         if (!isNaN(importe)) {
                             subTotal += importe;
                             
+                            // Busca y suma la retención previamente calculada (75% del IVA)
                             const retencion = appliedRetentions.find(r => r.noFiscal === noFiscal);
                             if (retencion) {
                                 totalRetencion += retencion.montoRetenido;
@@ -255,6 +273,7 @@
                 totalDescuento = subTotal * descuentoPorcentaje;
                 
                 subTotalSpan.textContent = subTotal.toFixed(2).replace('.', ',');
+                // Se añade el signo negativo a la retención y el descuento en la vista
                 retencionSpan.textContent = `-${totalRetencion.toFixed(2).replace('.', ',')}`;
                 descuentoSpan.textContent = `-${totalDescuento.toFixed(2).replace('.', ',')}`;
                 
@@ -280,8 +299,8 @@
                     const row = checkbox.closest('tr');
                     const noFiscal = row.dataset.noFiscal;
                     const importe = parseFloat(row.dataset.importe);
-                    const retencionAplicada = appliedRetentions.find(r => r.noFiscal === noFiscal);
-                    
+                    const retencionAplicada = appliedRetentions.find(r => r.noFiscal === noFiscal); 
+
                     subTotal += importe;
                     const retencionMonto = retencionAplicada ? retencionAplicada.montoRetenido : 0;
                     totalRetencion += retencionMonto;
@@ -290,7 +309,7 @@
                         tipo: row.dataset.tipo,
                         noFiscal: noFiscal,
                         importe: importe,
-                        retencion: retencionMonto
+                        retencion: retencionMonto 
                     });
                 });
                 
@@ -307,6 +326,7 @@
                     urlParams.set('totalDescuento', totalDescuento.toFixed(2));
                     urlParams.set('totalRetencion', totalRetencion.toFixed(2));
                     
+                    // Se envía el valor totalRetencion (suma del 75% del IVA) a la siguiente pantalla
                     window.location.href = `deposito_usd.html?${urlParams.toString()}`;
 
                 } else {
