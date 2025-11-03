@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Comparativa de Precios (Corregida)</title>
+    <title>Calculadora Comparativa de Precios (v3)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -98,13 +98,20 @@
             float: right;
             font-weight: bold;
         }
+        .commercial-discount {
+            background-color: #ffe0b2; /* Color naranja suave para el Dcto Comercial */
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            border: 1px dashed #ff9800;
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h1>💸 Calculadora Comparativa de Precios</h1>
-        <p style="text-align: center;">Simulación de Precios en Divisas y Bolívares con Descuentos.</p>
+        <p style="text-align: center;">Simulación de Precios con Descuento Comercial y Descuentos por Forma de Pago.</p>
         
         <div class="rates-section">
             <div class="input-group">
@@ -123,21 +130,25 @@
                 <h2>Lista A - Base **Tasa Binance** (Mercado)</h2>
                 
                 <div class="input-group">
-                    <label for="priceA">Precio del Producto ($):</label>
+                    <label for="priceA">Precio del Producto Base ($):</label>
                     <input type="number" id="priceA" value="100.00" oninput="calculate()">
                 </div>
                 
+                <div class="input-group commercial-discount">
+                    <label for="dctoComercialA">**Descuento Comercial (%)**:</label>
+                    <input type="number" id="dctoComercialA" value="5" oninput="calculate()">
+                </div>
                 <hr>
                 
                 <h3>Escenario 1: Pago en Dólares ($)</h3>
-                <p>Aplica un descuento por **Forma de Pago en Dólares**.</p>
+                <p>Aplica un descuento adicional por **Forma de Pago en Dólares**.</p>
                 <div class="input-group">
                     <label for="dctoDolarA">Descuento Pago en Dólares (%):</label>
                     <input type="number" id="dctoDolarA" value="15" oninput="calculate()">
                 </div>
                 
                 <div class="result-group highlight" style="background-color: #d4edda; border-left-color: #007bff;">
-                    Precio Final a Pagar en Dólares:
+                    **Precio Final a Pagar en Dólares:**
                     <span id="resultDolarA" class="result-value">0.00</span>
                 </div>
                 <div class="result-group" style="background-color: #eaf6ff;">
@@ -148,14 +159,14 @@
                 <hr>
                 
                 <h3>Escenario 2: Pago en Bolívares (Bs)</h3>
-                <p>Aplica un descuento por **Forma de Pago en Bolívares**.</p>
+                <p>Aplica un descuento adicional por **Forma de Pago en Bolívares**.</p>
                 <div class="input-group">
                     <label for="dctoBsA">Descuento Pago en Bolívares (%):</label>
                     <input type="number" id="dctoBsA" value="10" oninput="calculate()">
                 </div>
 
                 <div class="result-group highlight" style="background-color: #fff3cd; border-left-color: #ffc107;">
-                    Precio Final en Bs. (Binance con Dcto Bs):
+                    **Precio Final en Bs. (Binance con Dcto Bs):**
                     <span id="resultBsA" class="result-value">0.00</span>
                 </div>
             </div>
@@ -164,8 +175,13 @@
                 <h2>Lista B - Base **Tasa BCV** (Oficial)</h2>
                 
                 <div class="input-group">
-                    <label for="priceB">Precio del Producto ($):</label>
+                    <label for="priceB">Precio del Producto Base ($):</label>
                     <input type="number" id="priceB" value="105.00" oninput="calculate()">
+                </div>
+                
+                <div class="input-group commercial-discount">
+                    <label for="dctoComercialB">**Descuento Comercial (%)**:</label>
+                    <input type="number" id="dctoComercialB" value="0" oninput="calculate()">
                 </div>
                 
                 <hr>
@@ -174,18 +190,18 @@
                 <p>Calculado con la **Tasa BCV**.</p>
 
                 <div class="input-group">
-                    <label for="dctoB">Descuento Posible de Lista B (%):</label>
+                    <label for="dctoB">Descuento Adicional Posible de Lista B (%):</label>
                     <input type="number" id="dctoB" value="15" oninput="calculate()">
                 </div>
                 
                 <div class="result-group highlight" style="background-color: #f8d7da; border-left-color: #dc3545;">
-                    Precio Final en Bs. (BCV con Dcto Lista B):
+                    **Precio Final en Bs. (BCV con Dcto Total):**
                     <span id="resultBsB" class="result-value">0.00</span>
                 </div>
 
                 <hr>
                 
-                <h3>Referencia (Sin Descuento)</h3>
+                <h3>Referencia (Sin Descuento Comercial ni Adicional)</h3>
                 <div class="result-group" style="border-left-color: #6c757d;">
                     Precio Base en Bs. (sin Dcto):
                     <span id="resultBaseB" class="result-value">0.00</span>
@@ -202,21 +218,41 @@
 
             // 2. Obtener Inputs de Lista A
             const priceA = parseFloat(document.getElementById('priceA').value) || 0;
+            const dctoComercialA_factor = 1 - ((parseFloat(document.getElementById('dctoComercialA').value) || 0) / 100);
             const dctoDolarA_factor = 1 - ((parseFloat(document.getElementById('dctoDolarA').value) || 0) / 100);
             const dctoBsA_factor = 1 - ((parseFloat(document.getElementById('dctoBsA').value) || 0) / 100);
 
             // 3. Obtener Inputs de Lista B
             const priceB = parseFloat(document.getElementById('priceB').value) || 0;
+            const dctoComercialB_factor = 1 - ((parseFloat(document.getElementById('dctoComercialB').value) || 0) / 100);
             const dctoB_factor = 1 - ((parseFloat(document.getElementById('dctoB').value) || 0) / 100);
 
+            // --- APLICACIÓN DEL DESCUENTO COMERCIAL ---
+            // Precio con Dcto Comercial (Lista A)
+            const priceA_after_commercial = priceA * dctoComercialA_factor;
+            // Precio con Dcto Comercial (Lista B)
+            const priceB_after_commercial = priceB * dctoComercialB_factor;
+
             // 4. Cálculos Lista A (Utiliza Tasa Binance)
-            const finalDolarA = priceA * dctoDolarA_factor;
+
+            // Escenario A1: Pago en Dólares (Dcto Comercial + Dcto Dólar)
+            // Lógica: (Precio $ * Dcto Comercial) * Dcto Dólar
+            const finalDolarA = priceA_after_commercial * dctoDolarA_factor;
+            // Equivalente en Bs: finalDolarA * Tasa Binance
             const finalBsBinanceA = finalDolarA * tasaBinance;
-            const finalBsA = (priceA * tasaBinance) * dctoBsA_factor;
+            
+            // Escenario A2: Pago en Bolívares (Dcto Comercial + Dcto Bs)
+            // Lógica: (Precio $ * Dcto Comercial * Tasa Binance) * Dcto Bs
+            const finalBsA = (priceA_after_commercial * tasaBinance) * dctoBsA_factor;
 
             // 5. Cálculos Lista B (Utiliza Tasa BCV)
-            const finalBsB = (priceB * tasaBCV) * dctoB_factor;
-            const baseBsB = priceB * tasaBCV;
+
+            // Escenario B1: Lista B con Tasa BCV y Descuento (Dcto Comercial + Dcto Adicional)
+            // Lógica: (Precio $ * Dcto Comercial * Dcto Adicional) * Tasa BCV
+            const finalBsB = (priceB_after_commercial * dctoB_factor) * tasaBCV;
+            
+            // Referencia sin descuento
+            const baseBsB = priceB * tasaBCV; // Se mantiene el precio base sin ningún descuento
 
             // 6. Mostrar Resultados
             
