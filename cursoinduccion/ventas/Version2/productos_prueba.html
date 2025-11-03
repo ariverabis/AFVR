@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVF - Productos</title>
+    <title>034 - Productos</title>
     <style>
         body {
             font-family: sans-serif;
@@ -26,7 +26,7 @@
             position: relative;
         }
         .header {
-            background-color: #2e8b57;
+            background-color: #2e8b57; /* Mantenido el color original del header */
             color: white;
             padding: 15px;
             display: flex;
@@ -58,6 +58,8 @@
             cursor: pointer;
             color: #555;
             text-decoration: none;
+            /* Usamos la flecha unicode para un mejor ícono de retroceso */
+            line-height: 1; 
         }
         .guia-recomendacion {
             background-color: #e0f7fa;
@@ -71,12 +73,6 @@
         }
         .search-form {
             padding: 20px;
-        }
-        .search-form h3 {
-            margin-top: 0;
-            font-size: 1.1em;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
         }
         .form-group {
             display: flex;
@@ -115,24 +111,11 @@
         .action-buttons button:hover {
             background-color: #c0c0c0;
         }
-        .action-buttons button:active {
-            background-color: #a9a9a9;
-        }
-        .order-by-group {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .order-by-group button {
-            padding: 10px;
-            font-size: 1.2em;
-            background-color: #d3d3d3;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
         .options {
             cursor: pointer;
+            font-size: 1.5em; /* Ajuste para el ícono de opciones */
+            font-weight: bold;
+            line-height: 1;
         }
         .modal {
             display: none;
@@ -161,17 +144,15 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .modal-item {
-            margin-bottom: 15px;
-        }
         .modal-item h4 {
             margin: 0;
             color: #2e8b57;
         }
         .modal-item p {
-            margin: 5px 0 0;
+            margin: 5px 0 15px;
             font-size: 14px;
         }
+        /* Estilos de Tooltip */
         [data-tooltip] {
             position: relative;
         }
@@ -204,29 +185,29 @@
 <div class="container">
     <div class="header">
         <div class="title">
-            <img src="logofebeca.png" alt="Logo">
+            <img src="logofebeca.png" alt="Logo"> 
             <span>034 - Productos</span>
         </div>
-        <div class="options" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">...</div>
+        <div class="options" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</div>
     </div>
 
     <div class="info-box">
         <p>Artículo</p>
-        <a href="detallepedido_prueba.html" class="back-arrow" data-tooltip="Regresar a la pantalla de detalle de pedido">&#8617;</a>
+        <a href="detallepedido_prueba.html" class="back-arrow" data-tooltip="Regresar a la pantalla de detalle de pedido">&#x21B6;</a>
     </div>
     
     <p class="guia-recomendacion">
-        Para una búsqueda eficiente, se recomienda seleccionar <br> " -- Todas --" en el campo Grupo antes de presionar Buscar.
+        Para una búsqueda eficiente, se recomienda seleccionar <br> "**-- Todas --**" en el campo **Grupo** antes de presionar **Buscar**.
     </p>
 
     <div class="search-form">
         <form id="form-busqueda" action="#" method="get">
             <div class="form-group">
-                <label for="codigo" data-tooltip="código del producto para una búsqueda.">Código:</label>
+                <label for="codigo" data-tooltip="Código del producto para una búsqueda.">Código:</label>
                 <input type="text" id="codigo" name="codigo">
             </div>
             <div class="form-group">
-                <label for="nombre" data-tooltip="nombre o parte del nombre del producto.">Nombre:</label>
+                <label for="nombre" data-tooltip="Nombre o parte del nombre del producto.">Nombre:</label>
                 <input type="text" id="nombre" name="nombre">
             </div>
             <div class="form-group">
@@ -274,35 +255,7 @@
                     <option value="grupo-b">Grupo B</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label for="partida" data-tooltip="Seleccione la partida a la que pertenece el producto.">Partida:</label>
-                <select id="partida" name="partida">
-                    <option value="">--Seleccione--</option>
-                    <option value="partida-1">Partida 1</option>
-                    <option value="partida-2">Partida 2</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="clasificacion" data-tooltip="Seleccione la clasificación del producto.">Clasificación:</label>
-                <select id="clasificacion" name="clasificacion">
-                    <option value="">--Seleccione--</option>
-                    <option value="clas-a">Clase A</option>
-                    <option value="clas-b">Clase B</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="ordenar-por" data-tooltip="Seleccione un criterio para ordenar los resultados.">Ordenar Por:</label>
-                <div class="order-by-group">
-                    <select id="ordenar-por" name="ordenar-por">
-                        <option value="">--Seleccione--</option>
-                        <option value="nombre">Nombre</option>
-                        <option value="precio">Precio</option>
-                        <option value="codigo">Código</option>
-                    </select>
-                    <button type="button" data-tooltip="Añadir un criterio de ordenamiento adicional.">+</button>
-                </div>
-            </div>
-        </form>
+            </form>
     </div>
 
     <div class="action-buttons">
@@ -317,18 +270,18 @@
         <h3>Guía de Uso - Productos</h3>
         <div class="modal-item">
             <h4>Búsqueda por Campos</h4>
-            <p>Utilice los campos de texto y las listas desplegables para filtrar los productos por Código, Nombre, Referencia, Marca, Categoría, Sub-Categoría, Grupo o Partida.</p>
+            <p>Utilice los campos de texto y las listas desplegables para filtrar los productos por **Código, Nombre, Referencia, Marca, Categoría, Sub-Categoría o Grupo**.</p>
         </div>
         <div class="modal-item">
             <h4>Recomendación de búsqueda</h4>
-            <p>Para resultados más completos, es recomendable seleccionar la opción "-- Todas --" en el campo Grupo.</p>
+            <p>Para resultados más completos, es recomendable seleccionar la opción "**-- Todas --**" en el campo **Grupo**.</p>
         </div>
         <div class="modal-item">
             <h4>Botones de Acción</h4>
             <ul>
-                <li><strong>Limpiar:</strong> Borra todos los filtros de búsqueda aplicados.</li>
-                <li><strong>Buscar:</strong> Ejecuta la búsqueda de productos según los criterios seleccionados.</li>
-                <li><strong>Regresar:</strong> (Flecha) Vuelve a la pantalla de detalle del pedido.</li>
+                <li>**Limpiar:** Borra todos los filtros de búsqueda aplicados.</li>
+                <li>**Buscar:** Ejecuta la búsqueda de productos según los criterios seleccionados.</li>
+                <li>**Regresar:** (Flecha) Vuelve a la pantalla de detalle del pedido.</li>
             </ul>
         </div>
     </div>
@@ -352,7 +305,9 @@
             if (codigo) params.append('codigo', codigo);
             if (nombre) params.append('nombre', nombre);
             if (marca) params.append('marca', marca);
+            if (grupoSeleccionado) params.append('grupo', grupoSeleccionado);
 
+            // Validación de recomendación al presionar Buscar
             if (grupoSeleccionado !== 'todas' && grupoSeleccionado !== '') {
                 const confirmacion = confirm('Advertencia: Se recomienda encarecidamente seleccionar "-- Todas --" en el campo Grupo para una búsqueda completa. ¿Desea continuar con la búsqueda actual?');
                 
@@ -360,12 +315,14 @@
                     window.location.href = `resultados_prueba.html?${params.toString()}`;
                 }
             } else {
+                // Si selecciona '-- Todas --' o deja vacío (que es permitido)
                 window.location.href = `resultados_prueba.html?${params.toString()}`;
             }
         }
         
         buscarButton.addEventListener('click', validarBusqueda);
 
+        // Lógica del Modal
         helpButton.addEventListener('click', function() {
             helpModal.style.display = 'flex';
         });
@@ -380,25 +337,30 @@
             }
         });
 
+        // Lógica del botón Limpiar
         limpiarButton.addEventListener('click', function() {
             document.getElementById('form-busqueda').reset();
         });
 
+        // Lógica de Tooltips
         document.querySelectorAll('[data-tooltip]').forEach(item => {
             item.addEventListener('mouseenter', (event) => {
                 const rect = event.target.getBoundingClientRect();
                 const tooltipText = item.getAttribute('data-tooltip');
-                const tooltipWidth = tooltipText.length * 6;
+                // Estimación simple del ancho del tooltip
+                const tooltipWidth = tooltipText.length * 6 + 20; 
                 
                 let leftPosition = rect.left + (rect.width / 2);
                 let topPosition = rect.top;
 
+                // Ajuste para evitar que el tooltip se salga de la pantalla (horizontal)
                 if (leftPosition - tooltipWidth / 2 < 0) {
                     leftPosition = tooltipWidth / 2 + 10;
                 } else if (leftPosition + tooltipWidth / 2 > window.innerWidth) {
                     leftPosition = window.innerWidth - tooltipWidth / 2 - 10;
                 }
                 
+                // Ajuste para evitar que el tooltip se salga de la pantalla (vertical)
                 if (topPosition < 50) {
                     item.style.setProperty('--tooltip-top', `${topPosition + rect.height + 5}px`);
                 } else {
