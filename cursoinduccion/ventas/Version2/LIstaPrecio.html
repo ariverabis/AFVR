@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Comparativa de Precios</title>
+    <title>Calculadora Comparativa de Precios (Corregida)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,11 +57,11 @@
         }
         #listA {
             background-color: #f0fff4;
-            border: 2px solid #38761d;
+            border: 2px solid #155724; /* Color verde para Binance */
         }
         #listB {
             background-color: #fff0f0;
-            border: 2px solid #cc0000;
+            border: 2px solid #cc0000; /* Color rojo para BCV */
         }
         .list-column h2 {
             margin-top: 0;
@@ -105,7 +105,7 @@
 <body>
 
     <div class="container">
-        <h1>💸 Calculadora Comparativa de Escenarios</h1>
+        <h1>💸 Calculadora Comparativa de Precios</h1>
         <p style="text-align: center;">Simulación de Precios en Divisas y Bolívares con Descuentos.</p>
         
         <div class="rates-section">
@@ -122,7 +122,7 @@
         <div class="comparison-grid">
             
             <div class="list-column" id="listA">
-                <h2>Lista A - Pago en Divisas/Bolívares (Binance)</h2>
+                <h2>Lista A - Base **Tasa Binance** (Mercado)</h2>
                 
                 <div class="input-group">
                     <label for="priceA">Precio del Producto ($):</label>
@@ -131,33 +131,39 @@
                 
                 <hr>
                 
-                <h3>Escenario 1: Pago en Bolívares (Tasa BCV)</h3>
+                <h3>Escenario 1: Pago en Dólares ($)</h3>
+                <p>Aplica un descuento por **Forma de Pago en Dólares**.</p>
                 <div class="input-group">
-                    <label for="dctoBsA">Descuento Pago en Bolívares (%):</label>
-                    <input type="number" id="dctoBsA" value="10" oninput="calculate()">
+                    <label for="dctoDolarA">Descuento Pago en Dólares (%):</label>
+                    <input type="number" id="dctoDolarA" value="15" oninput="calculate()">
                 </div>
                 
-                <div class="result-group highlight">
-                    Precio Final en Bs. (BCV con Dcto):
-                    <span id="resultBsA" class="result-value">0.00</span>
+                <div class="result-group highlight" style="border-left-color: #007bff;">
+                    Precio Final a Pagar en Dólares:
+                    <span id="resultDolarA" class="result-value">0.00</span>
+                </div>
+                <div class="result-group" style="background-color: #eaf6ff;">
+                    Equivalente en Bs. (Tasa Binance):
+                    <span id="resultBsBinanceA" class="result-value">0.00</span>
                 </div>
                 
                 <hr>
                 
-                <h3>Escenario 2: Pago en Dólares (Tasa Binance)</h3>
+                <h3>Escenario 2: Pago en Bolívares (Bs)</h3>
+                <p>Aplica un descuento por **Forma de Pago en Bolívares**.</p>
                 <div class="input-group">
-                    <label for="dctoDolarA">Descuento Pago en Dólares (%):</label>
-                    <input type="number" id="dctoDolarA" value="5" oninput="calculate()">
+                    <label for="dctoBsA">Descuento Pago en Bolívares (%):</label>
+                    <input type="number" id="dctoBsA" value="10" oninput="calculate()">
                 </div>
 
                 <div class="result-group highlight" style="border-left-color: #d63384;">
-                    Precio Final en Bs. (Dólares Dcto -> Binance):
-                    <span id="resultDolarBinanceA" class="result-value">0.00</span>
+                    Precio Final en Bs. (Binance con Dcto Bs):
+                    <span id="resultBsA" class="result-value">0.00</span>
                 </div>
             </div>
 
             <div class="list-column" id="listB">
-                <h2>Lista B - Pago en Bolívares (BCV)</h2>
+                <h2>Lista B - Base **Tasa BCV** (Oficial)</h2>
                 
                 <div class="input-group">
                     <label for="priceB">Precio del Producto ($):</label>
@@ -167,7 +173,7 @@
                 <hr>
                 
                 <h3>Escenario Único: Pago con Descuento Aplicado</h3>
-                <p>Esta lista se rige por la **Tasa BCV**.</p>
+                <p>Calculado con la **Tasa BCV**.</p>
 
                 <div class="input-group">
                     <label for="dctoB">Descuento Posible de Lista B (%):</label>
@@ -192,31 +198,34 @@
 
     <script>
         function calculate() {
-            // 1. Obtener Tasas de Cambio (Tanto A como B se afectan por estas)
+            // 1. Obtener Tasas de Cambio
             const tasaBCV = parseFloat(document.getElementById('tasaBCV').value) || 0;
             const tasaBinance = parseFloat(document.getElementById('tasaBinance').value) || 0;
 
             // 2. Obtener Inputs de Lista A
             const priceA = parseFloat(document.getElementById('priceA').value) || 0;
-            // Convertir porcentajes a factor de descuento
-            const dctoBsA_factor = 1 - ((parseFloat(document.getElementById('dctoBsA').value) || 0) / 100);
+            // Descuento Pago en Dólares (Escenario 1)
             const dctoDolarA_factor = 1 - ((parseFloat(document.getElementById('dctoDolarA').value) || 0) / 100);
+            // Descuento Pago en Bolívares (Escenario 2)
+            const dctoBsA_factor = 1 - ((parseFloat(document.getElementById('dctoBsA').value) || 0) / 100);
 
             // 3. Obtener Inputs de Lista B
             const priceB = parseFloat(document.getElementById('priceB').value) || 0;
             const dctoB_factor = 1 - ((parseFloat(document.getElementById('dctoB').value) || 0) / 100);
 
-            // 4. Cálculos Lista A
+            // 4. Cálculos Lista A (Utiliza Tasa Binance)
 
-            // Escenario A1: Pago en Bolívares (Dcto aplicado al precio $ y convertido a Bs con Tasa BCV)
-            // Lógica: (Precio $ * Tasa BCV) * (1 - Descuento en Bs)
-            const finalBsA = (priceA * tasaBCV) * dctoBsA_factor;
+            // Escenario A1: Pago en Dólares (Dcto en $)
+            // Lógica: Precio $ * (1 - Descuento en $)
+            const finalDolarA = priceA * dctoDolarA_factor;
+            // Equivalente en Bs: finalDolarA * Tasa Binance
+            const finalBsBinanceA = finalDolarA * tasaBinance;
             
-            // Escenario A2: Pago en Dólares (Dcto aplicado al precio $ y convertido a Bs con Tasa Binance)
-            // Lógica: (Precio $ * (1 - Descuento en $) ) * Tasa Binance
-            const finalDolarBinanceA = (priceA * dctoDolarA_factor) * tasaBinance;
+            // Escenario A2: Pago en Bolívares (Dcto en Bs)
+            // Lógica: (Precio $ * Tasa Binance) * (1 - Descuento en Bs)
+            const finalBsA = (priceA * tasaBinance) * dctoBsA_factor;
 
-            // 5. Cálculos Lista B
+            // 5. Cálculos Lista B (Utiliza Tasa BCV)
 
             // Escenario B1: Lista B con Tasa BCV y Descuento
             // Lógica: (Precio $ * Tasa BCV) * (1 - Descuento B)
@@ -228,8 +237,9 @@
             // 6. Mostrar Resultados
             
             // Lista A
+            document.getElementById('resultDolarA').textContent = finalDolarA.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+            document.getElementById('resultBsBinanceA').textContent = finalBsBinanceA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
             document.getElementById('resultBsA').textContent = finalBsA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
-            document.getElementById('resultDolarBinanceA').textContent = finalDolarBinanceA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
 
             // Lista B
             document.getElementById('resultBsB').textContent = finalBsB.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
