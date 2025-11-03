@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Comparativa de Precios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        .rates-section {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #eaf6ff;
+        }
+        .rates-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #004085;
+        }
+        .rates-section input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            text-align: right;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .list-column {
+            padding: 20px;
+            border-radius: 6px;
+        }
+        #listA {
+            background-color: #f0fff4;
+            border: 2px solid #38761d;
+        }
+        #listB {
+            background-color: #fff0f0;
+            border: 2px solid #cc0000;
+        }
+        .list-column h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: inherit;
+        }
+        .input-group, .result-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 95%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: right;
+        }
+        .result-group {
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+        }
+        .result-group.highlight {
+            background-color: #d4edda;
+            border-left-color: #155724;
+            font-weight: bold;
+        }
+        .result-value {
+            float: right;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💸 Calculadora Comparativa de Escenarios</h1>
+        <p style="text-align: center;">Simulación de Precios en Divisas y Bolívares con Descuentos.</p>
+        
+        <div class="rates-section">
+            <div class="input-group">
+                <label for="tasaBCV">Tasa BCV (Bs./$):</label>
+                <input type="number" id="tasaBCV" value="36.50" oninput="calculate()">
+            </div>
+            <div class="input-group">
+                <label for="tasaBinance">Tasa Binance (Bs./$):</label>
+                <input type="number" id="tasaBinance" value="37.00" oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="comparison-grid">
+            
+            <div class="list-column" id="listA">
+                <h2>Lista A - Pago en Divisas/Bolívares (Binance)</h2>
+                
+                <div class="input-group">
+                    <label for="priceA">Precio del Producto ($):</label>
+                    <input type="number" id="priceA" value="100.00" oninput="calculate()">
+                </div>
+                
+                <hr>
+                
+                <h3>Escenario 1: Pago en Bolívares (Tasa BCV)</h3>
+                <div class="input-group">
+                    <label for="dctoBsA">Descuento Pago en Bolívares (%):</label>
+                    <input type="number" id="dctoBsA" value="10" oninput="calculate()">
+                </div>
+                
+                <div class="result-group highlight">
+                    Precio Final en Bs. (BCV con Dcto):
+                    <span id="resultBsA" class="result-value">0.00</span>
+                </div>
+                
+                <hr>
+                
+                <h3>Escenario 2: Pago en Dólares (Tasa Binance)</h3>
+                <div class="input-group">
+                    <label for="dctoDolarA">Descuento Pago en Dólares (%):</label>
+                    <input type="number" id="dctoDolarA" value="5" oninput="calculate()">
+                </div>
+
+                <div class="result-group highlight" style="border-left-color: #d63384;">
+                    Precio Final en Bs. (Dólares Dcto -> Binance):
+                    <span id="resultDolarBinanceA" class="result-value">0.00</span>
+                </div>
+            </div>
+
+            <div class="list-column" id="listB">
+                <h2>Lista B - Pago en Bolívares (BCV)</h2>
+                
+                <div class="input-group">
+                    <label for="priceB">Precio del Producto ($):</label>
+                    <input type="number" id="priceB" value="105.00" oninput="calculate()">
+                </div>
+                
+                <hr>
+                
+                <h3>Escenario Único: Pago con Descuento Aplicado</h3>
+                <p>Esta lista se rige por la **Tasa BCV**.</p>
+
+                <div class="input-group">
+                    <label for="dctoB">Descuento Posible de Lista B (%):</label>
+                    <input type="number" id="dctoB" value="15" oninput="calculate()">
+                </div>
+                
+                <div class="result-group highlight" style="border-left-color: #ffc107;">
+                    Precio Final en Bs. (BCV con Dcto Lista B):
+                    <span id="resultBsB" class="result-value">0.00</span>
+                </div>
+
+                <hr>
+                
+                <h3>Referencia (Sin Descuento)</h3>
+                <div class="result-group" style="border-left-color: #6c757d;">
+                    Precio Base en Bs. (sin Dcto):
+                    <span id="resultBaseB" class="result-value">0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // 1. Obtener Tasas de Cambio (Tanto A como B se afectan por estas)
+            const tasaBCV = parseFloat(document.getElementById('tasaBCV').value) || 0;
+            const tasaBinance = parseFloat(document.getElementById('tasaBinance').value) || 0;
+
+            // 2. Obtener Inputs de Lista A
+            const priceA = parseFloat(document.getElementById('priceA').value) || 0;
+            // Convertir porcentajes a factor de descuento
+            const dctoBsA_factor = 1 - ((parseFloat(document.getElementById('dctoBsA').value) || 0) / 100);
+            const dctoDolarA_factor = 1 - ((parseFloat(document.getElementById('dctoDolarA').value) || 0) / 100);
+
+            // 3. Obtener Inputs de Lista B
+            const priceB = parseFloat(document.getElementById('priceB').value) || 0;
+            const dctoB_factor = 1 - ((parseFloat(document.getElementById('dctoB').value) || 0) / 100);
+
+            // 4. Cálculos Lista A
+
+            // Escenario A1: Pago en Bolívares (Dcto aplicado al precio $ y convertido a Bs con Tasa BCV)
+            // Lógica: (Precio $ * Tasa BCV) * (1 - Descuento en Bs)
+            const finalBsA = (priceA * tasaBCV) * dctoBsA_factor;
+            
+            // Escenario A2: Pago en Dólares (Dcto aplicado al precio $ y convertido a Bs con Tasa Binance)
+            // Lógica: (Precio $ * (1 - Descuento en $) ) * Tasa Binance
+            const finalDolarBinanceA = (priceA * dctoDolarA_factor) * tasaBinance;
+
+            // 5. Cálculos Lista B
+
+            // Escenario B1: Lista B con Tasa BCV y Descuento
+            // Lógica: (Precio $ * Tasa BCV) * (1 - Descuento B)
+            const finalBsB = (priceB * tasaBCV) * dctoB_factor;
+            
+            // Referencia sin descuento
+            const baseBsB = priceB * tasaBCV;
+
+            // 6. Mostrar Resultados
+            
+            // Lista A
+            document.getElementById('resultBsA').textContent = finalBsA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+            document.getElementById('resultDolarBinanceA').textContent = finalDolarBinanceA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+
+            // Lista B
+            document.getElementById('resultBsB').textContent = finalBsB.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+            document.getElementById('resultBaseB').textContent = baseBsB.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+        }
+
+        // Ejecutar el cálculo inicial al cargar la página
+        window.onload = calculate;
+    </script>
+</body>
+</html>
