@@ -3,236 +3,198 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inducción Completa AFV - Fuerza de Ventas</title>
+    <title>Inducción AFV - Exportar a PDF</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --primary-blue: #007BFF;
-            --info-bg: #e3f2fd;
+            --info-bg: #f0f7ff;
             --info-border: #007BFF;
-            --text-color: #333;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #ffffff; /* Fondo general blanco solicitado */
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #ffffff;
             margin: 0;
             padding: 0;
-            color: var(--text-color);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Encabezado fijo con botón de descarga */
-        .top-bar {
+        /* Barra de herramientas */
+        .toolbar {
             width: 100%;
+            padding: 20px;
             background: #f8f9fa;
-            padding: 20px 0;
             display: flex;
             justify-content: center;
-            border-bottom: 1px solid #ddd;
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid #ddd;
         }
 
-        .btn-download {
+        .btn-pdf {
             background-color: #27ae60;
             color: white;
             padding: 12px 25px;
+            border: none;
             border-radius: 5px;
-            text-decoration: none;
             font-weight: bold;
+            cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        /* Contenedor de cada "Lámina" */
-        .slide-section {
-            width: 100%;
-            max-width: 1000px;
-            min-height: 100vh;
+        /* Contenedor que será convertido a PDF */
+        #contenido-pdf {
+            background: white;
+            padding: 20px;
+            width: 900px; /* Ancho fijo para asegurar calidad en el PDF */
+        }
+
+        .slide-page {
+            page-break-after: always; /* Obliga al PDF a crear una nueva página por lámina */
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 2px dashed #eee;
-            padding: 50px 0;
-        }
-
-        .presentation-box {
+            height: 900px;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
+            margin-bottom: 50px;
         }
 
-        /* MARCO DEL TELÉFONO CON CORRECCIÓN DE ESQUINAS */
+        /* Mockup del teléfono con bordes corregidos */
         .phone-mockup {
-            width: 320px;
-            height: 640px;
-            background-image: url('preview.jpg'); /* Asegúrate que se llame así */
+            width: 300px;
+            height: 600px;
+            background-image: url('preview.jpg'); 
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             position: relative;
-            border-radius: 45px; /* Redondea las esquinas de la imagen */
-            overflow: hidden;    /* Recorta el sobrante blanco de la imagen */
+            border-radius: 45px;
+            overflow: hidden;
             z-index: 5;
         }
 
-        /* Pantalla del Teléfono */
         .screen-container {
             position: absolute;
-            top: 85px;
-            left: 35px;
-            width: 250px;
-            height: 445px;
+            top: 80px;
+            left: 31px;
+            width: 238px;
+            height: 425px;
             background-color: white;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
             border: 1px solid #ddd;
         }
 
         .app-header {
             background-color: var(--primary-blue);
             color: white;
-            padding: 10px;
-            font-size: 12px;
+            padding: 8px;
+            font-size: 11px;
             font-weight: bold;
-            display: flex;
-            justify-content: space-between;
         }
 
-        /* ETIQUETAS DE AYUDA LATERALES */
-        .help-label {
+        /* Etiquetas */
+        .info-card {
             background-color: var(--info-bg);
             color: #01579b;
             padding: 15px;
             border-radius: 8px;
             border: 1px solid var(--info-border);
-            font-size: 13px;
-            width: 220px;
+            font-size: 12px;
+            width: 200px;
             position: absolute;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             line-height: 1.4;
         }
 
-        .label-left { right: 70%; }
-        .label-right { left: 70%; }
+        .label-left { left: 50px; }
+        .label-right { right: 50px; }
 
-        /* Flechas conectoras */
-        .help-label::after {
-            content: "";
-            position: absolute;
-            top: 50%;
-            width: 30px;
-            height: 2px;
-            background: var(--info-border);
+        .title-slide {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
         }
-        .label-left::after { left: 100%; }
-        .label-right::after { right: 100%; }
-
-        /* Contenido simulado de pantallas */
-        .content-area { padding: 10px; font-size: 11px; }
-        .btn-sim { background: #eee; border: 1px solid #ccc; padding: 10px; margin-bottom: 8px; text-align: center; border-radius: 4px; font-weight: bold; }
-        
-        table { width: 100%; border-collapse: collapse; font-size: 10px; }
-        th { background: #007BFF; color: white; padding: 5px; }
-        td { border-bottom: 1px solid #eee; padding: 5px; }
-
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <a href="manual_resumen_afv.pdf" class="btn-download" download>📥 Descargar Manual de Bolsillo (PDF)</a>
+    <div class="toolbar">
+        <button onclick="generarPDF()" class="btn-pdf">📥 Generar y Descargar Manual PDF</button>
     </div>
 
-    <section class="slide-section">
-        <div class="presentation-box">
-            <div class="help-label label-left">
-                <strong>MENÚ DE VENTAS:</strong> Desde aquí se accede a la toma de pedidos, gestión de clientes y reportes de metas.
-            </div>
+    <div id="contenido-pdf">
+        
+        <div class="slide-page">
+            <h2 class="title-slide" style="position: absolute; top: 0;">Fase II: Menú de Ventas</h2>
             
+            <div class="info-card label-left">
+                <strong>REGISTRO:</strong> Es obligatorio registrarse en la plataforma antes de iniciar.
+            </div>
+
             <div class="phone-mockup">
                 <div class="screen-container">
-                    <div class="app-header"><span>← 073 - Menú Ventas</span><span>⋮</span></div>
-                    <div class="content-area">
-                        <div class="btn-sim">Pedidos del catálogo</div>
-                        <div class="btn-sim">Clientes</div>
-                        <div class="btn-sim">Consultas</div>
-                        <div class="btn-sim">Gestión de Ventas</div>
+                    <div class="app-header">073 - Menú Ventas</div>
+                    <div style="padding: 10px;">
+                        <div style="background:#eee; padding:10px; margin-bottom:5px; text-align:center;">Pedidos del catálogo</div>
+                        <div style="background:#eee; padding:10px; margin-bottom:5px; text-align:center;">Clientes</div>
                     </div>
                 </div>
             </div>
 
-            <div class="help-label label-right">
-                <strong>MODO OFFLINE:</strong> Las transacciones se guardan localmente hasta que decida transmitirlas al servidor.
+            <div class="info-card label-right">
+                <strong>CONFIGURACIÓN:</strong> Se requiere configurar la IP del servidor y el usuario en SDS.
             </div>
         </div>
-    </section>
 
-    <section class="slide-section">
-        <div class="presentation-box">
-            <div class="help-label label-left">
-                <strong>LISTADO:</strong> Muestra los pedidos realizados. Los colores indican el estado (Sincronizado/Pendiente).
-            </div>
+        <div class="slide-page">
+            <h2 class="title-slide" style="position: absolute; top: 0;">Fase III: Detalle de Pedidos</h2>
             
+            <div class="info-card label-left">
+                <strong>PEDIDOS:</strong> El listado muestra la fecha y el código del cliente.
+            </div>
+
             <div class="phone-mockup">
                 <div class="screen-container">
-                    <div class="app-header"><span>← 118 - Pedidos Catálogo</span><span>⋮</span></div>
-                    <div class="content-area">
-                        <div style="background:#f0f0f0; padding:5px; margin-bottom:5px; font-weight:bold;">FM IMPORT PARTS, C.A.</div>
-                        <table>
-                            <tr><th>Cliente</th><th>Pedido</th><th>Fecha</th></tr>
-                            <tr><td>2535249</td><td>1000059</td><td>06-09-2026</td></tr>
-                            <tr><td>2531963</td><td>1000023</td><td>05-09-2026</td></tr>
+                    <div class="app-header" style="background:#008eb3;">Detalle Pedido</div>
+                    <div style="padding: 10px; font-size: 10px;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <tr style="background:#007BFF; color:white;"><th>Producto</th><th>Cant.</th></tr>
+                            <tr><td>FAROL NEGRO</td><td>1.0</td></tr>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <div class="help-label label-right">
-                <strong>VER DETALLES:</strong> Toque cualquier renglón para ver los productos solicitados en ese pedido específico.
+            <div class="info-card label-right">
+                <strong>COTIZACIÓN:</strong> Se recomienda revisar descuentos antes de enviar.
             </div>
         </div>
-    </section>
 
-    <section class="slide-section">
-        <div class="presentation-box">
-            <div class="help-label label-left">
-                <strong>CANTIDADES:</strong> Verifique las unidades solicitadas por el cliente antes de la transmisión final.
-            </div>
+    </div>
+
+    <script>
+        function generarPDF() {
+            const elemento = document.getElementById('contenido-pdf');
             
-            <div class="phone-mockup">
-                <div class="screen-container">
-                    <div class="app-header" style="background:#008eb3;"><span>← Detalle Pedido</span><span>⋮</span></div>
-                    <div class="content-area">
-                        <div style="border-bottom: 2px solid #007BFF; padding-bottom:5px; margin-bottom:10px;">
-                            <strong>7777008 - CONSTRUCERAMICA</strong>
-                        </div>
-                        <div style="background:#e3f2fd; padding:5px;">
-                            Producto: APLIQUE TIPO FAROL NEGRO<br>
-                            <strong>Cantidad: 1.0</strong>
-                        </div>
-                        <div style="padding:5px;">
-                            Producto: Juego Destornilladores<br>
-                            <strong>Cantidad: 2.0</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            // Configuración del PDF
+            const opciones = {
+                margin:       [10, 10],
+                filename:     'Manual_Induccion_AFV.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true }, // scale 2 para alta resolución
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
 
-            <div class="help-label label-right">
-                <strong>CREAR COTIZACIÓN:</strong> Permite generar un documento PDF previo para que el cliente valide precios y stock.
-            </div>
-        </div>
-    </section>
-
-    <footer style="padding: 50px; text-align: center; color: #888;">
-        © 2026 Inducción AFV - Material basado en "Registro Bienvenida.pptx"
-    </footer>
+            // Ejecutar la generación
+            html2pdf().set(opciones).from(elemento).save();
+        }
+    </script>
 
 </body>
 </html>
