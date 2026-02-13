@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inducción AFV - Menú Ventas</title>
+    <style>
+        :root {
+            --primary-blue: #007BFF;
+            --phone-bg: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--phone-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        /* Botón de Descarga Manual */
+        .download-container {
+            margin-bottom: 20px;
+        }
+        .btn-download {
+            background-color: #27ae60;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+        .btn-download:hover { transform: scale(1.05); background-color: #2ecc71; }
+
+        /* Contenedor del Teléfono */
+        .phone-mockup {
+            width: 360px;
+            height: 720px;
+            background-image: url('preview.jpg'); /* ASEGÚRATE QUE EL NOMBRE SEA CORRECTO */
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+        }
+
+        /* Pantalla Interactiva */
+        .screen-container {
+            position: absolute;
+            top: 92px;
+            left: 38px;
+            width: 285px;
+            height: 510px;
+            background-color: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+
+        .header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 12px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .main-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Botones con Ayuda (Tooltip) */
+        .help-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .menu-button {
+            width: 100%;
+            padding: 12px;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: help; /* Cambia el cursor para indicar que hay ayuda */
+        }
+
+        /* Estilo de las etiquetas de ayuda (tipo PowerPoint) */
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #f1c40f;
+            color: #000;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 10;
+            left: 105%; /* Aparece a la derecha */
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 1px solid #d4ac0d;
+        }
+
+        /* Flecha del tooltip */
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 100%;
+            margin-top: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent #f1c40f transparent transparent;
+        }
+
+        .help-wrapper:hover .tooltip-text {
+            visibility: visible;
+        }
+
+        .footer {
+            margin-top: auto;
+            font-size: 9px;
+            text-align: center;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="download-container">
+        <a href="manual_induccion_afv.pdf" class="btn-download" download>
+            📄 Descargar Manual de Bolsillo (PDF)
+        </a>
+    </div>
+
+    <div class="phone-mockup">
+        <div class="screen-container">
+            <div class="header">
+                <span>&#8592; 073 - Menú Ventas</span>
+                <span>&#x22EE;</span>
+            </div>
+
+            <div class="main-content">
+                <div class="help-wrapper">
+                    <button class="menu-button">Pedidos del catálogo</button>
+                    <span class="tooltip-text">Permite crear nuevos pedidos seleccionando productos directamente del catálogo digital.</span>
+                </div>
+
+                <div class="help-wrapper">
+                    <button class="menu-button">Clientes</button>
+                    <span class="tooltip-text">Gestión de cartera: Ver datos de contacto, ubicación y estados de cuenta.</span>
+                </div>
+
+                <div class="help-wrapper">
+                    <button class="menu-button">Consultas</button>
+                    <span class="tooltip-text">Revisar historial de ventas y disponibilidad de inventario en tiempo real.</span>
+                </div>
+
+                <div class="help-wrapper">
+                    <button class="menu-button">Gestión de Ventas</button>
+                    <span class="tooltip-text">Módulo administrativo para supervisar metas y cierres diarios.</span>
+                </div>
+            </div>
+
+            <div class="footer">
+                © Wholesale World Information Systems, 2014
+            </div>
+        </div>
+    </div>
+
+    <p style="margin-top: 15px; font-size: 12px; color: #bdc3c7;">
+        * Pasa el mouse sobre los botones para ver la explicación.
+    </p>
+
+</body>
+</html>
