@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>069 - Relación de Depósito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+            height: 100vh;
+        }
+
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .back-arrow {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .header .title {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .header .action-icon {
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 5px;
+            font-weight: bold;
+        }
+
+        .content {
+            padding: 15px 15px 0;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .table-container {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: auto;
+            flex-grow: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        thead {
+            background-color: #f8f8f8;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            white-space: nowrap;
+        }
+
+        .total-bar {
+            background-color: #f8f8f8;
+            padding: 10px 15px;
+            font-weight: bold;
+            text-align: right;
+            border-top: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .total-bar span {
+            margin-left: 10px;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ccc;
+        }
+
+        .footer-buttons button {
+            flex: 1;
+            padding: 10px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #eee;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .footer-buttons button:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="window.location.href='MenuCobranza.html'">&lt;-</span>
+            <span class="title">069 - Relación de Depósito</span>
+            <span class="action-icon">&rarr;</span>
+        </div>
+
+        <div class="content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>E</th>
+                            <th>Relación N°</th>
+                            <th>Fecha</th>
+                            <th>Monto (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td>60011</td>
+                            <td>14-09-2025</td>
+                            <td>120</td>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>60010</td>
+                            <td>13-09-2025</td>
+                            <td>250</td>
+                        </tr>
+                        <tr>
+                            <td>A</td>
+                            <td>60009</td>
+                            <td>12-09-2025</td>
+                            <td>55</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="total-bar">
+            Total: <span>0,00</span>
+        </div>
+
+        <div class="footer-buttons">
+            <button>ANULAR</button>
+            <button onclick="window.location.href='RelaciondeDeposito.html'">NUEVO</button>
+            <button onclick="alert('Se envió por email')">ENVIAR EMAIL</button>
+        </div>
+    </div>
+
+</body>
+</html>

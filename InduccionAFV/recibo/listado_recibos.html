@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>060 - Recibos de Cobro</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header .menu-icon { margin-left: auto; cursor: pointer; }
+
+        .client-info-bar { background-color: #e0e0e0; padding: 10px 15px; font-size: 14px; font-weight: bold; border-bottom: 1px solid #ccc; display: flex; flex-direction: column; }
+        .client-info-bar p { margin: 0; padding: 2px 0; }
+
+        .message-bar { background-color: #ffeb3b; color: #333; padding: 10px; text-align: center; font-size: 12px; font-weight: bold; border-bottom: 1px solid #fbc02d; }
+
+        .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
+        tfoot { background-color: #f8f8f8; font-weight: bold; position: sticky; bottom: 0; }
+        th, td { padding: 4px; border-bottom: 1px solid #eee; white-space: nowrap; border: 1px solid #ccc; }
+        tbody tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* Ajuste de anchos de columna para que todo quepa en una línea */
+        .table-container table th:nth-child(1),
+        .table-container table td:nth-child(1) {
+            width: 5%; /* E */
+            text-align: center;
+        }
+        .table-container table th:nth-child(2),
+        .table-container table td:nth-child(2) {
+            width: 35%; /* N */
+            text-align: left;
+        }
+        .table-container table th:nth-child(3),
+        .table-container table td:nth-child(3) {
+            width: 25%; /* F */
+            text-align: left;
+        }
+        .table-container table th:nth-child(4),
+        .table-container table td:nth-child(4) {
+            width: 35%; /* M */
+            text-align: right;
+        }
+        
+        /* Estilos para el pie de tabla */
+        .table-container tfoot td {
+            text-align: right;
+            font-weight: bold;
+        }
+        
+        /* Alineación del "Total:" */
+        #totalCell {
+            text-align: right !important;
+        }
+
+        /* Estilos para la tabla de cabeceras verticales */
+        .vertical-header {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            overflow: hidden;
+        }
+        .vertical-header .header-col {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f8f8;
+            border-right: 1px solid #ccc;
+            padding: 5px;
+            font-weight: bold;
+        }
+        .vertical-header .header-col:last-child {
+            border-right: none;
+        }
+        
+        /* Ocultar los thead y thead del HTML original para el diseño de la imagen */
+        thead, thead th {
+            display: none;
+        }
+
+        .footer-buttons { display: flex; justify-content: space-around; padding: 10px 15px; background-color: white; border-top: 1px solid #ccc; gap: 10px; }
+        .footer-buttons button { flex-grow: 1; padding: 12px 10px; font-size: 14px; font-weight: bold; color: #444; background-color: #e0e0e0; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .footer-buttons button:hover { background-color: #d0d0d0; }
+
+        .footer { padding: 10px; font-size: 10px; color: #888; text-align: center; border-top: 1px solid #eee; }
+
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip .tooltiptext { visibility: hidden; width: 150px; background-color: rgba(0, 0, 0, 0.8); color: #fff; text-align: center; border-radius: 5px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -75px; opacity: 0; transition: opacity 0.3s; font-size: 12px; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .header .tooltiptext { bottom: auto; top: 125%; }
+        .footer-buttons .tooltiptext { bottom: 100%; left: 50%; margin-left: -75px; }
+        th .tooltiptext { bottom: auto; top: 125%; }
+        tfoot .tooltiptext { bottom: auto; top: 125%; }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .modal-item:last-child {
+            border-bottom: none;
+        }
+        .modal-item h4 {
+            margin: 0;
+            color: #007BFF;
+        }
+        .modal-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.js"></script>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow tooltip" onclick="history.back()">&lt;<span class="tooltiptext">Volver a la pantalla anterior.</span></span>
+            <span class="tooltip">060 - Recibos de Cobro<span class="tooltiptext">Listado de recibos de cobro del cliente.</span></span>
+            <span class="menu-icon tooltip" onclick="toggleHelpModal()">&#8942;<span class="tooltiptext">Opciones de menú.</span></span>
+        </div>
+
+        <div class="message-bar tooltip">Genera recibos de cobro. Presione 'Nuevo' para agregar uno.<span class="tooltiptext">Mensaje general de la pantalla.</span></div>
+
+        <div class="client-info-bar tooltip">
+            <p>Cliente: ALTAMIRA FERRE-INDUSTRIAL</p>
+            <p>Código: 2131133</p>
+            <span class="tooltiptext">Información del cliente seleccionado.</span>
+        </div>
+
+        <div class="main-content">
+            <div class="vertical-header">
+                <div class="header-col tooltip">E<span class="tooltiptext">Indica el estado del recibo.</span></div>
+                <div class="header-col tooltip">No.<span class="tooltiptext">Número de recibo.</span></div>
+                <div class="header-col tooltip">Fecha<span class="tooltiptext">Fecha de emisión del recibo.</span></div>
+                <div class="header-col tooltip">Monto<span class="tooltiptext">Monto total del recibo.</span></div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="tooltip">E<span class="tooltiptext">Indica el estado del recibo.</span></th>
+                            <th class="tooltip">No.<span class="tooltiptext">Número de recibo.</span></th>
+                            <th class="tooltip">Fecha<span class="tooltiptext">Fecha de emisión del recibo.</span></th>
+                            <th class="tooltip">Monto<span class="tooltiptext">Monto total del recibo.</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="receiptsTableBody">
+                        <tr>
+                            <td>C</td>
+                            <td>00060312</td>
+                            <td>29-08-2025</td>
+                            <td>$10</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" id="totalCell" class="tooltip">Total:<span class="tooltiptext">Suma de los montos de todos los recibos.</span></td>
+                            <td>$10</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer-buttons">
+            <button class="tooltip" onclick="window.location.href='recibodecobroFormadepago.html'">
+                Nuevo
+                <span class="tooltiptext">Crear un nuevo recibo de cobro.</span>
+            </button>
+            <button class="tooltip" onclick="sendEmail()">
+                Enviar Email
+                <span class="tooltiptext">Enviar los recibos seleccionados por correo electrónico.</span>
+            </button>
+        </div>
+
+        <div class="footer"> &copy; Copyright Wholesale World Information Systems LTD, 2014 </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Guía de Recibos de Cobro</h3>
+            <div class="modal-item">
+                <h4>Moneda del recibo</h4>
+                <p>El recibo puede ser creado en bolívares (VES) y en dólares (USD). La moneda se selecciona al momento de la creación del recibo.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Pagos en efectivo</h4>
+                <p>Si el pago es en efectivo, Debe depositarlo en la cuenta de la empresa y luego relaciona este recibo con el depósito, según la planilla que entregue el banco, en la relación de deposito</p>
+            </div>
+            <div class="modal-item">
+                <h4>Registro de transferencias en Bs.</h4>
+                <p>El recibo en bolívares debe ser registrado el mismo día que el cliente realice la transferencia para que el monto se refleje correctamente.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Reporte al analista</h4>
+                <p>Una vez emitido el recibo, debe reportarlo a su analista de Cuentas por Cobrar (CyC) para su validación y procesamiento.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Gestión honesta y transparente</h4>
+                <p>Mantenga siempre una gestión honesta, responsable y transparente con el cliente. Esta herramienta es para asegurar la claridad y exactitud en los cobros.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        const helpModal = document.getElementById('helpModal');
+        const closeButton = document.querySelector('.close-button');
+
+        function toggleHelpModal() {
+            helpModal.style.display = 'block';
+        }
+
+        closeButton.onclick = function() {
+            helpModal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == helpModal) {
+                helpModal.style.display = 'none';
+            }
+        }
+
+        // --- Lógica del botón "Enviar Email" ---
+        async function sendEmail() {
+            try {
+                // Genera el PDF del recibo
+                const doc = new jsPDF();
+                let yOffset = 20;
+
+                doc.setFontSize(16);
+                doc.text("febeca", 10, yOffset);
+                doc.setFontSize(10);
+                yOffset += 5;
+                doc.text("mayor de ferretería.", 10, yOffset);
+                yOffset += 10;
+                doc.setFontSize(14);
+                doc.text("Recibo de Cobro", 100, yOffset, null, null, "center");
+                yOffset += 10;
+                doc.setFontSize(12);
+                doc.text("Recibo Nro. 00060312", 10, yOffset);
+                yOffset += 7;
+                doc.text("CLIENTE: 2579805 DISTRIBUIDORA V.P. HOGAR, C.A.", 10, yOffset);
+                yOffset += 7;
+                doc.text("FECHA DE PAGO: 29-08-2025 Hora: 06:22:55", 10, yOffset);
+                yOffset += 7;
+                doc.text("VENDEDOR: 2042 YENDER VOLCAN", 10, yOffset);
+                yOffset += 7;
+                doc.text("SALDO DEUDOR DEL CLIENTE (USD): 0,00", 10, yOffset);
+                yOffset += 5;
+                doc.text("Saldo antes de hacer el recibo de cobro.", 10, yOffset);
+                yOffset += 15;
+
+                const documentRows = [
+                    ["FAC 06627903", "288,05", "0,00", "9,79", "20,00"]
+                ];
+
+                doc.autoTable({
+                    startY: yOffset,
+                    head: [['NO. DOCUMENTO', 'IMP. ORIGINAL', 'OTORGADO', 'PAGO RECIBIDO', 'SALDO']],
+                    body: documentRows,
+                    theme: 'grid',
+                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
+                    styles: { fontSize: 10 },
+                    columnStyles: {
+                        1: { halign: 'right' },
+                        2: { halign: 'right' },
+                        3: { halign: 'right' },
+                        4: { halign: 'right' }
+                    }
+                });
+
+                yOffset = doc.autoTable.previous.finalY;
+                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset, null, null, "right");
+                yOffset += 15;
+
+                const paymentRows = [
+                    ["TRANSFERENCIA", "00000113524", "Bancamiga Banco U", "29-08-2025", "1.342,89"]
+                ];
+
+                doc.autoTable({
+                    startY: yOffset,
+                    head: [['FORMA DE PAGO', 'NRO. DOCUMENTO', 'BANCO', 'FECHA', 'MONTO']],
+                    body: paymentRows,
+                    theme: 'grid',
+                    headStyles: { fillColor: [240, 240, 240], textColor: [0, 0, 0] },
+                    styles: { fontSize: 10 },
+                    columnStyles: {
+                        4: { halign: 'right' }
+                    }
+                });
+
+                yOffset = doc.autoTable.previous.finalY;
+                doc.text(`LA SUMA DE: Nueve con 79/100`, 10, yOffset + 5);
+                doc.text(`TOTAL (USD) => 9,79`, 190, yOffset + 5, null, null, "right");
+                yOffset += 20;
+
+                doc.setFontSize(10);
+                doc.text("Página 1 de 1", 190, yOffset, null, null, "right");
+                yOffset += 5;
+                doc.text("DEL TOTAL DE PAGOS REALIZADOS 994,12 BS CORRESPONDEN A DIFERENCIAL CAMBIARIO.", 10, yOffset);
+                yOffset += 10;
+                doc.text("OBSERVACIONES:", 10, yOffset);
+                yOffset += 5;
+                doc.text("NOTA: Los cajeros, cobradores o viajeros, quienes llevaran consigo autorizacion de cobro usaran exclusivamente", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("recibos para dejar constancia de dinero recibido por cuenta de esta compañia. Por lo tanto no tiene validez la", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("cancelacion que se hiciere en el cuerpo de facturas y similares documentos, exceptuando los giros emitidos por", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("la compañia por ventas a credito, los que se cancelaran en su reverso ademas de estos recibos.", 10, yOffset, { maxWidth: 180 });
+                yOffset += 10;
+                doc.text("Declaro que el dinero utilizado para el pago de la presente venta, proviene de una fuente licita y por lo tanto", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("no tiene relacion directa o indirecta con dinero, capitales, fondos, beneficios, haberes, excedentes, valores o", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("titulos producto de las actividades o acciones previstas y sancionadas en la ley Organica de Drogas, en la Ley", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("Organica contra la Delincuencia Organizada y Financiamiento al Terrorismo, y todas las demas contempladas en el", 10, yOffset, { maxWidth: 180 });
+                yOffset += 5;
+                doc.text("Codigo Penal y demas leyes especiales.", 10, yOffset, { maxWidth: 180 });
+
+                yOffset += 20;
+                doc.text("FIRMA Y SELLO DEL CLIENTE", 10, yOffset);
+                doc.text("FIRMA VENDEDOR", 150, yOffset);
+                yOffset += 15;
+                doc.text("COPIA ENVIADA POR CORREO ELECTRONICO", 10, yOffset);
+
+                // Exporta el PDF como un blob para poder compartirlo
+                const pdfBlob = doc.output('blob');
+                const file = new File([pdfBlob], 'Recibo_de_Cobro.pdf', { type: 'application/pdf' });
+
+                // Comprueba si la API de Web Share está disponible
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: 'Recibo de Cobro',
+                        text: 'Hola, te comparto tu recibo de cobro. ¡Gracias por tu pago!',
+                    });
+                } else {
+                    // Si la API no está disponible, se simula la descarga del archivo
+                    const url = URL.createObjectURL(pdfBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'Recibo_de_Cobro.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    alert("Función de compartir no disponible. El PDF ha sido descargado.");
+                }
+
+            } catch (error) {
+                console.error('Error al intentar compartir el PDF:', error);
+                alert('No se pudo compartir el recibo. Por favor, inténtelo de nuevo.');
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>055 - Consultas Generales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header .logo {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        /* Estilos para el nuevo botón de retorno como un enlace */
+        .header .back-link {
+            font-size: 24px;
+            cursor: pointer;
+            margin-left: auto;
+            text-decoration: none; /* Quita el subrayado del enlace */
+            color: white; /* Mantiene el color blanco */
+        }
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-grow: 1;
+            align-items: center;
+        }
+        .menu-button {
+            width: 100%;
+            padding: 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+        .menu-button:hover {
+            background-color: #e0e0e0;
+        }
+        .footer {
+            padding: 10px;
+            text-align: center;
+            font-size: 10px;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="logo">f</span>
+            <span>055 - Consultas Generales</span>
+            <a href="indexcyc.html" class="back-link">&lt;-</a>
+        </div>
+
+        <div class="content">
+            <a href="Multiconsulta.html" class="menu-button">MULTI CONSULTA</a>
+            <a href="Gestiondecobranza.html" class="menu-button">GESTIÓN DE COBRANZA</a>
+            <a href="Avaluodededores.html" class="menu-button">AVALÚO DE DEUDORES</a>
+            <a href="Clientesbloqueados.html" class="menu-button">CLIENTES BLOQUEADOS</a>
+            <a href="ListaRelacionDeposito.html" class="menu-button">RELACIÓN DE DEPÓSITO</a>
+            <a href="Relacionderetenciones.html" class="menu-button">RELACION DE RETENCIONES</a>
+            <a href="Planificadordecobranza.html" class="menu-button">PLANIFICADOR DE COBRANZA</a>
+            <a href="Calendario.html" class="menu-button">CALENDARIO</a>
+        </div>
+
+        <div class="footer">
+            © Copyright Wholesale World Information Systems LTD, 2014
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Cliente</title>
+</head>
+<body>
+    <h1>Detalles del Cliente</h1>
+    <p id="client-info"></p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const clientName = params.get('cliente');
+            
+            if (clientName) {
+                document.getElementById('client-info').textContent = `Estás viendo los detalles de: ${decodeURIComponent(clientName)}`;
+            } else {
+                document.getElementById('client-info').textContent = 'No se ha seleccionado ningún cliente.';
+            }
+        });
+    </script>
+</body>
+</html>

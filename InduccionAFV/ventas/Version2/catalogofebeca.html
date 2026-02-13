@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEBECA - Catálogo Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #ffc107;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-color: #333;
+            --light-text: #666;
+            --success-color: #28a745;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            background-color: var(--card-background);
+            overflow-x: hidden;
+            transition: width 0.3s;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+            padding-top: 60px;
+        }
+
+        .sidebar.open {
+            width: 250px;
+        }
+
+        .sidebar-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        .sidebar-header h3, .sidebar-header span {
+            margin: 0;
+        }
+
+        .sidebar a {
+            padding: 12px 15px;
+            text-decoration: none;
+            font-size: 1em;
+            color: var(--text-color);
+            display: block;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .sidebar a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .sidebar .new-notifications {
+            background-color: var(--secondary-color);
+            color: black;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .sidebar .section-title {
+            padding: 12px 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-bottom: 1px solid #ccc;
+            background-color: #e9ecef;
+        }
+
+        /* --- Top Bar --- */
+        .top-bar {
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            box-shadow: var(--shadow-light);
+        }
+
+        .top-bar .menu-button {
+            font-size: 2em;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .top-bar .search-container {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        .top-bar .search-container input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1em;
+        }
+
+        .top-bar .search-container .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        /* --- Main Content Sections --- */
+        .content-section {
+            padding: 15px;
+            margin: 15px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .crypto-container {
+            text-align: center;
+        }
+
+        .crypto-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .crypto-info .crypto-text {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .crypto-info .crypto-text h3 {
+            margin: 0;
+            color: var(--primary-color);
+        }
+        
+        .crypto-info .crypto-text p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+        .crypto-img {
+            width: 80px;
+            height: auto;
+        }
+
+        .qr-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .qr-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .qr-item img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #eee;
+            border-radius: 5px;
+        }
+        
+        .qr-item p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+        
+        .product-section {
+            margin-top: 20px;
+        }
+
+        .product-list {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 10px 0;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .product-list::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .product-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: var(--shadow-light);
+            padding: 10px;
+            flex-shrink: 0;
+            width: 150px;
+            text-align: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .product-card .price {
+            font-weight: bold;
+            color: var(--success-color);
+            margin-top: 8px;
+            font-size: 1.1em;
+        }
+        
+        .product-card .product-title {
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 5px;
+        }
+
+        .product-card .icon-row {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .product-card .icon-row span {
+            cursor: pointer;
+            font-size: 1.4em;
+            color: var(--primary-color);
+            transition: color 0.2s;
+        }
+
+        .product-card .icon-row span:hover {
+            color: #0056b3;
+        }
+
+        .section-title-products, .section-title-arrivals {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .see-all-button {
+            text-align: right;
+            padding-right: 15px;
+            color: var(--primary-color);
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* --- Modals --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--card-background);
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .close-button {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+        }
+
+        .modal-body {
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+        
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .detail-row label {
+            font-weight: bold;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+        
+        .detail-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            background-color: #d3d3d3;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-footer button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .ok-button {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .cancel-button {
+            background-color: #ccc;
+            color: var(--text-color);
+        }
+
+        .modal-retenciones .modal-body {
+            display: block;
+        }
+
+        .modal-retenciones .modal-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .modal-retenciones .modal-body th, .modal-retenciones .modal-body td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        .modal-retenciones .modal-body th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-retenciones .modal-body tr.selected {
+            background-color: #e0f7fa;
+        }
+
+        .total-section {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .total-section .input-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .total-section input {
+            width: 100px;
+            text-align: right;
+        }
+
+        .total-section button {
+            margin-left: auto;
+        }
+        
+        /* Tooltips */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* --- Nuevo estilo para el botón de volver --- */
+        .back-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* --- Media Queries for Mobile --- */
+        @media (max-width: 768px) {
+            .container.shift {
+                transform: translateX(250px);
+            }
+            .sidebar {
+                box-shadow: 5px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            .top-bar {
+                padding: 10px 15px;
+            }
+            .crypto-info {
+                flex-direction: column;
+            }
+            .crypto-info .crypto-text {
+                text-align: center;
+            }
+            .qr-container {
+                flex-direction: column;
+            }
+            .modal-content {
+                width: 95%;
+            }
+            .tooltip .tooltiptext {
+                /* Larger tooltip for better touch interaction */
+                bottom: 110%;
+                left: 0;
+                transform: none;
+                width: 150px;
+                white-space: normal;
+            }
+            .tooltip:not(:hover) .tooltiptext {
+                visibility: hidden;
+                opacity: 0;
+            }
+            /* Show tooltips by default on elements with 'mobile-tooltip' class */
+            .mobile-tooltip .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+                pointer-events: none; /* No interaction */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<button class="back-button" onclick="history.back()">Volver</button>
+
+<div id="welcomeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            Bienvenido a FEBECA
+            <span class="close-button" onclick="closeModal('welcomeModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>¡Hola!</strong> Te damos la bienvenida a tu catálogo digital. Aquí tienes algunas ayudas para empezar:</p>
+            <ul>
+                <li>Usa el botón de menú <strong style="font-size: 1.2em;">&#9776;</strong> para ver las opciones. ¡Desliza el dedo a la derecha desde el borde de la pantalla para abrir el menú!</li>
+                <li>En la barra superior, puedes buscar productos por nombre o código.</li>
+                <li>Explora los productos en las secciones de "Marcas Destacadas" "Productos Recientemente Vistos" "Nuevas Existencias" y más abajo.</li>
+                <li>Si tienes dudas, los <span style="font-weight: bold; border-bottom: 2px dashed #007bff;">mensajes de ayuda</span> (tooltips) te guiarán.</li>
+                <li>Aprende a usar este catalogo ya que los clientes lo tienen instalado en sus telefonos<span style="font-weight: bold; border-bottom: 2px dashed #007bff;">y si tienen dudas sobre él, podemos ayudarlos</span> Excelente!!!</li>
+                <li>Recuerda el cliente puede crear un registro de sus clientes y en el carrito amarillo puede generar una cotizacion con sus datos para sus clientes finales<span style="font-weight: bold; border-bottom: 2px dashed #007bff;"></span></li>
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button" onclick="closeModal('welcomeModal')">Entendido</button>
+        </div>
+    </div>
+</div>
+
+<div id="sidebar" class="sidebar">
+    <div class="sidebar-header" onclick="toggleSidebar()">
+        <h3>Mayorista de Valor</h3>
+        <span>Bienvenido RIf0000000</span>
+    </div>
+    <a href="#" class="tooltip">Inicio<span class="tooltiptext">Volver a la pantalla principal.</span></a>
+    <a href="#" class="tooltip">Mi Compañía<span class="tooltiptext">Carga información de su empresa.</span></a>
+    <a href="#" class="tooltip">Notificaciones <span class="new-notifications">211 nuevas</span><span class="tooltiptext">Ver las notificaciones más recientes (cambios de existencia).</span></a>
+    <a href="#" class="tooltip">Listas de Productos<span class="tooltiptext">Explorar listas de productos creadas según la necesidad del usuario.</span></a>
+    <a href="#" class="tooltip">Recomendados<span class="tooltiptext">Ver productos recomendados.</span></a>
+    <a href="#" class="tooltip">Clientes<span class="tooltiptext">Administrar la lista de clientes. Crear o seleccionar clientes.</span></a>
+    
+    <div class="section-title">Solicitudes de Cotización Pedidos a Febeca(Creadas Carrito Azul Pedidos a Febeca)</div>
+    <a href="#" class="tooltip">Solicitud Abierta<span class="tooltiptext">Ver cotizaciones pendientes.</span></a>
+    <a href="#" class="tooltip">Solicitudes Cerradas<span class="tooltiptext">Ver cotizaciones finalizadas.</span></a>
+    
+    <div class="section-title">Mis Cotizaciones(Creadas Carrito amarillo dirigidas a clientes finales)</div>
+    <a href="#" class="tooltip">Cotizaciones Abiertas<span class="tooltiptext">Ver mis cotizaciones pendientes por culminar. Las cotizaciones se crean al seleccionar el carrito amarillo.</span></a>
+    <a href="#" class="tooltip">Cotizaciones Cerradas<span class="tooltiptext">Ver mis cotizaciones finalizadas.</span></a>
+
+    <div class="section-title">Comunicación</div>
+    <a href="#" class="tooltip">Contáctanos arivera@mayoreo.biz<span class="tooltiptext">Enviar un mensaje a soporte.</span></a>
+    <a href="mailto:arivera@mayoreo,biz" class="tooltip">
+      Escribir a Soporte
+    <span class="tooltiptext">Envíanos un correo electrónico para soporte o recomendaciones.</span>
+    </a>
+    <a href="tel:+584244444066" class="tooltip">
+    Llamar a Soporte
+    <span class="tooltiptext">Llámanos por teléfono para una atención directa(04244444066).</span>
+    </a>
+    <a href="#" class="tooltip">Invitar Amigos<span class="tooltiptext">Invitar a otros a usar la aplicación.</span></a>
+
+    <div class="section-title">Configuración</div>
+    <a href="#" class="tooltip">Mi Cuenta<span class="tooltiptext">Configurar perfil sincroniza y detalles de la cuenta.</span></a>
+    <a href="#" class="tooltip">Manejo de Imágenes<span class="tooltiptext">Administrar imágenes de productos.</span></a>
+
+    <div class="section-title">Ayuda</div>
+    <a href="#" class="tooltip">Mensaje Bienvenida<span class="tooltiptext">Ver el mensaje de bienvenida.</span></a>
+    <a href="#" class="tooltip">Reportar Error<span class="tooltiptext">Enviar un reporte de error.</span></a>
+    <a href="#" class="tooltip">Acerca de<span class="tooltiptext">Ver información de la aplicación.</span></a>
+</div>
+
+<div class="container" id="main-content">
+    
+    <div class="top-bar">
+        <button class="menu-button tooltip mobile-tooltip" onclick="toggleSidebar()">&#9776;<span class="tooltiptext">Abre el menú lateral para navegar por el catálogo.</span></button>
+        <div class="search-container tooltip mobile-tooltip">
+            <input type="text" placeholder="Buscar productos...">
+            <span class="search-icon">&#128269;</span>
+            <span class="tooltiptext">Busca productos por nombre o código.</span>
+        </div>
+    </div>
+    
+    <div class="content-section crypto-container mobile-tooltip">
+        <div class="crypto-info">
+            <div class="crypto-text">
+                <h3>¡Paga con Tether (USDT)!</h3>
+                <p>Aprovecha los descuentos por pago con criptomoneda.</p>
+            </div>
+            <img src="cripto.png" alt="Logo de Tether" class="crypto-img">
+        </div>
+        <p style="font-size: 0.9em; color: var(--light-text);">Escanea el código QR o usa las direcciones de nuestra Wallet para pagar:</p>
+        <div class="qr-container">
+            <div class="qr-item">
+                <img src="codigoqr.png" alt="QR ERC20">
+                <p>ERC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">0x0AF8eBeD4800d7B8EaE0db7feC7c9Efb60FAc193A</p>
+            </div>
+            <div class="qr-item">
+                <img src="cripto.png" alt="QR TRC20">
+                <p>TRC-20</p>
+                <p style="font-size: 0.8em; word-wrap: break-word;">TD6CrQk3BcPPeFLqZJm2NptEQLQZM9H4Cd</p>
+            </div>
+        </div>
+        <p style="text-align: right; font-size: 0.8em; color: var(--light-text);">Publicado: 10/06/2025</p>
+    </div>
+
+    <div class="product-section">
+        <h2 class="section-title-products">Productos Destacados</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="extractor.png" alt="Extractor de Aire">
+                <div class="product-title">Extractor de Aire 6 FP</div>
+                <div class="price">USD 100,39</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="ventiladordemesa.png" alt="Ventilador de Mesa">
+                <div class="product-title">Ventilador de Mesa Oscilante</div>
+                <div class="price">USD 31,07</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Válvula de Aire">
+                <div class="product-title">Válvula Inser...</div>
+                <div class="price">USD 20,50</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+        <div class="see-all-button">VER TODOS</div>
+    </div>
+
+    <div class="product-section">
+        <h2 class="section-title-arrivals">Nuevas Existencias</h2>
+        <div class="product-list">
+            <div class="product-card">
+                <img src="pinturanaranja.png" alt="Pintura Naranja">
+                <div class="product-title">Pintura Esmalte Brillante Naranja</div>
+                <div class="price">USD 36,40</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="pinturanegra.png" alt="Pintura Negra">
+                <div class="product-title">Pintura Esmalte Brillante Negro</div>
+                <div class="price">USD 10,66</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="teflonliquido.png" alt="Teflón Líquido">
+                <div class="product-title">Teflón Líquido Sellador</div>
+                <div class="price">USD 5,75</div>
+                <div class="icon-row">
+                    <span class="tooltip">❤️<span class="tooltiptext">Añadir a favoritos.</span></span>
+                    <span class="tooltip">🛒<span class="tooltiptext">Añadir al carrito.</span></span>
+                    <span class="tooltip">💬<span class="tooltiptext">Compartir este producto.</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="retencionModal" class="modal" onclick="closeModal('retencionModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            098 - Detalle Retencion
+            <span class="close-button" onclick="closeModal('retencionModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <label>Comprobante:</label>
+                <input type="text" value="20250800000000" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Tipo Doc:</label>
+                <input type="text" value="FAC" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Doc:</label>
+                <input type="text" value="06886193" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Nro. Control:</label>
+                <input type="text" value="" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Alicuota (%):</label>
+                <input type="text" value="16,00% Ret: 75.0%" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Base:</label>
+                <input type="text" value="20.808,38" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Impuesto:</label>
+                <input type="text" value="2.869,93" readonly>
+            </div>
+            <div class="detail-row">
+                <label>Retención:</label>
+                <input type="text" value="2.152,44" readonly>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="ok-button">OK</button>
+            <button class="cancel-button">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="retencionesIVAModal" class="modal modal-retenciones" onclick="closeModal('retencionesIVAModal')">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            124 - Retenciones de IVA
+            <span class="close-button" onclick="closeModal('retencionesIVAModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tipo</th>
+                        <th>No. Fiscal</th>
+                        <th>Monto (USD)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886186</td>
+                        <td>9,60</td>
+                    </tr>
+                    <tr onclick="toggleSelection(this)">
+                        <td><input type="checkbox"></td>
+                        <td>FAC</td>
+                        <td>06886193</td>
+                        <td>18,92</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="total-section">
+                <span>--Seleccione--</span>
+                <select>
+                    <option>Escanear Retención</option>
+                    <option>Cargar PDF</option>
+                    <option>Cargar Imagen</option>
+                    <option>Cargar Manual</option>
+                </select>
+                <label>Total retenido:</label>
+                <input type="text" value="0" readonly>
+                <div class="modal-footer">
+                    <button class="ok-button">Validar</button>
+                    <button class="ok-button">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        if (sidebar.style.width === '250px') {
+            sidebar.style.width = '0';
+            mainContent.classList.remove('shift');
+        } else {
+            sidebar.style.width = '250px';
+            mainContent.classList.add('shift');
+        }
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+
+    function toggleSelection(row) {
+        const checkbox = row.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        row.classList.toggle('selected', checkbox.checked);
+    }
+
+    // Mostrar el modal de bienvenida al cargar la página si es la primera vez
+    window.onload = function() {
+        const hasVisited = localStorage.getItem('hasVisitedFEBECA');
+        if (!hasVisited) {
+            openModal('welcomeModal');
+            localStorage.setItem('hasVisitedFEBECA', 'true');
+        }
+
+        // Agregar evento de arrastrar para el menú lateral en móviles
+        let startX = 0;
+        let isDragging = false;
+        const mainContent = document.getElementById('main-content');
+        const sidebar = document.getElementById('sidebar');
+
+        mainContent.addEventListener('touchstart', (e) => {
+            if (!sidebar.classList.contains('open')) {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            }
+        });
+
+        mainContent.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                const currentX = e.touches[0].clientX;
+                const diffX = currentX - startX;
+                if (diffX > 50) { // Si arrastra más de 50px a la derecha
+                    toggleSidebar();
+                    isDragging = false; // Evitar que se active de nuevo hasta el próximo toque
+                }
+            }
+        });
+
+        mainContent.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+    };
+</script>
+
+</body>
+</html>

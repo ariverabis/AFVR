@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVF - Finalizar Pedido</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-size: 14px;
+        }
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+        .header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.2em;
+        }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .back-button {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 0;
+            margin-right: 15px;
+        }
+        .header .header-text {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .header .options {
+            display: flex;
+            align-items: center;
+        }
+        .header .options button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 5px;
+            color: black;
+        }
+        .header .options .fin-button {
+            background-color: white;
+        }
+        .header .options .delete-button {
+            background-color: #d3d3d3;
+        }
+        .message-bar { 
+            background-color: #ffeb3b; 
+            color: #333; 
+            padding: 10px; 
+            text-align: center; 
+            font-size: 12px; 
+            font-weight: bold; 
+            border-bottom: 1px solid #fbc02d; 
+        }
+        .info-form {
+            padding: 20px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+            font-size: 0.9em;
+            position: relative;
+        }
+        .form-group label {
+            flex: 1;
+            font-weight: bold;
+        }
+        .form-group .input-group {
+            display: flex;
+            flex: 2;
+            gap: 5px;
+        }
+        .form-group .input-group input, .form-group .input-group select {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+            background-color: #d3d3d3;
+            font-size: 0.9em;
+        }
+        .form-group .input-group input:read-only {
+            background-color: #d3d3d3;
+        }
+        .total-section {
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+        }
+        .total-section .form-group label {
+            font-size: 1em;
+        }
+        .total-section .form-group input {
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .fin-button-bottom {
+            background-color: #28a745;
+            color: white;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            width: 90%;
+            font-size: 1em;
+        }
+        .discount-table {
+            margin: 20px;
+            border-collapse: collapse;
+            width: calc(100% - 40px);
+            text-align: center;
+        }
+        .discount-table th, .discount-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+        .discount-table th {
+            background-color: #007bff;
+            color: white;
+        }
+        .discount-table .mayor-a75 {
+            background-color: #e6f2ff;
+            color: #007bff;
+        }
+        .observations {
+            padding: 0 20px 20px 20px;
+        }
+        .observations .input-group {
+            display: flex;
+            gap: 5px;
+        }
+        .observations input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #d3d3d3;
+        }
+        .observations button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 350px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-button:hover,
+        .close-button:focus {
+            color: black;
+            text-decoration: none;
+        }
+
+        /* Tooltip styles */
+        .tooltip { position: relative; display: inline-block; }
+        .tooltip .tooltiptext { visibility: hidden; width: 150px; background-color: rgba(0, 0, 0, 0.8); color: #fff; text-align: center; border-radius: 5px; padding: 5px; position: absolute; z-index: 1; bottom: 125%; left: 50%; margin-left: -75px; opacity: 0; transition: opacity 0.3s; font-size: 12px; }
+        .tooltip:hover .tooltiptext { visibility: visible; opacity: 1; }
+        .header .tooltiptext { bottom: auto; top: 125%; }
+        .form-group .tooltiptext { bottom: 100%; }
+        .tooltip-right .tooltiptext { left: 100%; margin-left: 5px; top: 50%; transform: translateY(-50%); }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title">
+            <a href="#" class="back-button tooltip" onclick="window.history.back()">&#8592;<span class="tooltiptext">Volver al listado de productos.</span></a>
+            <span class="header-text">016 - Finalizar Pedido</span>
+        </div>
+        <div class="options">
+            <button onclick="generarPDF()" class="fin-button tooltip">Fin<span class="tooltiptext">Finalizar pedido y generar el documento.</span></button>
+            <button class="delete-button tooltip">X<span class="tooltiptext">Eliminar el pedido actual.</span></button>
+        </div>
+    </div>
+    
+    <div class="message-bar">Verifique los datos del pedido ,  valide la lista de precios bs. o $ y presione "Fin" para continuar. Existe un descuento por flete depende del monto del pedido en este caso es del 100% si pasa los 75$.</div>
+
+    <div class="info-form">
+        <div class="form-group">
+            <label class="tooltip">Pedido:<span class="tooltiptext">Número de identificación del pedido.</span></label>
+            <div class="input-group">
+                <input type="text" id="pedido-nro" value="60001" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="tooltip">Fecha:<span class="tooltiptext">Fecha en que se realizó el pedido.</span></label>
+            <div class="input-group">
+                <input type="text" id="fecha" value="14-08-2025" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="tooltip">Condición:<span class="tooltiptext">Condiciones de pago y descuento aplicadas.</span></label>
+            <div class="input-group">
+                <input type="text" value="0% DE DESCUENTO A 30 DIAS" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="nivel" class="tooltip">Nivel:<span class="tooltiptext">Nivel de precios para el pedido (Mayorista B con 15% de recargo o Mayorista D sin recargo).</span></label>
+            <div class="input-group">
+                <select id="nivel" onchange="calcularTotales()">
+                    <option value="MAYOREOD" selected>MAYOREOD</option>
+                    <option value="MAYOREOB">MAYOREOB</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="tooltip">Flete (USD):<span class="tooltiptext">Monto del flete. Se aplica un 100% de descuento si el subtotal es mayor a $75.</span></label>
+            <div class="input-group">
+                <input type="text" id="flete" value="0,00" readonly>
+                <input type="text" id="flete-desc" value="100" readonly>
+                <span>(%)</span>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <div class="form-group">
+                <label class="tooltip">Subtotal (USD):<span class="tooltiptext">Suma de los precios de los productos. Base imponible.</span></label>
+                <div class="input-group">
+                    <input type="text" id="subtotal" value="2.702,00" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="tooltip">IVA Ret. (12%):<span class="tooltiptext">Monto de la retención del IVA (12% del subtotal).</span></label>
+                <div class="input-group">
+                    <input type="text" id="iva-ret" value="324,24" readonly>
+                    <button type="button" onclick="openHelpModal()" class="tooltip tooltip-right">Opc.<span class="tooltiptext">Ver opciones de retención de IVA.</span></button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="tooltip">IVA Rest. (4%):<span class="tooltiptext">Monto restante del IVA (4% del subtotal), que debe ser pagado.</span></label>
+                <div class="input-group">
+                    <input type="text" id="iva-rest" value="108,08" readonly>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="tooltip">Total (USD):<span class="tooltiptext">Monto final a pagar, incluyendo flete e IVA.</span></label>
+                <div class="input-group">
+                    <input type="text" id="total-usd" value="3.134,32" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="discount-table">
+        <thead>
+            <tr>
+                <th>Monto Pedido (USD)</th>
+                <th>% Desc Flete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="mayor-a75">
+                <td>Mayor a 75</td>
+                <td>100</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="observations">
+        <label class="tooltip">Observaciones:<span class="tooltiptext">Añade comentarios adicionales al pedido.</span></label>
+        <div class="input-group">
+            <input type="text" id="observaciones">
+            <button type="button" class="tooltip tooltip-right">+</button>
+        </div>
+    </div>
+    
+    <button class="fin-button-bottom tooltip" onclick="generarPDF()">Finalizar Pedido<span class="tooltiptext">Finaliza el pedido y lo procesa en el sistema.</span></button>
+
+</div>
+
+<div id="helpModal" class="modal" onclick="closeHelpModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <span class="close-button" onclick="closeHelpModal(event)">&times;</span>
+        <h3>Opciones de IVA</h3>
+        <p><b>IVA Ret. (12%):</b> El 12% del IVA total del 16% es retenido por el cliente.</p>
+        <p><b>IVA Rest. (4%):</b> El 4% restante del IVA total del 16% es pagado por el cliente.</p>
+        <p>El botón "Opc." solo sirve para ver esta ayuda. No modifica los valores, ya que el cálculo se basa en un 16% fijo de IVA, dividido en 12% y 4%.</p>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Se carga la data inicial del local storage
+        const productosMock = [{
+            "codigo": "0101002",
+            "nombre": "Receptaculo De Pvc Blanco Bornes Automaticos Bticino",
+            "cantidad": 1,
+            "precioBase": 10.70
+        }, {
+            "codigo": "0101003",
+            "nombre": "Socate metalico e27 para intemperie Eagle",
+            "cantidad": 1,
+            "precioBase": 10.70
+        }, {
+            "codigo": "0202001",
+            "nombre": "Tornillo para madera",
+            "cantidad": 50,
+            "precioBase": 0.50
+        }, {
+            "codigo": "0303001",
+            "nombre": "Bombillo LED 10W",
+            "cantidad": 5,
+            "precioBase": 2.50
+        }, {
+            "codigo": "0404001",
+            "nombre": "Destornillador de estrella",
+            "cantidad": 2,
+            "precioBase": 8.00
+        }];
+        localStorage.setItem('productosEnPedido', JSON.stringify(productosMock));
+
+        calcularTotales();
+    });
+
+    function calcularTotales() {
+        const nivel = document.getElementById('nivel').value;
+        let productos = JSON.parse(localStorage.getItem('productosEnPedido')) || [];
+        
+        let subtotal = 0;
+        const recargoTasa = 0.15;
+
+        productos.forEach(producto => {
+            let precioActual = producto.precioBase;
+            if (nivel === 'MAYOREOB') {
+                precioActual = producto.precioBase * (1 + recargoTasa);
+            }
+            producto.precio = precioActual;
+
+            // Generar y aplicar un descuento aleatorio si no existe
+            if (producto.descuentoPorcentaje === undefined) {
+                // Descuento entre 1% y 5%
+                producto.descuentoPorcentaje = Math.random() * (0.05 - 0.01) + 0.01;
+            }
+
+            // Recalcular subtotal de la línea de producto con el descuento
+            const subtotalSinDescuento = producto.cantidad * precioActual;
+            const subtotalConDescuento = subtotalSinDescuento * (1 - producto.descuentoPorcentaje);
+            producto.subtotal = subtotalConDescuento;
+            
+            subtotal += producto.subtotal;
+        });
+
+        const ivaRetTasa = 0.12;
+        const ivaRestTasa = 0.04;
+        const fleteTasa = 0.05;
+        const descuentoFleteThreshold = 75;
+
+        // Calcular flete
+        let flete = subtotal * fleteTasa;
+        let descuentoFlete = 0;
+        if (subtotal > descuentoFleteThreshold) {
+            descuentoFlete = 100;
+            flete = 0;
+        }
+
+        // Calcular IVA
+        const ivaRet = subtotal * ivaRetTasa;
+        const ivaRest = subtotal * ivaRestTasa;
+        
+        // Calcular total
+        const total = subtotal + flete + ivaRet + ivaRest;
+
+        // Actualizar el DOM
+        document.getElementById('subtotal').value = subtotal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('flete').value = flete.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('flete-desc').value = descuentoFlete;
+        document.getElementById('iva-ret').value = ivaRet.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('iva-rest').value = ivaRest.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('total-usd').value = total.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        
+        // Guardar los productos actualizados en localStorage para el PDF
+        localStorage.setItem('productosEnPedido', JSON.stringify(productos));
+        localStorage.setItem('subtotal', subtotal);
+    }
+
+    function generarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        const productos = JSON.parse(localStorage.getItem('productosEnPedido')) || [];
+        const subtotal = document.getElementById('subtotal').value;
+        const ivaRet = document.getElementById('iva-ret').value;
+        const ivaRest = document.getElementById('iva-rest').value;
+        const total = document.getElementById('total-usd').value;
+        const renglones = productos.length;
+
+        let y = 10;
+        doc.setFontSize(16);
+        doc.text("Febeca, C.A.", 10, y);
+        y += 7;
+        doc.setFontSize(12);
+        doc.text("Pedido Nro.: " + document.getElementById('pedido-nro').value, 10, y);
+        y += 7;
+        doc.text("CLIENTE: A-40, C.A", 10, y);
+        y += 7;
+        doc.text("FECHA: " + document.getElementById('fecha').value, 10, y);
+        y += 7;
+        doc.text("TIPO DOCUMENTO: Pedido", 10, y);
+        y += 10;
+
+        // Nueva columna "DESCUENTO"
+        const tableColumn = ["CODIGO", "ARTICULO", "CANT", "PRECIO U.", "DESCUENTO", "PRECIO NETO"];
+        const tableRows = [];
+
+        productos.forEach(producto => {
+            const productoData = [
+                producto.codigo,
+                producto.nombre,
+                producto.cantidad,
+                producto.precio.toFixed(2),
+                (producto.descuentoPorcentaje * 100).toFixed(0) + '%', // Mostrar el porcentaje de descuento
+                producto.subtotal.toFixed(2)
+            ];
+            tableRows.push(productoData);
+        });
+
+        doc.autoTable({
+            startY: y,
+            head: [tableColumn],
+            body: tableRows,
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [0, 123, 255] }
+        });
+        
+        const finalY = doc.lastAutoTable.finalY + 10;
+        doc.setFontSize(10);
+        doc.text(`TOTAL RENGLONES: ${renglones}`, 10, finalY);
+        doc.text(`SubTotal USD: ${subtotal}`, 10, finalY + 5);
+        doc.text(`IVA Ret. (12%): ${ivaRet}`, 10, finalY + 10);
+        doc.text(`IVA Rest. (4%): ${ivaRest}`, 10, finalY + 15);
+        doc.text(`TOTAL USD: ${total}`, 10, finalY + 20);
+
+        doc.save('pedido_finalizado.pdf');
+        alert('El pedido ha sido finalizado y el PDF ha sido generado y guardado.');
+        window.location.href = 'clientes.html';
+    }
+
+    function openHelpModal() {
+        document.getElementById('helpModal').style.display = 'flex';
+    }
+
+    function closeHelpModal(event) {
+        if (event.target.id === 'helpModal' || event.target.className === 'close-button') {
+            document.getElementById('helpModal').style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>

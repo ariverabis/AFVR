@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>065 - Multi Consulta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header .logo {
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        .header .help-icon {
+            font-size: 24px;
+            margin-left: auto;
+            cursor: pointer;
+            background-color: #0066d9;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            text-align: center;
+            line-height: 28px;
+        }
+        .toolbar {
+            padding: 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .toolbar-group label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .toolbar-group select, .toolbar-group input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .toolbar-group .date-input {
+            font-size: 12px;
+            padding: 3px;
+        }
+        .toolbar-group button {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #eee;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .table-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        tbody tr {
+            cursor: pointer;
+        }
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+        tbody tr.selected {
+            background-color: #cce0ff;
+        }
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-top: 1px solid #ccc;
+        }
+        .bottom-bar-text {
+            font-size: 12px;
+            color: #555;
+            flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+        }
+        .bottom-bar .buttons {
+            display: flex;
+            gap: 10px; /* Espacio entre los botones */
+        }
+        .bottom-bar button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #eee;
+            font-size: 12px;
+            cursor: pointer;
+            width: 80px; /* Ancho fijo para los botones */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 10px;
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="screen-container">
+        <div class="header">
+            <span class="logo">f</span>
+            <span>065 - Multi Consulta</span>
+            <span class="help-icon" id="help-icon">?</span>
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-group">
+                <label for="docType">Tipo Doc:</label>
+                <select id="docType">
+                    <option selected>FACTURAS</option>
+                    <option>NC_DEVOLUCION</option>
+                    <option>NC_BONIFICACION</option>
+                    <option>ND_CARGOSXMORA</option>
+                    <option>IGTF</option>
+                    <option>RECIBO</option>
+                    <option>FACTURA ALMACEN</option>
+                    <option>ND_MERCANCIA</option>
+                    <option>ND_CHD</option>
+                    <option>PED PRE-PAGO</option>
+                    <option>IGTF TEMP</option>
+                    <option>NC VIUDA</option>
+                    <option>NCB VIUDA</option>
+                    <option>RECV VIUDA</option>
+                    <option>RETV VIUDA</option>
+                </select>
+            </div>
+            <div class="toolbar-group">
+                <label>Desde:</label>
+                <input type="date" id="dateFrom" class="date-input">
+                <label>Hasta:</label>
+                <input type="date" id="dateTo" class="date-input">
+                <button id="dateFilterBtn" onclick="alert('Criterio de búsqueda por fecha aplicado')">C</button>
+            </div>
+        </div>
+
+        <div class="table-container" id="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>E</th>
+                        <th>Documento</th>
+                        <th>F. Emisión</th>
+                        <th>F. Vencimiento</th>
+                        <th>Forma de Pago</th>
+                        <th>Doc. Origen</th>
+                        <th>Monto (USD)</th>
+                        <th>Monto (VES)</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-list">
+                    <tr data-client-code="2531314" data-client-name="V. ROMERO MINIMARKET, C.A." data-date="2025-08-15"><td>V</td><td>06901342</td><td>15-08-25</td><td>14-09-25</td><td>PAGO GENERICO</td><td>PED.6901342</td><td>495,40</td><td>67.196,01</td></tr>
+                    <tr data-client-code="7890123" data-client-name="COMERCIALIZADORA DELTA, C.A." data-date="2025-08-15"><td>V</td><td>06901343</td><td>15-08-25</td><td>29-09-25</td><td>PAGO GENERICO</td><td>PED.6901343</td><td>135,61</td><td>18.394,13</td></tr>
+                    <tr data-client-code="3456789" data-client-name="INVERSIONES ALFA, S.A." data-date="2025-08-15"><td>V</td><td>06901373</td><td>15-08-25</td><td>29-09-25</td><td>PAGO GENERICO</td><td>PED.6901373</td><td>223,71</td><td>30.344,00</td></tr>
+                    <tr data-client-code="9012345" data-client-name="DISTRIBUIDORA GAIA" data-date="2025-08-15"><td>V</td><td>06901404</td><td>15-08-25</td><td>14-09-25</td><td>PAGO GENERICO</td><td>PED.6901404</td><td>327,56</td><td>44.430,21</td></tr>
+                    <tr data-client-code="6789012" data-client-name="LA TIENDITA DE LA ESQUINA" data-date="2025-08-15"><td>V</td><td>06901405</td><td>15-08-25</td><td>14-09-25</td><td>PAGO GENERICO</td><td>PED.6901405</td><td>144,20</td><td>19.559,27</td></tr>
+                    <tr data-client-code="4567890" data-client-name="ABASTOS CENTRO, C.A." data-date="2025-08-16"><td>V</td><td>06901793</td><td>16-08-25</td><td>30-09-25</td><td>PAGO GENERICO</td><td>PED.6901793</td><td>153,82</td><td>21.056,90</td></tr>
+                    <tr data-client-code="1234567" data-client-name="BODEGON LA PRIMAVERA" data-date="2025-08-16"><td>V</td><td>06901867</td><td>16-08-25</td><td>28-08-25</td><td>PAGO GENERICO</td><td>PED.6901867</td><td>206,82</td><td>28.312,23</td></tr>
+                    <tr data-client-code="8901234" data-client-name="SUPERMERCADO SOL" data-date="2025-08-18"><td>V</td><td>06901936</td><td>18-08-25</td><td>14-09-25</td><td>PAGO GENERICO</td><td>PED.6901936</td><td>463,32</td><td>63.425,31</td></tr>
+                    <tr data-client-code="5678901" data-client-name="MERCADO FRESCO" data-date="2025-08-18"><td>V</td><td>06901963</td><td>18-08-25</td><td>17-09-25</td><td>PAGO GENERICO</td><td>PED.6901963</td><td>969,93</td><td>132.776,72</td></tr>
+                    <tr data-client-code="2345678" data-client-name="LA COLMENA ABASTOS" data-date="2025-08-18"><td>V</td><td>06902000</td><td>18-08-25</td><td>17-09-25</td><td>PAGO GENERICO</td><td>PED.6902000</td><td>21,91</td><td>2.999,33</td></tr>
+                    <tr data-client-code="9012345" data-client-name="DISTRIBUIDORA GAIA" data-date="2025-08-18"><td>V</td><td>06902018</td><td>18-08-25</td><td>02-10-25</td><td>PAGO GENERICO</td><td>PED.6902018</td><td>401,42</td><td>54.951,63</td></tr>
+                    <tr data-client-code="6789012" data-client-name="LA TIENDITA DE LA ESQUINA" data-date="2025-08-18"><td>V</td><td>06902020</td><td>18-08-25</td><td>18-08-25</td><td>PAGO GENERICO</td><td>PED.6902020</td><td>133,80</td><td>18.316,30</td></tr>
+                    <tr data-client-code="3456789" data-client-name="INVERSIONES ALFA, S.A." data-date="2025-08-18"><td>V</td><td>06902021</td><td>18-08-25</td><td>17-09-25</td><td>PAGO GENERICO</td><td>PED.6902021</td><td>224,73</td><td>30.763,99</td></tr>
+                    <tr data-client-code="1234567" data-client-name="BODEGON LA PRIMAVERA" data-date="2025-08-18"><td>V</td><td>06902022</td><td>18-08-25</td><td>17-09-25</td><td>PAGO GENERICO</td><td>PED.6902022</td><td>623,93</td><td>85.411,71</td></tr>
+                    <tr data-client-code="2531314" data-client-name="V. ROMERO MINIMARKET, C.A." data-date="2025-08-18"><td>V</td><td>06902067</td><td>18-08-25</td><td>02-10-25</td><td>PAGO GENERICO</td><td>PED.6902067</td><td>24,86</td><td>3.403,16</td></tr>
+                    <tr data-client-code="4567890" data-client-name="ABASTOS CENTRO, C.A." data-date="2025-08-18"><td>V</td><td>06902086</td><td>18-08-25</td><td>18-09-25</td><td>PAGO GENERICO</td><td>PED.6902086</td><td>225,72</td><td>30.899,51</td></tr>
+                    <tr data-client-code="7890123" data-client-name="COMERCIALIZADORA DELTA, C.A." data-date="2025-08-19"><td>V</td><td>06902375</td><td>19-08-25</td><td>18-09-25</td><td>PAGO GENERICO</td><td>PED.6902375</td><td>50,45</td><td>6.906,26</td></tr>
+                    <tr data-client-code="5678901" data-client-name="MERCADO FRESCO" data-date="2025-08-19"><td>V</td><td>06902380</td><td>19-08-25</td><td>18-09-25</td><td>PAGO GENERICO</td><td>PED.6902380</td><td>49,20</td><td>6.735,14</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bottom-bar">
+            <span class="bottom-bar-text" id="client-info"></span>
+            <div class="buttons">
+                <button onclick="window.location.href='MenuCobranza.html'">DEVOLVER</button>
+                <button onclick="alert('Se envió a la impresora')">IMPRIMIR</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Ayuda - Consulta de Documentos</h2>
+            <p><strong>Funcionalidad de la pantalla:</strong></p>
+            <ul>
+                <li><strong>Tipo Doc:</strong> Utilice este menú desplegable para seleccionar el tipo de documento que desea consultar.</li>
+                <li><strong>Rango de Fechas:</strong> Seleccione la fecha de inicio y de fin. Haga clic en el botón <strong>'C'</strong> para aplicar el filtro.</li>
+                <li><strong>Selección de Factura:</strong> Haga clic sobre una fila de la tabla para ver el código y nombre del cliente.</li>
+                <li><strong>Botón Imprimir:</strong> Presione para generar un reporte.</li>
+                <li><strong>Botón Devolver:</strong> Regresa a la pantalla del menú principal de Cobranza.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const docTypeSelect = document.getElementById('docType');
+            const dateFromInput = document.getElementById('dateFrom');
+            const dateToInput = document.getElementById('dateTo');
+            const dateFilterBtn = document.getElementById('dateFilterBtn');
+            const tableContainer = document.getElementById('table-container');
+            const invoiceList = document.getElementById('invoice-list');
+            const clientInfoSpan = document.getElementById('client-info');
+            const allRows = invoiceList.querySelectorAll('tr');
+
+            const helpIcon = document.getElementById('help-icon');
+            const modal = document.getElementById('helpModal');
+            const closeModalBtn = document.getElementsByClassName('close-btn')[0];
+
+            // Función para mostrar la tabla de facturas
+            const showInvoices = () => {
+                tableContainer.style.display = 'block';
+                allRows.forEach(row => {
+                    row.style.display = '';
+                });
+                clientInfoSpan.textContent = '';
+            };
+
+            // Función para ocultar todo el contenido
+            const hideAllContent = () => {
+                tableContainer.style.display = 'none';
+                clientInfoSpan.textContent = '';
+            };
+
+            // Maneja el cambio en el select de Tipo Doc
+            docTypeSelect.addEventListener('change', (event) => {
+                const selectedValue = event.target.value;
+                if (selectedValue === 'FACTURAS') {
+                    showInvoices();
+                } else {
+                    hideAllContent();
+                }
+            });
+
+            // Maneja el clic en las filas de la tabla
+            invoiceList.addEventListener('click', (event) => {
+                const row = event.target.closest('tr');
+                if (row) {
+                    allRows.forEach(r => r.classList.remove('selected'));
+                    row.classList.add('selected');
+
+                    const clientCode = row.getAttribute('data-client-code');
+                    const clientName = row.getAttribute('data-client-name');
+                    clientInfoSpan.textContent = `[${clientCode}] ${clientName} - ${clientCode}`;
+                }
+            });
+
+            // Maneja el clic en el botón de filtro de fechas
+            dateFilterBtn.addEventListener('click', () => {
+                const dateFrom = new Date(dateFromInput.value);
+                const dateTo = new Date(dateToInput.value);
+
+                allRows.forEach(row => {
+                    const rowDate = new Date(row.getAttribute('data-date'));
+                    if (dateFromInput.value && dateToInput.value && !isNaN(dateFrom) && !isNaN(dateTo)) {
+                        if (rowDate >= dateFrom && rowDate <= dateTo) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    } else {
+                        row.style.display = '';
+                    }
+                });
+            });
+
+            // Lógica para el modal de ayuda
+            helpIcon.onclick = function() {
+                modal.style.display = "block";
+            }
+            closeModalBtn.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Llamada inicial para mostrar la tabla de facturas
+            showInvoices();
+        });
+    </script>
+</body>
+</html>

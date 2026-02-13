@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Pedido</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .modal-header .close-button {
+            cursor: pointer;
+            font-size: 1.5em;
+            color: #555;
+            text-decoration: none;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 10px;
+            align-items: center;
+        }
+        .info-grid label {
+            font-weight: bold;
+        }
+        .info-grid input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            text-align: right;
+            background-color: #d3d3d3;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<div class="modal-header">
+    <h3>Datos del Pedido</h3>
+    <a href="#" onclick="window.close();" class="close-button" title="Cerrar esta ventana.">X</a>
+</div>
+
+<div class="info-grid">
+    <label for="cliente">Cliente:</label>
+    <input type="text" id="cliente" value="A-40, C.A - 2565065" readonly>
+    <label for="pedido-num">Pedido #:</label>
+    <input type="text" id="pedido-num" value="60001" readonly>
+    <label for="subtotal">Subtotal (USD):</label>
+    <input type="text" id="subtotal" value="0" readonly>
+    <label for="impuestos">Impuestos (USD):</label>
+    <input type="text" id="impuestos" value="0" readonly>
+    <label for="flete">Flete (Bs):</label>
+    <input type="text" id="flete" value="0,00" readonly>
+    <label for="total">Total (USD):</label>
+    <input type="text" id="total" value="0" readonly>
+    <label for="renglones">Renglones:</label>
+    <input type="text" id="renglones" value="0" readonly>
+    <label for="cred-disp">Cred. Disp.:</label>
+    <input type="text" id="cred-disp" value="10.125,20" readonly>
+</div>
+
+</body>
+</html>

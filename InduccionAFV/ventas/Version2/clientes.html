@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>088 - Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: auto;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        /* Nuevo estilo para el mensaje de ayuda */
+        .help-message-container {
+            background-color: #e0f7fa;
+            color: #004d40;
+            padding: 10px;
+            border-bottom: 1px solid #b2dfdb;
+            font-size: 14px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+        .search-section {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .search-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        .search-row label {
+            white-space: nowrap;
+            font-size: 14px;
+            color: #555;
+        }
+        .search-row select, .search-row input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .search-row .client-buttons {
+            display: flex;
+            gap: 5px;
+        }
+        .search-row .client-buttons button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background-color: #e9e9e9;
+            cursor: pointer;
+            border-radius: 5px;
+            position: relative;
+        }
+        .client-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .client-list li {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .client-list li:hover {
+            background-color: #f5f5f5;
+        }
+        .client-list li.selected {
+            background-color: #b3d4ff;
+            color: #000;
+        }
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(13, 1fr);
+            gap: 5px;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+        .keyboard button {
+            padding: 10px 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Estilos para el modal de ayuda */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 320px;
+        }
+        .close-button {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-item {
+            margin-bottom: 15px;
+        }
+        .modal-item h4 {
+            margin: 0;
+            color: #007BFF;
+        }
+        .modal-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        /* Estilos para los mensajes emergentes (tooltips) - MODIFICADOS */
+        [data-tooltip] {
+            position: relative;
+        }
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: fixed;
+            bottom: calc(100vh - var(--tooltip-top) + 10px);
+            left: var(--tooltip-left);
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+            margin-bottom: 5px;
+            pointer-events: none;
+        }
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="window.location.href = 'MenuVentasFH.html';" data-tooltip="Retrocede a la pantalla anterior.">&#8592;</span>
+            <span>088 - Clientes</span>
+            <span class="menu-icon" id="btnHelpPedido" data-tooltip="Haz clic para ver los pasos para un pedido.">&#x2753;</span>
+            <span class="menu-icon" id="btnHelp" data-tooltip="Haz clic para ver la guía de uso.">&#x22EE;</span>
+        </div>
+        <div class="help-message-container">
+            Primero Seleccione el cliente luego el afv abre la pagina siguiente donde se selecciona los productos.
+        </div>
+
+        <div class="search-section">
+            <div class="search-row">
+                <label for="route" data-tooltip="Selecciona la ruta de clientes a mostrar.">Ruta:</label>
+                <select id="route">
+                    <option>--- Todas ---</option>
+                </select>
+            </div>
+            <div class="search-row">
+                <label for="client-search" data-tooltip="Codigo del cliente.">Cliente:</label>
+                <input type="text" id="client-search" value="2565065">
+                <div class="client-buttons">
+                    <button id="btnOP" data-tooltip="Muestra/Oculta el codigo del Cliente.">O.P.</button>
+                    <button id="btnB" data-tooltip="Busca el cliente por su nombre.">B.</button>
+                </div>
+            </div>
+        </div>
+
+        <ul class="client-list">
+        </ul>
+
+        <div class="keyboard">
+            <button data-tooltip="Buscar por 'A'">A</button><button data-tooltip="Buscar por 'B'">B</button><button data-tooltip="Buscar por 'C'">C</button><button data-tooltip="Buscar por 'D'">D</button><button data-tooltip="Buscar por 'E'">E</button><button data-tooltip="Buscar por 'F'">F</button><button data-tooltip="Buscar por 'G'">G</button>
+            <button data-tooltip="Buscar por 'H'">H</button><button data-tooltip="Buscar por 'I'">I</button><button data-tooltip="Buscar por 'J'">J</button><button data-tooltip="Buscar por 'K'">K</button><button data-tooltip="Buscar por 'L'">L</button><button data-tooltip="Buscar por 'M'">M</button>
+            <button data-tooltip="Buscar por 'N'">N</button><button data-tooltip="Buscar por 'O'">O</button><button data-tooltip="Buscar por 'P'">P</button><button data-tooltip="Buscar por 'Q'">Q</button><button data-tooltip="Buscar por 'R'">R</button><button data-tooltip="Buscar por 'S'">S</button>
+        </div>
+    </div>
+    
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('helpModal')">&times;</span>
+            <h3>Guía de Uso - Clientes</h3>
+            <div class="modal-item">
+                <h4>Ruta</h4>
+                <p>Usa este menú desplegable para filtrar la lista de clientes por una ruta específica.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Cliente (Buscar)</h4>
+                <p>Introduce parte del nombre o el código del cliente que deseas encontrar. La lista se actualizará automáticamente.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Lista de clientes</h4>
+                <p>Haz clic en el nombre de un cliente para seleccionarlo y proceder a gestionar sus pedidos.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Teclado</h4>
+                <p>Usa las letras del teclado para filtrar los clientes que comiencen con esa letra.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModalPedido" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('helpModalPedido')">&times;</span>
+            <h3>Pasos para elaborar un pedido</h3>
+            <div class="modal-item">
+                <ol>
+                    <li>Seleccione el cliente al que se le va a cargar el pedido.</li>
+                    <li>Busque el producto que desea cargar por nombre o código.</li>
+                    <li>Al visualizar los productos, haga clic en el producto a cargar.</li>
+                    <li>Se visualizará una pantalla donde cargará la cantidad del producto y el precio.</li>
+                    <li>En la pantalla de productos cargados, elija si desea facturar el pedido.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const clientList = document.querySelector('.client-list');
+            const helpModal = document.getElementById('helpModal');
+            const helpModalPedido = document.getElementById('helpModalPedido');
+
+            // Función para cerrar cualquier modal
+            window.closeModal = function(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            };
+
+            const clients = [
+                'A-40, C.A - 2565065',
+                'ALTAMIRA FERRE-INDUSTRIAL - 2131133',
+                'BIKE MARKET REPUESTOS & ACCESORIOS, C.A - 2531304',
+                'COLORMAR C.A. - 2541013',
+                'COMERCIAL EL SAMAN 2007, C.A. - 2532008',
+                'COMERCIALIZADORA Y SUPLIDORA POVINSTAR ASIA, C A - 25',
+                'CONCRETERA Y FERRETERIA DON JULIO SANCHEZ C.A. - 2565',
+                'DISTORMAR C.A - 2541132',
+                'DISTRIBUIDORA S.C GUACARA, C.A. - 2531122',
+                'EMPACADURAS INDUSTRIALES DEL CENTRO, C.A -',
+                'FERRE COMERC DE LA CHIQ C.A - 2531019',
+                'FERRE MATERIALES EL TRONO DE DIOS 2024, C.A -',
+                'FERRE MIXTOR, C.A -',
+                'FERRE REPUESTO PADUA C.A - 2580030',
+                'FERRECENTRO GUACARA C.A - 2531024',
+            ];
+
+            const halfIndex = Math.ceil(clients.length / 2);
+            const reducedClients = clients.slice(0, halfIndex);
+
+            // Generar la lista de clientes en el HTML
+            reducedClients.forEach(clientText => {
+                const li = document.createElement('li');
+                li.textContent = clientText.trim();
+                li.addEventListener('click', function() {
+                    document.querySelectorAll('.client-list li').forEach(item => {
+                        item.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    window.location.href = 'productos_prueba.html';
+                });
+                clientList.appendChild(li);
+            });
+
+            // Lógica para la navegación con el teclado simulado
+            const keyboardButtons = document.querySelectorAll('.keyboard button');
+            keyboardButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const letra = this.textContent;
+                    scrollToClientByLetter(letra);
+                });
+            });
+
+            // Función para desplazarse al cliente
+            function scrollToClientByLetter(letter) {
+                const listItems = document.querySelectorAll('.client-list li');
+                let found = false;
+
+                // Remover la selección anterior
+                document.querySelectorAll('.client-list li').forEach(item => {
+                    item.classList.remove('selected');
+                });
+
+                for (const item of listItems) {
+                    // Limpiar el texto y comparar con la letra, sin importar mayúsculas/minúsculas
+                    if (item.textContent.trim().toUpperCase().startsWith(letter.toUpperCase())) {
+                        // Desplazar el elemento a la vista
+                        item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Seleccionar el elemento
+                        item.classList.add('selected');
+                        found = true;
+                        break; // Detener el bucle una vez que se encuentra el primer cliente
+                    }
+                }
+
+                if (!found) {
+                    console.log(`No se encontraron clientes que comiencen con la letra '${letter}'.`);
+                }
+            }
+
+            // Lógica para el modal de ayuda de uso
+            const helpButton = document.getElementById('btnHelp');
+            helpButton.addEventListener('click', function() {
+                helpModal.style.display = 'flex';
+            });
+
+            // Lógica para el nuevo modal de pasos de pedido
+            const helpButtonPedido = document.getElementById('btnHelpPedido');
+            helpButtonPedido.addEventListener('click', function() {
+                helpModalPedido.style.display = 'flex';
+            });
+            
+            // Lógica para cerrar modals al hacer clic fuera
+            window.addEventListener('click', function(event) {
+                if (event.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
+                if (event.target === helpModalPedido) {
+                    helpModalPedido.style.display = 'none';
+                }
+            });
+            
+            // Lógica para posicionar los tooltips dinámicamente
+            document.querySelectorAll('[data-tooltip]').forEach(item => {
+                item.addEventListener('mouseenter', (event) => {
+                    const rect = event.target.getBoundingClientRect();
+                    item.style.setProperty('--tooltip-top', `${rect.top}px`);
+                    item.style.setProperty('--tooltip-left', `${rect.left + rect.width / 2}px`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

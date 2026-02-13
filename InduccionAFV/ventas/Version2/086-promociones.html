@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>086 - Promociones</title>
+<style>
+        body { font-family: sans-serif; margin: 0; background-color: #f0f0f0; }
+        .screen-container { width: 100%; max-width: 400px; height: 100vh; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin: 0 auto; display: flex; flex-direction: column; overflow: hidden; }
+        .header { background-color: #007bff; color: white; padding: 15px; display: flex; align-items: center; font-size: 1.2em; font-weight: bold; }
+        .header .back-button { font-size: 1.8em; margin-right: 15px; cursor: pointer; color: white; }
+        .product-info { padding: 15px; }
+        .product-info h3 { margin: 0; color: #333; font-size: 1em; }
+        .product-info p { margin: 5px 0 0 0; font-size: 0.9em; color: #666; }
+        .promotions-section { padding: 15px; }
+        .promotions-section h4 { margin-top: 0; margin-bottom: 10px; }
+        .promotions-table { width: 100%; border-collapse: collapse; }
+        .promotions-table th, .promotions-table td { padding: 8px; border: 1px solid #ccc; text-align: center; }
+        .promotions-table thead { background-color: #007bff; color: white; }
+        .promotions-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+        .footer { padding: 15px; background-color: #f0f0f0; border-top: 1px solid #ccc; margin-top: auto; }
+        .footer .input-group { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .footer .input-group label { flex: 1; text-align: left; }
+        .footer .input-group input { flex: 2; text-align: right; border: 1px solid #ccc; padding: 5px; border-radius: 3px; background-color: #d3d3d3; }
+    </style>
+</head>
+<body>
+
+<div class="screen-container">
+    <div class="header">
+        <span class="back-button" onclick="history.back()">&#8592;</span>
+        <span>086 - Promociones</span>
+    </div>
+
+    <div class="product-info">
+        <h3 id="productCode"></h3>
+        <p id="productDescription"></p>
+    </div>
+
+    <div class="promotions-section">
+        <h4>Promociones Vigentes</h4>
+        <table class="promotions-table">
+            <thead>
+                <tr>
+                    <th>% Desc</th>
+                    <th>Cant.</th>
+                    <th>Unidad</th>
+                </tr>
+            </thead>
+            <tbody id="promotionsTableBody">
+                            </tbody>
+        </table>
+    </div>
+
+    <div class="footer">
+        <div class="input-group">
+            <label for="cantPedida">Cant. Pedida:</label>
+            <input type="text" id="cantPedida" value="0,00" readonly>
+        </div>
+        <div class="input-group">
+            <label for="monto">Monto:</label>
+            <input type="text" id="monto" value="0,00" readonly>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Data de promociones, en un caso real esto vendría de una base de datos
+    const promotionsData = [{
+        code: '0101014',
+        description: 'Sócate para tubo LED T8 y tubo fluorescente Gdeseo - 7300315',
+        promotions: [{
+            desc: 5,
+            cant: 10,
+            unidad: 'UNID.'
+        }]
+    }, {
+        // Puedes agregar más productos con promociones aquí si es necesario
+        code: '0101021',
+        description: 'Socate plástico E27 blanco Semilic - 7130077',
+        promotions: [{
+            desc: 10,
+            cant: 50,
+            unidad: 'PZA.'
+        }]
+    }];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productCode = urlParams.get('code');
+
+    if (productCode) {
+        const productPromo = promotionsData.find(p => p.code === productCode);
+
+        if (productPromo) {
+            document.getElementById('productCode').textContent = `Código: ${productPromo.code}`;
+            document.getElementById('productDescription').textContent = productPromo.description;
+
+            const tableBody = document.getElementById('promotionsTableBody');
+            productPromo.promotions.forEach(promo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${promo.desc}</td>
+                    <td>${promo.cant}</td>
+                    <td>${promo.unidad}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            document.getElementById('productDescription').textContent = 'No se encontraron promociones para este producto.';
+        }
+    }
+</script>
+
+</body>
+</html>

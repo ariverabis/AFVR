@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Comparativa de Precios (v4)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 15px; /* Reducido para ahorrar espacio */
+            background-color: #f4f4f9;
+            color: #333;
+            font-size: 14px; /* Tamaño de fuente base reducido */
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 15px; /* Reducido */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #0056b3;
+            font-size: 1.8em; /* Ajustado */
+        }
+        h2 {
+            text-align: center;
+            color: #0056b3;
+            font-size: 1.3em; /* Ajustado */
+        }
+        h3 {
+             font-size: 1.1em; /* Ajustado */
+        }
+        .rates-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Reducido */
+            margin-bottom: 20px;
+            padding: 10px; /* Reducido */
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #eaf6ff;
+        }
+        .rates-section label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 3px; /* Reducido */
+            color: #004085;
+        }
+        .rates-section input {
+            padding: 6px; /* Reducido */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 120px; /* Reducido ligeramente */
+            text-align: right;
+            font-size: 1em; /* Consistente */
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px; /* Reducido */
+        }
+        .list-column {
+            padding: 15px; /* Reducido */
+            border-radius: 6px;
+        }
+        #listA {
+            background-color: #f0fff4;
+            border: 2px solid #155724; 
+        }
+        #listB {
+            background-color: #fff0f0;
+            border: 2px solid #cc0000; 
+        }
+        .list-column h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: inherit;
+        }
+        .input-group, .result-group {
+            margin-bottom: 10px; /* Reducido */
+        }
+        label {
+            display: block;
+            margin-bottom: 3px;
+            font-weight: bold;
+        }
+        input[type="number"] {
+            width: 95%;
+            padding: 8px; /* Reducido */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: right;
+            font-size: 1em; /* Consistente */
+        }
+        .result-group {
+            padding: 8px; /* Reducido */
+            border-radius: 4px;
+            font-size: 1em; /* Reducido de 1.1em a 1em */
+            background-color: #e9ecef;
+            border-left: 5px solid #007bff;
+        }
+        .result-group.highlight {
+            font-weight: bold;
+        }
+        .result-value {
+            float: right;
+            font-weight: bold;
+        }
+        .commercial-discount {
+            background-color: #ffe0b2;
+            padding: 8px; /* Reducido */
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border: 1px dashed #ff9800;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>💸 Calculadora Comparativa de Precios</h1>
+        <p style="text-align: center; font-size: 0.9em;">Simulación de Precios con Descuento Comercial y Descuentos por Forma de Pago.</p>
+        
+        <div class="rates-section">
+            <div class="input-group">
+                <label for="tasaBCV">Tasa BCV (Bs./$):</label>
+                <input type="number" id="tasaBCV" value="224" oninput="calculate()">
+            </div>
+            <div class="input-group">
+                <label for="tasaBinance">Bs (Bs./$):</label>
+                <input type="number" id="tasaBinance" value="304.00" oninput="calculate()">
+            </div>
+        </div>
+
+        <div class="comparison-grid">
+            
+            <div class="list-column" id="listA">
+                <h2>Mayoreo D-(Mercado)</h2>
+                
+                <div class="input-group">
+                    <label for="priceA">Precio del Producto Base ($):</label>
+                    <input type="number" id="priceA" value="89.57" oninput="calculate()">
+                </div>
+                
+                <div class="input-group commercial-discount">
+                    <label for="dctoComercialA">Descuento Comercial (%):</label>
+                    <input type="number" id="dctoComercialA" value="0" oninput="calculate()">
+                </div>
+                <hr>
+                
+                <h3>Escenario 1: Pago en Dólares ($)</h3>
+                <p style="font-size: 0.9em;">Aplica un descuento adicional por Forma de Pago en Dólares.</p>
+                <div class="input-group">
+                    <label for="dctoDolarA">Descuento Pago en Dólares (%):</label>
+                    <input type="number" id="dctoDolarA" value="15" oninput="calculate()">
+                </div>
+                
+                <div class="result-group highlight" style="background-color: #d4edda; border-left-color: #007bff;">
+                    Precio Final a Pagar en Dólares: 
+                    <span id="resultDolarA" class="result-value">0.00</span>
+                </div>
+                
+                <hr>
+                
+                <h3>Escenario 2: Pago en Bolívares (Bs)</h3>
+                <p style="font-size: 0.9em;">Aplica un descuento adicional por Forma de Pago en Bolívares.</p>
+                <div class="input-group">
+                    <label for="dctoBsA">Descuento Pago en Bolívares (%):</label>
+                    <input type="number" id="dctoBsA" value="10" oninput="calculate()">
+                </div>
+
+                <div class="result-group highlight" style="background-color: #fff3cd; border-left-color: #ffc107;">
+                    Precio Final en Bs. (Bs.. con Dcto Bs): 
+                    <span id="resultBsA" class="result-value">0.00</span>
+                </div>
+            </div>
+
+            <div class="list-column" id="listB">
+                <h2>Mayoreo B-Tasa BCV (Oficial)</h2>
+                
+                <div class="input-group">
+                    <label for="priceB">Precio del Producto Base ($):</label>
+                    <input type="number" id="priceB" value="138.84" oninput="calculate()">
+                </div>
+                
+                <div class="input-group commercial-discount">
+                    <label for="dctoComercialB">Descuento Comercial (%):</label>
+                    <input type="number" id="dctoComercialB" value="0" oninput="calculate()">
+                </div>
+                
+                <hr>
+                
+                <h3>Escenario Único: Pago con Descuento Aplicado</h3>
+                <p style="font-size: 0.9em;">Calculado con la Tasa BCV.</p>
+
+                <div class="input-group">
+                    <label for="dctoB">Descuento Adicional Posible de Lista B (%):</label>
+                    <input type="number" id="dctoB" value="0" oninput="calculate()">
+                </div>
+                
+                <div class="result-group highlight" style="background-color: #f8d7da; border-left-color: #dc3545;">
+                    Precio Final en Bs. (BCV con Dcto Total):
+                    <span id="resultBsB" class="result-value">0.00</span>
+                </div>
+
+                <hr>
+                
+                <h3>Referencia (Sin Descuento Comercial ni Adicional)</h3>
+                <div class="result-group" style="border-left-color: #6c757d;">
+                    Precio Base en Bs. (sin Dcto):
+                    <span id="resultBaseB" class="result-value">0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculate() {
+            // 1. Obtener Tasas de Cambio
+            const tasaBCV = parseFloat(document.getElementById('tasaBCV').value) || 0;
+            const tasaBinance = parseFloat(document.getElementById('tasaBinance').value) || 0;
+
+            // 2. Obtener Inputs de Lista A
+            const priceA = parseFloat(document.getElementById('priceA').value) || 0;
+            const dctoComercialA_factor = 1 - ((parseFloat(document.getElementById('dctoComercialA').value) || 0) / 100);
+            const dctoDolarA_factor = 1 - ((parseFloat(document.getElementById('dctoDolarA').value) || 0) / 100);
+            const dctoBsA_factor = 1 - ((parseFloat(document.getElementById('dctoBsA').value) || 0) / 100);
+
+            // 3. Obtener Inputs de Lista B
+            const priceB = parseFloat(document.getElementById('priceB').value) || 0;
+            const dctoComercialB_factor = 1 - ((parseFloat(document.getElementById('dctoComercialB').value) || 0) / 100);
+            const dctoB_factor = 1 - ((parseFloat(document.getElementById('dctoB').value) || 0) / 100);
+
+            // --- APLICACIÓN DEL DESCUENTO COMERCIAL ---
+            // Precio con Dcto Comercial (Lista A)
+            const priceA_after_commercial = priceA * dctoComercialA_factor;
+            // Precio con Dcto Comercial (Lista B)
+            const priceB_after_commercial = priceB * dctoComercialB_factor;
+
+            // 4. Cálculos Lista A (Utiliza Tasa Binance)
+
+            // Escenario A1: Pago en Dólares (Dcto Comercial + Dcto Dólar)
+            // Lógica: (Precio $ * Dcto Comercial) * Dcto Dólar
+            const finalDolarA = priceA_after_commercial * dctoDolarA_factor;
+            // Equivalente en Bs (Ya no se muestra en un campo separado, pero se calcula para referencia si fuera necesario)
+            const finalBsBinanceA = finalDolarA * tasaBinance;
+            
+            // Escenario A2: Pago en Bolívares (Dcto Comercial + Dcto Bs)
+            // Lógica: (Precio $ * Dcto Comercial * Tasa Binance) * Dcto Bs
+            const finalBsA = (priceA_after_commercial * tasaBinance) * dctoBsA_factor;
+
+            // 5. Cálculos Lista B (Utiliza Tasa BCV)
+
+            // Escenario B1: Lista B con Tasa BCV y Descuento (Dcto Comercial + Dcto Adicional)
+            // Lógica: (Precio $ * Dcto Comercial * Dcto Adicional) * Tasa BCV
+            const finalBsB = (priceB_after_commercial * dctoB_factor) * tasaBCV;
+            
+            // Referencia sin descuento
+            const baseBsB = priceB * tasaBCV; 
+
+            // 6. Mostrar Resultados
+            
+            // Lista A
+            document.getElementById('resultDolarA').textContent = finalDolarA.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+            // El resultado de "Equivalente en Bs" fue eliminado de la estructura HTML original para ahorrar espacio visual, pero su cálculo se mantuvo por si se desea usar.
+            // document.getElementById('resultBsBinanceA').textContent = finalBsBinanceA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+            document.getElementById('resultBsA').textContent = finalBsA.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+
+            // Lista B
+            document.getElementById('resultBsB').textContent = finalBsB.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+            document.getElementById('resultBaseB').textContent = baseBsB.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Bs';
+        }
+
+        // Ejecutar el cálculo inicial al cargar la página
+        window.onload = calculate;
+    </script>
+</body>
+</html>

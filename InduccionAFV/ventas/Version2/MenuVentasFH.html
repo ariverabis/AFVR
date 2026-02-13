@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Ventas - Optimizado para Móviles</title>
+    <style>
+        /* ... (tus estilos CSS existentes) ... */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+        .screen-container {
+            width: 360px;
+            height: 640px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header .back-arrow {
+            font-size: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .header .menu-icon {
+            margin-left: auto;
+            cursor: pointer;
+        }
+        .main-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .menu-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            color: #444;
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+        .menu-button:hover:not([disabled]) {
+            background-color: #d0d0d0;
+        }
+        .menu-button[disabled] {
+            color: #a0a0a0;
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .menu-button::before, .menu-button::after {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .menu-button:hover::before, .menu-button:hover::after {
+            visibility: visible;
+            opacity: 1;
+        }
+        .menu-button::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            white-space: normal;
+            max-width: 250px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .menu-button::after {
+            content: '';
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%) translateY(12px);
+            border-style: solid;
+            border-width: 6px 6px 0 6px;
+            border-color: #333 transparent transparent transparent;
+            z-index: 1000;
+        }
+        
+        /* Estilos para el modal de ayuda */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            z-index: 1001; /* Por encima de todo */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5); /* Fondo semitransparente */
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 320px;
+        }
+        .close-button {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-item {
+            margin-bottom: 15px;
+        }
+        .modal-item h4 {
+            margin: 0;
+            color: #007BFF;
+        }
+        .modal-item p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+        .help-message-container {
+            background-color: #e0f7fa;
+            color: #004d40;
+            padding: 10px;
+            border-bottom: 1px solid #b2dfdb;
+            font-size: 14px;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="window.location.href = 'index.html';">&#8592;</span>
+            <span>073 - Menú Ventas</span>
+            <span class="menu-icon" id="btnHelp">&#x22EE;</span>
+        </div>
+        <div class="help-message-container">
+            [Opcion Disponible Gestión de Ventas]. Para crear un pedido, la opcion a seleccionar es la Gestión de Ventas. Luego selecciona el cliente y luego se crea un pedido nuevo.
+        </div>
+        <div class="main-content">
+            <button id="btnPedidos" class="menu-button" data-tooltip="Pedidos de clientes cargados en sus catálogos digitales.">Pedidos del catálogo</button>
+            <button id="btnClientes" class="menu-button" data-tooltip="Informacion de clientes.">Clientes</button>
+            <button id="btnConsultas" class="menu-button" data-tooltip="Consultas generales de ventas.">Consultas</button>
+            <button id="btnGestionVentas" class="menu-button" data-tooltip="Genera pedidos.">Gestión de Ventas</button>
+            <button id="btnTransmitir" class="menu-button" disabled data-tooltip="Envía tus transacciones al sistema central para su procesamiento.">Transmitir Transacciones</button>
+            <button id="btnSalir" class="menu-button" data-tooltip="Finaliza tu sesión.">Salir</button>
+        </div>
+
+        <div class="footer">
+            &copy; Copyright Wholesale World Information Systems LTD, 2014
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3>Guía de Uso</h3>
+            <div class="modal-item">
+                <h4>Pedidos del catálogo</h4>
+                <p>Importa los pedidos que los clientes ya han realizado en cada uno de sus catalogos digitales..</p>
+            </div>
+            <div class="modal-item">
+                <h4>Clientes</h4>
+                <p>Aquí encontrarás toda la información de tus clientes: datos de contacto, etc.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Consultas</h4>
+                <p>Usa esta sección para buscar datos de las ventas del dia y del mes.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Gestión de Ventas</h4>
+                <p>Genera Pedidos, Consulta de pedidos por cliente seleccionado.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Transmitir Transacciones</h4>
+                <p>Envía y recibe las transacciones pendientes (Envia: Pedidos, recibos, retenciones. Recibe:Facturas, Existencia, Promociones ).</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        const btnPedidos = document.getElementById('btnPedidos');
+        const btnClientes = document.getElementById('btnClientes');
+        const btnConsultas = document.getElementById('btnConsultas');
+        const btnGestionVentas = document.getElementById('btnGestionVentas');
+        const btnTransmitir = document.getElementById('btnTransmitir');
+        const btnSalir = document.getElementById('btnSalir');
+
+        const helpButton = document.getElementById('btnHelp');
+        const helpModal = document.getElementById('helpModal');
+        const closeButton = document.querySelector('.close-button');
+
+        // Función para manejar el clic en los botones que solo muestran la alerta
+        function handleAlertClick(event) {
+            const tooltipMessage = event.target.getAttribute('data-tooltip');
+            alert(tooltipMessage);
+        }
+
+        // Asignar eventos a los botones
+        btnPedidos.addEventListener('click', handleAlertClick);
+        btnClientes.addEventListener('click', handleAlertClick);
+        btnConsultas.addEventListener('click', handleAlertClick);
+        btnTransmitir.addEventListener('click', handleAlertClick);
+        btnSalir.addEventListener('click', handleAlertClick);
+
+        // **MODIFICACIÓN CLAVE AQUÍ**
+        // Este botón ahora redirige a una página, en lugar de mostrar una alerta
+        btnGestionVentas.addEventListener('click', function() {
+            window.location.href = 'clientes.html';
+        });
+
+        // Lógica para el modal de ayuda (sin cambios)
+        helpButton.addEventListener('click', function() {
+            helpModal.style.display = 'flex'; // Muestra el modal
+        });
+
+        closeButton.addEventListener('click', function() {
+            helpModal.style.display = 'none'; // Oculta el modal
+        });
+
+        window.addEventListener('click', function(event) {
+            if (event.target == helpModal) {
+                helpModal.style.display = 'none'; // Oculta el modal si el usuario hace clic fuera de él
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>097 - Retenciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; display: flex; justify-content: center; align-items: flex-start; height: 100vh; margin: 0; padding-top: 20px; }
+        .screen-container { width: 360px; height: 640px; background-color: white; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .header { background-color: #007BFF; color: white; padding: 15px; display: flex; align-items: center; font-size: 18px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .header .back-arrow { font-size: 24px; margin-right: 15px; cursor: pointer; }
+        .header-title { flex-grow: 1; }
+        .header-actions { margin-left: auto; cursor: pointer; position: relative; }
+        
+        /* Contenedor de información del cliente */
+        .client-info { padding: 10px 15px; background-color: #f8f8f8; font-size: 14px; border-bottom: 1px solid #ccc; }
+        .info-row { display: flex; align-items: center; margin-bottom: 5px; position: relative; }
+        .info-row span { font-weight: bold; width: 100px; }
+        .info-row input { flex-grow: 1; padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
+        .info-row input:focus { outline: none; border-color: #007BFF; }
+
+        /* Tooltip Styles */
+        .info-row .tooltip-icon { font-size: 12px; margin-left: 5px; cursor: help; }
+        .info-row .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+        }
+        .info-row:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Validación de Comprobante */
+        input.valid { border: 2px solid green; }
+        input.invalid { border: 2px solid red; }
+
+        .main-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .table-container { border: 1px solid #ccc; border-radius: 5px; flex-grow: 1; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: center; font-size: 14px; }
+        thead { background-color: #f8f8f8; font-weight: bold; position: sticky; top: 0; }
+        th, td { padding: 10px; border-bottom: 1px solid #eee; }
+        .retencion-item { cursor: pointer; }
+        .retencion-item:hover { background-color: #f0f0f0; }
+        .table-row-selected { background-color: #b3e0ff; }
+        .checkbox-cell { width: 30px; }
+        
+        /* Controles inferiores */
+        .footer-controls { padding: 15px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; border-top: 1px solid #ccc; }
+        .footer-controls .select-all-row { display: flex; align-items: center; gap: 5px; margin-bottom: 10px; }
+        .footer-controls .total-row { display: flex; align-items: center; gap: 10px; }
+        .footer-controls .total-row span { font-weight: bold; }
+        .footer-controls .total-row input { padding: 8px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; width: 120px; text-align: right; }
+
+        /* Modal de Ayuda */
+        .modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); padding-top: 60px; }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 10px; position: relative; }
+        .close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close-button:hover, .close-button:focus { color: black; text-decoration: none; cursor: pointer; }
+        .modal-item h4 { margin: 0; color: #007BFF; }
+        .modal-item p { margin: 5px 0 0; font-size: 14px; }
+        
+        /* Modal de Detalle de Retención */
+        .detalle-modal { display: none; position: fixed; z-index: 1002; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .detalle-modal-content { background-color: #f1f1f1; margin: 15% auto; padding: 20px; border: 1px solid #ccc; width: 90%; max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .detalle-modal-content h3 { margin-top: 0; text-align: center; color: #333; }
+        .detalle-modal-content .field-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .detalle-modal-content .field-row label { font-weight: bold; color: #555; }
+        .detalle-modal-content .field-row input { padding: 8px; border: 1px solid #ccc; border-radius: 5px; text-align: right; flex-grow: 1; margin-left: 10px; }
+        .detalle-modal-content .field-row input[readonly] { background-color: #e9e9e9; cursor: not-allowed; }
+        .detalle-modal-buttons { display: flex; justify-content: space-between; margin-top: 20px; }
+        .detalle-modal-buttons button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; width: 48%; }
+        #modal-ok { background-color: #28a745; color: white; }
+        #modal-cancel { background-color: #dc3545; color: white; }
+        
+    </style>
+</head>
+<body>
+    <div class="screen-container">
+        <div class="header">
+            <span class="back-arrow" onclick="history.back()">&#8592;</span>
+            <span class="header-title">097 - Retenciones</span>
+            <span class="header-actions" onclick="toggleHelpModal()">&#x22EE;</span>
+        </div>
+        
+        <div class="client-info">
+            <div class="info-row">
+                <span>RIF:</span>
+                <input type="text" value="J412013688" readonly>
+            </div>
+            <div class="info-row">
+                <span>Razón Social:</span>
+                <input type="text" value="FERRELUGAMA, C.A. - 1331555" readonly>
+            </div>
+            <div class="info-row">
+                <span>Fecha Comp:</span>
+                <input type="date" id="fecha-comp">
+                <span class="tooltiptext">Seleccione la fecha del comprobante.</span>
+            </div>
+            <div class="info-row">
+                <span>Comprobante:</span>
+                <input type="text" id="comprobante" maxlength="14" placeholder="YYYYMMXXXXXXXX">
+                <span class="tooltiptext">Formato: YYYYMM + 8 dígitos del usuario.</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell"></th>
+                            <th>Tipo</th>
+                            <th>No. Fiscal</th>
+                            <th>Monto (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="retencion-table-body">
+                        <tr class="retencion-item" data-monto="46.65" data-comprobante="20250800000001" data-tipodoc="FAC" data-nrodoc="06861818" data-nrocontrol="C-001" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06861818</td>
+                            <td class="monto-cell">46,65</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="3.86" data-comprobante="20250800000002" data-tipodoc="FAC" data-nrodoc="06874772" data-nrocontrol="C-002" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06874772</td>
+                            <td class="monto-cell">3,86</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="9.66" data-comprobante="20250800000003" data-tipodoc="FAC" data-nrodoc="06874773" data-nrocontrol="C-003" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06874773</td>
+                            <td class="monto-cell">9,66</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="50.25" data-comprobante="20250800000004" data-tipodoc="FAC" data-nrodoc="06874923" data-nrocontrol="C-004" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06874923</td>
+                            <td class="monto-cell">50,25</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="9.60" data-comprobante="20250800000005" data-tipodoc="FAC" data-nrodoc="06886186" data-nrocontrol="C-005" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06886186</td>
+                            <td class="monto-cell">9,60</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="18.92" data-comprobante="20250800000006" data-tipodoc="FAC" data-nrodoc="06886193" data-nrocontrol="C-006" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06886193</td>
+                            <td class="monto-cell">18,92</td>
+                        </tr>
+                        <tr class="retencion-item" data-monto="53.04" data-comprobante="20250800000007" data-tipodoc="FAC" data-nrodoc="06889432" data-nrocontrol="C-007" data-alicuota="16.00" data-base="20808.38" data-impuesto="2869.93">
+                            <td class="checkbox-cell"><input type="checkbox"></td>
+                            <td>FAC</td>
+                            <td>06889432</td>
+                            <td class="monto-cell">53,04</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="footer-controls">
+            <div class="select-all-row">
+                <input type="checkbox" id="selectAllCheckbox">
+                <label for="selectAllCheckbox">Seleccionar todo</label>
+            </div>
+            <div class="total-row">
+                <span>Monto VES:</span>
+                <input type="text" id="totalRetenidoVES" value="0,00" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="toggleHelpModal()">&times;</span>
+            <h3>Guía de Retenciones</h3>
+            <div class="modal-item">
+                <h4>Descripción de la Pantalla</h4>
+                <p>Esta pantalla muestra una lista de las retenciones de IVA asociadas al cliente seleccionado. Las retenciones son montos que ya han sido pagados y se descuentan del total a cobrar de las facturas.</p>
+            </div>
+            <div class="modal-item">
+                <h4>Funciones de la Tabla</h4>
+                <p>
+                    <ul>
+                        <li><input type="checkbox" disabled> **Casilla de Selección:** Use las casillas para seleccionar las retenciones que desea aplicar al recibo de cobro.</li>
+                        <li>**Monto (USD):** Es el valor de la retención. Al seleccionar una retención, su monto se suma al total retenido.</li>
+                    </ul>
+                </p>
+            </div>
+            <div class="modal-item">
+                <h4>Totales y Acciones</h4>
+                <p>
+                    <ul>
+                        <li>**Monto VES:** Muestra el total de las retenciones seleccionadas, convertido a la tasa actual en Bolívares (VES).</li>
+                        <li>**Seleccionar todo:** Use esta opción para seleccionar o desmarcar todas las retenciones de la lista.</li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="detalle-retencion-modal" class="detalle-modal">
+        <div class="detalle-modal-content">
+            <h3>098 - Detalle Retencion</h3>
+            <div class="field-row">
+                <label>Comprobante:</label>
+                <input type="text" id="modal-comprobante" readonly>
+            </div>
+            <div class="field-row">
+                <label>Tipo Doc:</label>
+                <input type="text" id="modal-tipo-doc" readonly>
+            </div>
+            <div class="field-row">
+                <label>Nro. Doc:</label>
+                <input type="text" id="modal-nro-doc" readonly>
+            </div>
+            <div class="field-row">
+                <label>Nro. Control:</label>
+                <input type="text" id="modal-nro-control" readonly>
+            </div>
+            <div class="field-row">
+                <label>Alicuota (%):</label>
+                <input type="text" id="modal-alicuota" readonly>
+            </div>
+            <div class="field-row">
+                <label>Base:</label>
+                <input type="text" id="modal-base" readonly>
+            </div>
+            <div class="field-row">
+                <label>Impuesto:</label>
+                <input type="text" id="modal-impuesto" readonly>
+            </div>
+            <div class="field-row">
+                <label>Retención:</label>
+                <input type="number" id="modal-retencion" step="0.01">
+            </div>
+            <div class="detalle-modal-buttons">
+                <button id="modal-ok">OK</button>
+                <button id="modal-cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fechaCompInput = document.getElementById('fecha-comp');
+            const comprobanteInput = document.getElementById('comprobante');
+            const checkboxes = document.querySelectorAll('#retencion-table-body input[type="checkbox"]');
+            const retencionItems = document.querySelectorAll('.retencion-item');
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const totalRetenidoVES = document.getElementById('totalRetenidoVES');
+            const helpModal = document.getElementById('helpModal');
+            const detalleModal = document.getElementById('detalle-retencion-modal');
+            const modalRetencionInput = document.getElementById('modal-retencion');
+            const modalOkBtn = document.getElementById('modal-ok');
+            const modalCancelBtn = document.getElementById('modal-cancel');
+            
+            let currentEditingRow = null;
+
+            // Función para actualizar el total retenido
+            function updateTotal() {
+                let total = 0;
+                checkboxes.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    const montoCell = row.querySelector('.monto-cell');
+                    if (checkbox.checked) {
+                        row.classList.add('table-row-selected');
+                        const numericValue = parseFloat(montoCell.textContent.replace(',', '.'));
+                        total += numericValue;
+                    } else {
+                        row.classList.remove('table-row-selected');
+                    }
+                });
+                totalRetenidoVES.value = total.toFixed(2).replace('.', ',');
+            }
+
+            // Evento para checkboxes individuales
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateTotal();
+                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                });
+            });
+
+            // Evento para el checkbox "Seleccionar todo"
+            selectAllCheckbox.addEventListener('change', () => {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                updateTotal();
+            });
+            
+            // Lógica para el modal de ayuda
+            window.toggleHelpModal = function() {
+                helpModal.style.display = helpModal.style.display === 'block' ? 'none' : 'block';
+            }
+
+            // Lógica para el campo de fecha y comprobante
+            fechaCompInput.addEventListener('change', () => {
+                const date = fechaCompInput.value;
+                if (date) {
+                    const [year, month] = date.split('-');
+                    comprobanteInput.value = `${year}${month}`;
+                } else {
+                    comprobanteInput.value = '';
+                }
+                validateComprobante();
+            });
+
+            // Lógica de validación del comprobante
+            function validateComprobante() {
+                const prefix = comprobanteInput.value.slice(0, 6);
+                const suffix = comprobanteInput.value.slice(6);
+                const requiredPrefix = fechaCompInput.value ? fechaCompInput.value.replace(/-/g, '').slice(0, 6) : '';
+                
+                const isValid = comprobanteInput.value.length === 14 && 
+                                !isNaN(suffix) && 
+                                prefix === requiredPrefix;
+
+                if (comprobanteInput.value.length === 0) {
+                    comprobanteInput.classList.remove('valid', 'invalid');
+                } else if (isValid) {
+                    comprobanteInput.classList.remove('invalid');
+                    comprobanteInput.classList.add('valid');
+                } else {
+                    comprobanteInput.classList.remove('valid');
+                    comprobanteInput.classList.add('invalid');
+                }
+            }
+            comprobanteInput.addEventListener('input', validateComprobante);
+
+            // Lógica para abrir el modal de detalle al hacer doble clic
+            retencionItems.forEach(item => {
+                item.addEventListener('dblclick', (e) => {
+                    currentEditingRow = e.target.closest('tr');
+                    const montoUSD = currentEditingRow.querySelector('.monto-cell').textContent.replace(',', '.');
+                    
+                    document.getElementById('modal-comprobante').value = currentEditingRow.dataset.comprobante;
+                    document.getElementById('modal-tipo-doc').value = currentEditingRow.dataset.tipodoc;
+                    document.getElementById('modal-nro-doc').value = currentEditingRow.dataset.nrodoc;
+                    document.getElementById('modal-nro-control').value = currentEditingRow.dataset.nrocontrol;
+                    document.getElementById('modal-alicuota').value = currentEditingRow.dataset.alicuota;
+                    document.getElementById('modal-base').value = currentEditingRow.dataset.base;
+                    document.getElementById('modal-impuesto').value = currentEditingRow.dataset.impuesto;
+                    modalRetencionInput.value = montoUSD;
+                    
+                    detalleModal.style.display = 'block';
+                });
+            });
+
+            // Lógica del botón OK del modal de detalle
+            modalOkBtn.addEventListener('click', () => {
+                if (currentEditingRow) {
+                    const newMonto = parseFloat(modalRetencionInput.value).toFixed(2);
+                    currentEditingRow.querySelector('.monto-cell').textContent = newMonto.replace('.', ',');
+                    updateTotal();
+                }
+                detalleModal.style.display = 'none';
+                currentEditingRow = null;
+            });
+
+            // Lógica del botón Cancelar del modal de detalle
+            modalCancelBtn.addEventListener('click', () => {
+                detalleModal.style.display = 'none';
+                currentEditingRow = null;
+            });
+
+        });
+    </script>
+</body>
+</html>

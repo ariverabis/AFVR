@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual S.D.S. Febeca</title>
+    <style>
+        :root {
+            --main-bg-color: #f0f2f5;
+            --container-bg-color: #ffffff;
+            --text-color: #333;
+            --primary-color: #007bff;
+            --secondary-color: #00bfff;
+            --border-color: #e0e0e0;
+            --shadow-light: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .manual-container {
+            max-width: 600px;
+            width: 100%;
+            background-color: var(--container-bg-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow-light);
+            padding: 20px;
+            box-sizing: border-box;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #fafafa;
+        }
+
+        .screenshot {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            font-size: 0.9em;
+        }
+
+        .tooltip-container:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .tooltip-text {
+                visibility: visible;
+                opacity: 1;
+                white-space: normal;
+                width: 150px;
+                bottom: 110%;
+                left: 0;
+                transform: none;
+                pointer-events: none;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            }
+        }
+        
+        .sds-text {
+            margin-bottom: 15px;
+        }
+
+        .sds-text h3 {
+            margin: 0;
+            border-bottom: none;
+            color: var(--text-color);
+            display: inline-block;
+        }
+
+        .sds-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .sds-list li {
+            background: #e9ecef;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .button-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-section button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-section button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-button-container {
+            text-align: right;
+        }
+
+        .back-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="manual-container">
+    <div class="back-button-container">
+        <button class="back-button" onclick="history.back()">Volver</button>
+    </div>
+    
+    <h1>Manual de Usuario - S.D.S. Febeca</h1>
+
+    <div class="section">
+        <h2>¿Qué es S.D.S.?</h2>
+        <p>S.D.S. significa <strong>Sincronizador de Datos Inteligente</strong> para el sistema AFV de Febeca.</p>
+        <p>Esta aplicación es la encargada de <span class="tooltip-container">transmitir la información<span class="tooltip-text">Envía los pedidos, recibos y otros datos de ventas a la empresa Febeca.</span></span> desde tu dispositivo a la empresa, y al mismo tiempo, <span class="tooltip-container">recibir los datos de la empresa<span class="tooltip-text">Descarga las facturas, inventario de productos, promociones y descuentos actualizados.</span></span> para mantener tu catálogo y sistema AFV al día.</p>
+    </div>
+
+    <div class="section">
+        <h2><span class="tooltip-container">Estado de la Sincronización<span class="tooltip-text">Revisa el estado actual de la sincronización y el historial de actividad.</span></span></h2>
+        <img src="sds2.jpg" alt="Captura de pantalla de la sincronización S.D.S." class="screenshot">
+
+        <p>En esta pantalla, puedes ver el progreso de la sincronización y el historial de actividades recientes.</p>
+
+        <div class="sds-text">
+            <h3 class="tooltip-container">Última Sinc. Exitosa<span class="tooltip-text">Muestra la fecha y hora de la última sincronización completada con éxito. Esto te asegura que tu información está al día.</span></h3>
+            <p>01/09/2025 03:55:36 A. M.</p>
+        </div>
+        
+        <div class="sds-text">
+            <h3 class="tooltip-container">Log de Sincronización<span class="tooltip-text">El registro de actividades donde puedes ver el historial de las sincronizaciones iniciadas y finalizadas.</span></h3>
+            <ul class="sds-list">
+                <li><span class="tooltip-container">Sincronización programada finalizada.<span class="tooltip-text">Indica que la sincronización automática se completó sin errores, asegurando que tus datos y los de la empresa coinciden.</span></span> - 31/08/2025 06:46:27 p. m.</li>
+                <li><span class="tooltip-container">Sincronización programada iniciada.<span class="tooltip-text">Indica que la aplicación comenzó a enviar o recibir datos.</span></span> - 31/08/2025 10:45:04 p. m.</li>
+                <li>...</li>
+            </ul>
+        </div>
+        
+        <div class="button-section">
+            <button class="tooltip-container">SINCRONIZAR<span class="tooltip-text">Presiona este botón para iniciar manualmente una sincronización. ¡Útil para obtener los últimos datos al instante!</span></button>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2><span class="tooltip-container">Acerca de la App<span class="tooltip-text">Información técnica y general sobre la aplicación S.D.S.</span></span></h2>
+        <img src="sds.jpg" alt="Captura de pantalla de la información de la app S.D.S." class="screenshot">
+        
+        <p>Aquí encontrarás detalles técnicos y de compatibilidad de la aplicación:</p>
+        <ul>
+            <li><strong><span class="tooltip-container">Novedades<span class="tooltip-text">Mensajes importantes sobre actualizaciones recientes o mejoras continuas.</span></span>:</strong> Mejoras continuas</li>
+            <li><strong><span class="tooltip-container">Versión<span class="tooltip-text">El número de la versión actual de la aplicación.</span></span>:</strong> 1.3.3</li>
+            <li><strong><span class="tooltip-container">Actualización<span class="tooltip-text">Fecha de la última actualización para asegurar que tienes la versión más reciente.</span></span>:</strong> 29 oct 2024</li>
+            <li><strong><span class="tooltip-container">Descargas<span class="tooltip-text">El número de descargas de la aplicación en la tienda.</span></span>:</strong> Más de 500 descargas</li>
+            <li><strong><span class="tooltip-container">SO Requerido<span class="tooltip-text">La versión del sistema operativo Android necesaria para que la aplicación funcione correctamente.</span></span>:</strong> Android 8.0 y versiones posteriores</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
