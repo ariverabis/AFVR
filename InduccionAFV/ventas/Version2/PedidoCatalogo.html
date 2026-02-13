@@ -3,198 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inducción AFV - Exportar a PDF</title>
+    <title>Manual de Inducción AFV - Interactivo</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
         :root {
             --primary-blue: #007BFF;
-            --info-bg: #f0f7ff;
+            --info-bg: #e3f2fd;
             --info-border: #007BFF;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            color: #333;
         }
 
-        /* Barra de herramientas */
-        .toolbar {
-            width: 100%;
-            padding: 20px;
-            background: #f8f9fa;
-            display: flex;
-            justify-content: center;
-            position: sticky;
-            top: 0;
+        /* Botón Flotante de Descarga */
+        .download-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             z-index: 1000;
-            border-bottom: 1px solid #ddd;
         }
 
-        .btn-pdf {
+        .btn-generate {
             background-color: #27ae60;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
         }
 
-        /* Contenedor que será convertido a PDF */
-        #contenido-pdf {
+        .btn-generate:hover { transform: scale(1.05); background-color: #1e8449; }
+
+        /* Contenedor Principal para el PDF */
+        #manual-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
             background: white;
-            padding: 20px;
-            width: 900px; /* Ancho fijo para asegurar calidad en el PDF */
         }
 
-        .slide-page {
-            page-break-after: always; /* Obliga al PDF a crear una nueva página por lámina */
+        /* Estilo de cada lámina */
+        .slide {
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 900px;
             position: relative;
-            margin-bottom: 50px;
+            page-break-after: always; /* Importante para el PDF */
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        /* Mockup del teléfono con bordes corregidos */
+        /* MARCO DEL TELÉFONO PULIDO */
         .phone-mockup {
-            width: 300px;
-            height: 600px;
-            background-image: url('preview.jpg'); 
+            width: 320px;
+            height: 640px;
+            background-image: url('preview.jpg'); /* Debe estar en la carpeta */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             position: relative;
-            border-radius: 45px;
-            overflow: hidden;
-            z-index: 5;
+            border-radius: 40px;
+            overflow: hidden; /* Esto elimina las esquinas blancas */
         }
 
-        .screen-container {
+        .screen {
             position: absolute;
-            top: 80px;
-            left: 31px;
-            width: 238px;
-            height: 425px;
+            top: 86px;
+            left: 36px;
+            width: 248px;
+            height: 440px;
             background-color: white;
             display: flex;
             flex-direction: column;
             border: 1px solid #ddd;
         }
 
-        .app-header {
+        .app-bar {
             background-color: var(--primary-blue);
             color: white;
-            padding: 8px;
+            padding: 10px;
             font-size: 11px;
             font-weight: bold;
         }
 
-        /* Etiquetas */
-        .info-card {
+        /* ETIQUETAS DE TEXTO (Azul Institucional) */
+        .label {
             background-color: var(--info-bg);
             color: #01579b;
             padding: 15px;
             border-radius: 8px;
             border: 1px solid var(--info-border);
-            font-size: 12px;
+            font-size: 13px;
             width: 200px;
             position: absolute;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             line-height: 1.4;
         }
 
-        .label-left { left: 50px; }
-        .label-right { right: 50px; }
+        .left { left: 50px; }
+        .right { right: 50px; }
 
-        .title-slide {
-            text-align: center;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
+        .label::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 2px;
+            background: var(--info-border);
         }
+        .left::after { left: 100%; }
+        .right::after { right: 100%; }
+
+        h2.slide-title {
+            position: absolute;
+            top: 40px;
+            color: var(--primary-blue);
+            width: 100%;
+            text-align: center;
+        }
+
+        .content-mock { padding: 10px; font-size: 11px; }
+        .row-mock { background: #f5f5f5; padding: 10px; margin-bottom: 5px; border-radius: 3px; font-weight: bold; border: 1px solid #eee;}
     </style>
 </head>
 <body>
 
-    <div class="toolbar">
-        <button onclick="generarPDF()" class="btn-pdf">📥 Generar y Descargar Manual PDF</button>
+    <div class="download-box">
+        <button onclick="descargarManual()" class="btn-generate">📥 Descargar Manual PDF</button>
     </div>
 
-    <div id="contenido-pdf">
+    <div id="manual-container">
         
-        <div class="slide-page">
-            <h2 class="title-slide" style="position: absolute; top: 0;">Fase II: Menú de Ventas</h2>
-            
-            <div class="info-card label-left">
-                <strong>REGISTRO:</strong> Es obligatorio registrarse en la plataforma antes de iniciar.
-            </div>
-
+        <div class="slide">
+            <h2 class="slide-title">Fase I: Registro en Plataforma</h2>
+            <div class="label left"><strong>REGISTRO:</strong> Es indispensable completar el formulario SDS para activar el usuario.</div>
             <div class="phone-mockup">
-                <div class="screen-container">
-                    <div class="app-header">073 - Menú Ventas</div>
-                    <div style="padding: 10px;">
-                        <div style="background:#eee; padding:10px; margin-bottom:5px; text-align:center;">Pedidos del catálogo</div>
-                        <div style="background:#eee; padding:10px; margin-bottom:5px; text-align:center;">Clientes</div>
+                <div class="screen">
+                    <div class="app-bar">Registro Plataforma</div>
+                    <div class="content-mock">
+                        <div style="color: #007BFF; text-align: center; margin-top: 50px;">
+                            <p>Abriendo Formulario...</p>
+                            <small>Siga las instrucciones en pantalla</small>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="info-card label-right">
-                <strong>CONFIGURACIÓN:</strong> Se requiere configurar la IP del servidor y el usuario en SDS.
-            </div>
+            <div class="label right"><strong>ENLACE:</strong> El acceso se realiza vía Google Forms compartido.</div>
         </div>
 
-        <div class="slide-page">
-            <h2 class="title-slide" style="position: absolute; top: 0;">Fase III: Detalle de Pedidos</h2>
-            
-            <div class="info-card label-left">
-                <strong>PEDIDOS:</strong> El listado muestra la fecha y el código del cliente.
-            </div>
-
+        <div class="slide">
+            <h2 class="slide-title">Fase II: Menú Principal</h2>
+            <div class="label left"><strong>PEDIDOS:</strong> Inicia la toma de pedidos navegando por el catálogo.</div>
             <div class="phone-mockup">
-                <div class="screen-container">
-                    <div class="app-header" style="background:#008eb3;">Detalle Pedido</div>
-                    <div style="padding: 10px; font-size: 10px;">
-                        <table style="width:100%; border-collapse:collapse;">
-                            <tr style="background:#007BFF; color:white;"><th>Producto</th><th>Cant.</th></tr>
-                            <tr><td>FAROL NEGRO</td><td>1.0</td></tr>
-                        </table>
+                <div class="screen">
+                    <div class="app-bar">073 - Menú Ventas</div>
+                    <div class="content-mock">
+                        <div class="row-mock">Pedidos del catálogo</div>
+                        <div class="row-mock">Clientes</div>
+                        <div class="row-mock">Consultas</div>
+                        <div class="row-mock">Gestión de Ventas</div>
                     </div>
                 </div>
             </div>
+            <div class="label right"><strong>GESTIÓN:</strong> Sincronice sus datos al final del día.</div>
+        </div>
 
-            <div class="info-card label-right">
-                <strong>COTIZACIÓN:</strong> Se recomienda revisar descuentos antes de enviar.
+        <div class="slide">
+            <h2 class="slide-title">Fase III: Consulta de Pedido</h2>
+            <div class="label left"><strong>DETALLES:</strong> Visualice productos y cantidades antes de transmitir.</div>
+            <div class="phone-mockup">
+                <div class="screen">
+                    <div class="app-bar">118 - Detalle Pedido</div>
+                    <div class="content-mock">
+                        <div style="background:#007BFF; color:white; padding:5px; font-size:10px;">Cliente: 7777008</div>
+                        <div style="padding:5px; border-bottom:1px solid #ddd;">FAROL NEGRO - Cant: 1.0</div>
+                        <div style="padding:5px; border-bottom:1px solid #ddd;">PINTURA SPRAY - Cant: 2.0</div>
+                    </div>
+                </div>
             </div>
+            <div class="label right"><strong>COTIZACIÓN:</strong> Genere el documento para aprobación del cliente.</div>
         </div>
 
     </div>
 
     <script>
-        function generarPDF() {
-            const elemento = document.getElementById('contenido-pdf');
+        function descargarManual() {
+            const element = document.getElementById('manual-container');
             
-            // Configuración del PDF
-            const opciones = {
-                margin:       [10, 10],
-                filename:     'Manual_Induccion_AFV.pdf',
+            const opt = {
+                margin:       0,
+                filename:     'Manual_Induccion_AFV_Febeca.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true }, // scale 2 para alta resolución
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true,
+                    letterRendering: true
+                },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Ejecutar la generación
-            html2pdf().set(opciones).from(elemento).save();
+            // Ejecuta la descarga. El navegador abrirá el cuadro de diálogo de guardado.
+            html2pdf().set(opt).from(element).save();
         }
     </script>
-
 </body>
 </html>
