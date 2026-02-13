@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inducción AFV - Menú Ventas</title>
+    <title>Inducción AFV - Modo Guía Permanente</title>
     <style>
         :root {
             --primary-blue: #007BFF;
             --phone-bg: #2c3e50;
+            --help-yellow: #f1c40f;
         }
 
         body {
@@ -16,50 +17,63 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
             color: white;
         }
 
         /* Botón de Descarga Manual */
         .download-container {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            z-index: 100;
         }
         .btn-download {
             background-color: #27ae60;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border: none;
-            border-radius: 30px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             transition: transform 0.2s;
         }
-        .btn-download:hover { transform: scale(1.05); background-color: #2ecc71; }
+        .btn-download:hover { transform: translateY(-2px); background-color: #2ecc71; }
 
-        /* Contenedor del Teléfono */
+        /* Contenedor Principal que abarca teléfono + etiquetas */
+        .presentation-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 900px; /* Espacio extra para las etiquetas laterales */
+        }
+
+        /* Marco del Teléfono */
         .phone-mockup {
             width: 360px;
             height: 720px;
-            background-image: url('preview.jpg'); /* ASEGÚRATE QUE EL NOMBRE SEA CORRECTO */
+            background-image: url('preview.jpg'); /* Asegúrate que el archivo se llame así */
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             position: relative;
+            z-index: 2;
         }
 
-        /* Pantalla Interactiva */
+        /* Pantalla del Teléfono */
         .screen-container {
             position: absolute;
             top: 92px;
             left: 38px;
-            width: 285px;
-            height: 510px;
+            width: 284px;
+            height: 512px;
             background-color: white;
             overflow: hidden;
             display: flex;
@@ -80,114 +94,130 @@
             padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-
-        /* Botones con Ayuda (Tooltip) */
-        .help-wrapper {
-            position: relative;
-            width: 100%;
+            gap: 15px;
         }
 
         .menu-button {
             width: 100%;
-            padding: 12px;
-            background: #eee;
-            border: 1px solid #ccc;
+            padding: 14px;
+            background: #e9e9e9;
+            border: 1px solid #bdc3c7;
             border-radius: 5px;
             font-weight: bold;
-            cursor: help; /* Cambia el cursor para indicar que hay ayuda */
-        }
-
-        /* Estilo de las etiquetas de ayuda (tipo PowerPoint) */
-        .tooltip-text {
-            visibility: hidden;
-            width: 200px;
-            background-color: #f1c40f;
-            color: #000;
+            color: #2c3e50;
             text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 10;
-            left: 105%; /* Aparece a la derecha */
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 11px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            border: 1px solid #d4ac0d;
         }
 
-        /* Flecha del tooltip */
-        .tooltip-text::after {
+        /* ETIQUETAS DE AYUDA PERMANENTES */
+        .help-label {
+            position: absolute;
+            background-color: var(--help-yellow);
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 12px;
+            width: 220px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            font-weight: 500;
+            line-height: 1.4;
+            border-left: 5px solid #d4ac0d;
+        }
+
+        /* Líneas conectoras (opcional para estética PPT) */
+        .help-label::before {
             content: "";
             position: absolute;
+            width: 40px;
+            height: 2px;
+            background: var(--help-yellow);
             top: 50%;
-            right: 100%;
-            margin-top: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent #f1c40f transparent transparent;
         }
 
-        .help-wrapper:hover .tooltip-text {
-            visibility: visible;
+        /* Posicionamiento de cada etiqueta */
+        #label-pedidos {
+            right: 0;
+            top: 140px;
         }
+        #label-pedidos::before { right: 100%; }
+
+        #label-clientes {
+            left: 0;
+            top: 200px;
+        }
+        #label-clientes::before { left: 100%; }
+
+        #label-consultas {
+            right: 0;
+            top: 260px;
+        }
+        #label-consultas::before { right: 100%; }
+
+        #label-gestion {
+            left: 0;
+            top: 320px;
+        }
+        #label-gestion::before { left: 100%; }
 
         .footer {
             margin-top: auto;
             font-size: 9px;
             text-align: center;
             padding: 10px;
-            border-top: 1px solid #eee;
+            background: #f8f9fa;
         }
     </style>
 </head>
 <body>
 
     <div class="download-container">
-        <a href="manual_induccion_afv.pdf" class="btn-download" download>
-            📄 Descargar Manual de Bolsillo (PDF)
+        <a href="manual_bolsillo.pdf" class="btn-download" download>
+            <span>📄 Descargar Manual de Bolsillo (PDF)</span>
         </a>
     </div>
 
-    <div class="phone-mockup">
-        <div class="screen-container">
-            <div class="header">
-                <span>&#8592; 073 - Menú Ventas</span>
-                <span>&#x22EE;</span>
-            </div>
+    <div class="presentation-wrapper">
+        
+        <div id="label-clientes" class="help-label">
+            <strong>CLIENTES:</strong> Acceso a la base de datos, ubicación GPS y límites de crédito.
+        </div>
+        
+        <div id="label-gestion" class="help-label">
+            <strong>GESTIÓN:</strong> Resumen de ventas del día y cumplimiento de metas mensuales.
+        </div>
 
-            <div class="main-content">
-                <div class="help-wrapper">
-                    <button class="menu-button">Pedidos del catálogo</button>
-                    <span class="tooltip-text">Permite crear nuevos pedidos seleccionando productos directamente del catálogo digital.</span>
+        <div class="phone-mockup">
+            <div class="screen-container">
+                <div class="header">
+                    <span>&#8592; 073 - Menú Ventas</span>
+                    <span>&#x22EE;</span>
                 </div>
 
-                <div class="help-wrapper">
-                    <button class="menu-button">Clientes</button>
-                    <span class="tooltip-text">Gestión de cartera: Ver datos de contacto, ubicación y estados de cuenta.</span>
+                <div class="main-content">
+                    <div class="menu-button">Pedidos del catálogo</div>
+                    <div class="menu-button">Clientes</div>
+                    <div class="menu-button">Consultas</div>
+                    <div class="menu-button">Gestión de Ventas</div>
+                    <div class="menu-button" style="color: #999;">Transmitir Transacciones</div>
                 </div>
 
-                <div class="help-wrapper">
-                    <button class="menu-button">Consultas</button>
-                    <span class="tooltip-text">Revisar historial de ventas y disponibilidad de inventario en tiempo real.</span>
+                <div class="footer">
+                    © Wholesale World Information Systems, 2014
                 </div>
-
-                <div class="help-wrapper">
-                    <button class="menu-button">Gestión de Ventas</button>
-                    <span class="tooltip-text">Módulo administrativo para supervisar metas y cierres diarios.</span>
-                </div>
-            </div>
-
-            <div class="footer">
-                © Wholesale World Information Systems, 2014
             </div>
         </div>
+
+        <div id="label-pedidos" class="help-label">
+            <strong>PEDIDOS:</strong> Inicia la toma de pedidos navegando por las categorías de productos.
+        </div>
+
+        <div id="label-consultas" class="help-label">
+            <strong>CONSULTAS:</strong> Verifique existencias en almacén y precios actualizados.
+        </div>
+
     </div>
 
-    <p style="margin-top: 15px; font-size: 12px; color: #bdc3c7;">
-        * Pasa el mouse sobre los botones para ver la explicación.
+    <p style="margin-top: 30px; color: #95a5a6; font-size: 14px;">
+        Inducción AFV - Material de Apoyo Visual
     </p>
 
 </body>
