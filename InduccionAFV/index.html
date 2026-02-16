@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFV Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="simulator-wrapper">
+        <div class="phone-frame">
+            <div class="notch">
+                <div class="camera"></div>
+                <div class="speaker"></div>
+            </div>
+
+            <div class="screen" id="mainScreen">
+                <!-- Status Bar -->
+                <div class="status-bar">
+                    <span class="time">12:00</span>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-three-quarters"></i>
+                    </div>
+                </div>
+
+                <!-- App Content (Iframe) -->
+                <iframe id="appFrame" src="about:blank" class="app-frame hidden"></iframe>
+
+                <!-- Android Home Screen -->
+                <div id="homeScreen" class="home-screen">
+                    <div class="app-grid">
+                        <div class="app-icon" onclick="launchApp('SDS')">
+                            <div class="icon-bg sds-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <span>SDS</span>
+                        </div>
+                        <div class="app-icon" onclick="launchApp('AFV')">
+                            <div class="icon-bg afv-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <span>AFV Droid</span>
+                        </div>
+                        <div class="app-icon" onclick="launchApp('Catalog')">
+                            <div class="icon-bg catalog-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <span>Catálogo</span>
+                        </div>
+                    </div>
+
+                    <div class="dock">
+                        <div class="app-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="app-icon">
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                        <div class="app-icon">
+                            <i class="fas fa-th"></i>
+                        </div>
+                        <div class="app-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Android Navigation Buttons -->
+            <div class="nav-bar">
+                <div class="nav-btn" onclick="goBack()"><i class="fas fa-chevron-left"></i></div> <!-- Back -->
+                <div class="nav-btn" onclick="goHome()"><i class="far fa-circle"></i></div> <!-- Home -->
+                <div class="nav-btn"><i class="far fa-square"></i></div> <!-- Recent -->
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <h2>Panel de Control del Simulador</h2>
+            <p>Use este panel para generar el manual o reiniciar la simulación.</p>
+            <button class="control-btn" onclick="generatePDFManual()">
+                <i class="fas fa-file-pdf"></i> Descargar Manual PDF
+            </button>
+            <button class="control-btn" onclick="goHome()">
+                <i class="fas fa-home"></i> Ir al Inicio
+            </button>
+            <div id="manualLog"></div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="simulator.js"></script>
+</body>
+
+</html>

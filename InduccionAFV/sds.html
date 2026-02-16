@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDS - Smart Data Synchronizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .status-box {
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            height: 20px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        .log-area {
+            width: 100%;
+            height: 150px;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .sync-btn {
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+
+        .sync-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">S.D.S. Febeca</div>
+
+    <div class="content">
+        <div class="status-box">
+            <div>PROGRESO</div>
+            <div id="percentage">0%</div>
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="statusText">Esperando sincronización...</div>
+        </div>
+
+        <div class="log-area" id="logArea">
+            LOG DE SINCRONIZACIÓN
+        </div>
+
+        <button id="btnSync" class="sync-btn" onclick="startSync()">SINCRONIZAR</button>
+        <div id="successMsg" class="success-message">¡Sincronización Finalizada!</div>
+    </div>
+
+    <script>
+        function startSync() {
+            const btn = document.getElementById('btnSync');
+            const pBar = document.getElementById('progressBar');
+            const pText = document.getElementById('percentage');
+            const statusText = document.getElementById('statusText');
+            const logArea = document.getElementById('logArea');
+            const successMsg = document.getElementById('successMsg');
+
+            btn.disabled = true;
+            successMsg.style.display = 'none';
+            statusText.innerText = "Iniciando...";
+            logArea.innerHTML += "<br>Iniciando Sincronización...";
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 10) + 5;
+                if (progress > 100) progress = 100;
+
+                pBar.style.width = progress + '%';
+                pText.innerText = progress + '%';
+                logArea.innerHTML += `<br>Enviando datos... ${progress}%`;
+                logArea.scrollTop = logArea.scrollHeight;
+
+                if (progress === 100) {
+                    clearInterval(interval);
+                    statusText.innerText = "Finalizado";
+                    logArea.innerHTML += "<br>Sincronización Finalizada.";
+                    successMsg.style.display = 'block';
+                    btn.disabled = false;
+
+                    // Notify parent frame that sync is complete (optional for strict compliance but good for UX)
+                    setTimeout(() => {
+                        // alert("Puede salir y abrir AFV ahora.");
+                    }, 500);
+                }
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

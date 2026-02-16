@@ -1,0 +1,211 @@
+body {
+    background-color: #eef2f5;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.simulator-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Phone Frame */
+.phone-frame {
+    width: 360px;
+    height: 740px;
+    background-color: #1a1a1a;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.notch {
+    height: 25px;
+    background-color: #1a1a1a;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.camera {
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 50%;
+}
+
+.speaker {
+    width: 40px;
+    height: 4px;
+    background-color: #333;
+    border-radius: 2px;
+}
+
+/* Screen */
+.screen {
+    background-color: #fff;
+    flex-grow: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.status-bar {
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.1);
+    /* Transparent black for contrast */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    font-size: 12px;
+    color: #333;
+    font-weight: bold;
+    z-index: 5;
+}
+
+.screen iframe.app-frame {
+    flex-grow: 1;
+    border: none;
+    width: 100%;
+}
+
+.screen iframe.hidden {
+    display: none;
+}
+
+/* Home Screen */
+.home-screen {
+    flex-grow: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.app-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.app-icon span {
+    color: white;
+    font-size: 11px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.icon-bg {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sds-icon {
+    background-color: #ff9800;
+}
+
+.afv-icon {
+    background-color: #2196f3;
+}
+
+.catalog-icon {
+    background-color: #4caf50;
+}
+
+.dock {
+    margin-top: auto;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.dock .app-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+/* Nav Bar */
+.nav-bar {
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: #666;
+    font-size: 18px;
+}
+
+.nav-btn {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.nav-btn:hover {
+    color: #ccc;
+}
+
+/* Controls Panel */
+.controls-panel {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.control-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.control-btn:hover {
+    background-color: #0056b3;
+}
