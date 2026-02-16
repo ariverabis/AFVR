@@ -24,7 +24,7 @@ function launchApp(appName) {
             url = 'menu_ventas.html'; // Temporary link to existing menu
             break;
         case 'Catalog':
-            url = 'catalog.html'; // Placeholder
+            url = 'catalog.html';
             break;
         default:
             goHome();

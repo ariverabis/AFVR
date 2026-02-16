@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Productos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .header {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 10px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .product-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background: #eee;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 12px;
+            height: 30px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background-color: #eee;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .add-btn.active {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .cart-bar {
+            background-color: white;
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .send-btn {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .send-btn:disabled {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <span>Catálogo Digital</span>
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+
+    <div class="product-grid">
+        <!-- Products Mockup -->
+        <div class="product-card">
+            <div style="font-size:40px; color:#ccc;">🔌</div>
+            <div class="product-title">Extractor de Aire 6 FP</div>
+            <div class="price">$100.39</div>
+            <button class="add-btn" onclick="toggleCart(this, 'Extractor 6FP', 100.39)">+</button>
+        </div>
+        <div class="product-card">
+            <div style="font-size:40px; color:#ccc;">🌀</div>
+            <div class="product-title">Ventilador de Mesa</div>
+            <div class="price">$31.07</div>
+            <button class="add-btn" onclick="toggleCart(this, 'Ventilador Mesa', 31.07)">+</button>
+        </div>
+        <div class="product-card">
+            <div style="font-size:40px; color:#ccc;">🎨</div>
+            <div class="product-title">Pintura Naranja</div>
+            <div class="price">$36.40</div>
+            <button class="add-btn" onclick="toggleCart(this, 'Pintura Naranja', 36.40)">+</button>
+        </div>
+        <div class="product-card">
+            <div style="font-size:40px; color:#ccc;">⚫</div>
+            <div class="product-title">Pintura Negra</div>
+            <div class="price">$10.66</div>
+            <button class="add-btn" onclick="toggleCart(this, 'Pintura Negra', 10.66)">+</button>
+        </div>
+    </div>
+
+    <div class="cart-bar">
+        <span id="cartCount">0 Artículos</span>
+        <button id="btnSend" class="send-btn" disabled onclick="sendQuote()">ENVIAR A AFV</button>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function toggleCart(btn, name, price) {
+            if (btn.classList.contains('active')) {
+                btn.classList.remove('active');
+                btn.innerText = "+";
+                cart = cart.filter(item => item.name !== name);
+            } else {
+                btn.classList.add('active');
+                btn.innerText = "✓";
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = `${cart.length} Artículos`;
+            document.getElementById('btnSend').disabled = cart.length === 0;
+        }
+
+        function sendQuote() {
+            if (cart.length === 0) return;
+
+            // Simulate sending data to AFV via LocalStorage
+            const quoteId = 'COT-' + Math.floor(Math.random() * 10000);
+            const quoteData = {
+                id: quoteId,
+                items: cart,
+                client: 'Cliente Mostrador', // Default for simulation
+                date: new Date().toLocaleDateString()
+            };
+
+            // Store in specific key for AFV to read
+            // In a real iframe scenario, we might use postMessage, but localStorage is easier for same-origin simulation
+            // Since we are likely serving files from file://, localStorage might be shared.
+            // If strictly isolated, we'd use parent.postMessage.
+            // Let's try localStorage first, assuming same folder context.
+
+            let existingQuotes = JSON.parse(localStorage.getItem('afv_quotes') || '[]');
+            existingQuotes.push(quoteData);
+            localStorage.setItem('afv_quotes', JSON.stringify(existingQuotes));
+
+            alert(`Cotización ${quoteId} enviada exitosamente a AFV.\n\nAhora puede ir a AFV > Pedidos Catálogo para importarla.`);
+
+            // Allow user to go back or close
+            // parent.goHome() isn't accessible directly if blocked, but let's assume simulator.js function visibility or just alert.
+        }
+    </script>
+</body>
+
+</html>

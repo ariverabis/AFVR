@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Digital - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #4caf50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            flex-direction: column;
+        }
+
+        .login-container {
+            width: 80%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            color: #4caf50;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div class="logo">📦</div>
+        <h2>Catálogo Digital</h2>
+        <input type="text" placeholder="Usuario" value="vendedor">
+        <input type="password" placeholder="Contraseña" value="123456">
+        <button onclick="login()">INGRESAR</button>
+    </div>
+
+    <script>
+        function login() {
+            // Simulate login delay
+            const btn = document.querySelector('button');
+            btn.innerText = "Entrando...";
+            setTimeout(() => {
+                window.location.href = 'catalog_products.html';
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>
