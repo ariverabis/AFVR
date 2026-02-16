@@ -20,8 +20,7 @@ function launchApp(appName) {
             url = 'sds.html';
             break;
         case 'AFV':
-            // TODO: Create afv_login.html or link to existing
-            url = 'menu_ventas.html'; // Temporary link to existing menu
+            url = 'afv_login.html';
             break;
         case 'Catalog':
             url = 'catalog.html';

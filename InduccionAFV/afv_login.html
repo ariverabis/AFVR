@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AFV Droid - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('imagenes/AFV.jpeg');
+            /* Placeholder/Fallback */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            background-color: #333;
+            /* Fallback color */
+        }
+
+        .login-overlay {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            background-color: #007BFF;
+            border-radius: 15px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-overlay">
+        <div class="icon">afv</div>
+        <h2>AFV Droid</h2>
+        <input type="text" placeholder="Usuario" value="VENDEDOR">
+        <input type="password" placeholder="Contraseña" value="1234">
+        <button onclick="login()">INGRESAR</button>
+        <div class="footer">Wholesale World Information Systems</div>
+    </div>
+
+    <script>
+        function login() {
+            const btn = document.querySelector('button');
+            btn.innerText = "Validando...";
+
+            // Check if synced (Simulated check)
+            // In a real app we'd check localStorage/DB. 
+            // For simulation, we assume if they are here, they might have synced or we let them pass to show the flow.
+
+            setTimeout(() => {
+                window.location.href = 'menu_ventas.html';
+            }, 800);
+        }
+    </script>
+</body>
+
+</html>
