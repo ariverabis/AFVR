@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Integración SDS AFV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00b09b;
+            --primary-dark: #008a78;
+            --secondary: #f0f2f5;
+            --bg: #ffffff;
+            --text-main: #333333;
+            --text-light: #666666;
+            --border: #e1e4e8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .header-bar {
+            background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);
+            color: white;
+            padding: 2rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-bar h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        main {
+            max-width: 900px;
+            margin: -2rem auto 3rem auto;
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        h2 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); color: #111; }
+        h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #222; }
+
+        p { line-height: 1.7; margin-bottom: 1.2rem; color: var(--text-light); }
+        
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { line-height: 1.7; color: var(--text-light); margin-bottom: 0.5rem; }
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .config-card {
+            background: #f4fcfa;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .house-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #eef2f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--primary-dark);
+            font-size: 1.05em;
+            font-weight: bold;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: white;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: background 0.3s ease;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.3); }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            font-size: 0.9rem;
+        }
+        .btn-download:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        .intro-text {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            main { margin-top: 0; border-radius: 0; padding: 2rem; }
+            .header-bar { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <a href="index.html" class="btn-back">← Volver al Portal</a>
+        <h1>Manual y Configuración de Acceso</h1>
+        <p>Proceso de configuración técnica e instalación de aplicaciones SDS.</p>
+    </header>
+
+    <main>
+        <div class="intro-text">
+            <h3>Objetivos del Primer Entrenamiento</h3>
+            <p>El motivo principal de esta etapa es que nuestros colaboradores logren un dominio integral de las herramientas operativas tecnológicas y del portafolio de productos. Al finalizar, debe estar capacitado para:</p>
+            <ul>
+                <li><strong>Dominio de la plataforma:</strong> Comprender el proceso de instalación técnica y adquirir destreza para el uso de la app.</li>
+                <li><strong>Conocimiento del Inventario:</strong> Identificar el surtido específico de cada empresa y dominar la estructura del catálogo (categorías y subcategorías).</li>
+            </ul>
+        </div>
+
+        <h2>Instalación por Casa Comercial</h2>
+        <p>A continuación se detalla la configuración técnica IP específica y los enlaces oficiales a la Google Play Store que debe utilizar para instalar las herramientas de su empresa asignada.</p>
+
+        <!-- SILLACA -->
+        <div class="config-card" style="border-left-color: #e91e8c;">
+            <span class="house-badge" style="background:#e91e8c;">Casa Sillaca</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Haga clic en los enlaces oficiales para descargar desde la Google Play Store:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.sillaca&hl=es_VE" target="_blank" class="btn-download" style="background: #e91e8c;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.sillaca&hl=es_VE" target="_blank" class="btn-download" style="background: #e91e8c;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.sillaca&hl=es_VE" target="_blank" class="btn-download" style="background: #e91e8c;">📲 Descargar Catálogo</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <code>http://52.2.135.87:8089</code></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <!-- BEVAL -->
+        <div class="config-card" style="border-left-color: #2e7d32;">
+            <span class="house-badge" style="background:#2e7d32;">Casa Beval</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Instale las aplicaciones correspondientes a Beval desde sus enlaces formales aprobados:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.beval&hl=es_VE" target="_blank" class="btn-download" style="background: #2e7d32;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.beval&hl=es_VE" target="_blank" class="btn-download" style="background: #2e7d32;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.beval&hl=es_VE" target="_blank" class="btn-download" style="background: #2e7d32;">📲 Descargar Catálogo</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <code>http://34.239.223.37:8089</code></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <!-- FEBECA -->
+        <div class="config-card" style="border-left-color: #1565c0;">
+            <span class="house-badge" style="background:#1565c0;">Casa Febeca</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Siga los mismos métodos para la descarga de SDS, AFV y Catálogo de Febeca:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.febeca&hl=es_VE" target="_blank" class="btn-download" style="background: #1565c0;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.febeca&hl=es_VE" target="_blank" class="btn-download" style="background: #1565c0;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.febeca&hl=es_VE" target="_blank" class="btn-download" style="background: #1565c0;">📲 Descargar Catálogo</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <code>http://44.214.201.82:8089</code></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <p style="margin-top:2rem;"><em>Quedo a su disposición para cualquier duda o comentario adicional sobre el cronograma de estas sesiones. — Alvaro Rivera, Asesor de Aprendizaje.</em></p>
+    </main>
+
+</body>
+</html>

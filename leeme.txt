@@ -1,0 +1,3 @@
+se copia la carpeta completa de cursoinduccion 
+en la carpeta InduccionAFV y allí se eliminan los files que tienen que ver con el csv.
+la ide es dejar en esta carpeta induccionafv la nueva versión del manua de inudccion y que sea dinamico y descargable de bolsillo. y que aparezca con el marco del tf.

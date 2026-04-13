@@ -1,0 +1,5 @@
+C:\Users\arivera\Documents\GitHub\AFVR\InduccionAFV\.venv\Lib\site-packages\pip\_vendor\rich\color_triplet.py
+C:\Users\arivera\Documents\GitHub\AFVR\InduccionAFV\.venv\Lib\site-packages\pip\_vendor\rich\color.py
+C:\Users\arivera\Documents\GitHub\AFVR\InduccionAFV\.venv\Lib\site-packages\pip\_vendor\rich\__pycache__\color_triplet.cpython-313.pyc
+C:\Users\arivera\Documents\GitHub\AFVR\InduccionAFV\.venv\Lib\site-packages\pip\_vendor\rich\__pycache__\color.cpython-313.pyc
+C:\Users\arivera\Documents\GitHub\AFVR\InduccionAFV\ventas\Version2\temp_colors.txt

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Uso: Codex Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0080;
+            --primary-dark: #cc0066;
+            --secondary: #f0f2f5;
+            --bg: #ffffff;
+            --text-main: #333333;
+            --text-light: #666666;
+            --border: #e1e4e8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--secondary);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .header-bar {
+            background: linear-gradient(135deg, #7928ca 0%, #ff0080 100%);
+            color: white;
+            padding: 2rem 4rem;
+            text-align: center;
+        }
+
+        .header-bar h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        main {
+            max-width: 900px;
+            margin: -2rem auto 3rem auto;
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        h2 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); color: #111; }
+        h3 { font-family: 'Outfit', sans-serif; font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #222; }
+
+        p { line-height: 1.7; margin-bottom: 1.2rem; color: var(--text-light); }
+        
+        ul { margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { line-height: 1.7; color: var(--text-light); margin-bottom: 0.5rem; }
+        strong { color: var(--text-main); font-weight: 600; }
+
+        .note-card {
+            background: #fff8fc;
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+        }
+
+        code {
+            background: #f7e6f0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--primary-dark);
+            font-size: 0.9em;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            color: white;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: background 0.3s ease;
+        }
+        .btn-back:hover { background: rgba(255,255,255,0.3); }
+
+        @media (max-width: 768px) {
+            main { margin-top: 0; border-radius: 0; padding: 2rem; }
+            .header-bar { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-bar">
+        <a href="index.html" class="btn-back">← Volver al Portal</a>
+        <h1>Manual de Uso: Inducción Dinámica (Codex Game)</h1>
+        <p>Aprende a memorizar códigos de producto y mnemotecnias de manera interactiva.</p>
+    </header>
+
+    <main>
+        <p>Esta herramienta ha sido diseñada para ayudarte a memorizar los códigos de producto (SKU) y sus mnemotecnias de manera interactiva y eficiente.</p>
+        
+        <h2>1. Inicio de Sesión y Registro</h2>
+        <p>Al abrir la aplicación, te encontrarás con la pantalla de bienvenida:</p>
+        <ul>
+            <li><strong>Registro:</strong> Si es tu primera vez, utiliza la opción "¿No tienes cuenta? Crear usuario" para registrarte con tu nombre, correo y una contraseña.</li>
+            <li><strong>Acceso:</strong> Ingresa tus credenciales para acceder al panel principal.</li>
+            <li><strong>Sede:</strong> Puedes cambiar la sede comercial (Prisma, Febeca, Sillaca) desde el menú superior para ver los productos específicos de cada una.</li>
+        </ul>
+
+        <h2>2. Guía de Estudio (Catálogo)</h2>
+        <p>Ubicada en la primera pestaña de la barra de navegación inferior. Aquí podrás explorar toda la base de conocimientos:</p>
+        <ul>
+            <li><strong>Estructura del Código:</strong> Verás un panel informativo que explica el formato <code>XX-XX-XXX</code> (Categoría - Subcategoría - Producto).</li>
+            <li><strong>Búsqueda Inteligente:</strong> Utiliza los campos de "Categoría" y "Subcategoría" para filtrar los productos. La aplicación te ofrecerá sugerencias mientras escribes.</li>
+            <li><strong>Navegación por Niveles:</strong> El catálogo se organiza en un árbol desplegable. Haz clic en una categoría para ver sus subcategorías, y en estas para ver los productos.</li>
+            <li><strong>Mnemotecnias:</strong> Cada producto incluye una mnemotecnia (frase o palabra clave) representada con el icono de un bombillo (💡) para ayudarte a recordar su código.</li>
+        </ul>
+
+        <h2>3. Desafíos (Entrenamiento)</h2>
+        <p>En la segunda pestaña encontrarás diferentes modos de juego para poner a prueba tu memoria:</p>
+        <h3>Modos de Juego</h3>
+        <ul>
+            <li><strong>Reto Categorías:</strong> Identifica la categoría principal basándote en el inicio del código.</li>
+            <li><strong>Reto Subcategorías:</strong> Nivel medio; identifica la subcategoría correcta.</li>
+            <li><strong>Reto Código Productos:</strong> Nivel experto; selecciona el código completo basándote en el nombre del producto.</li>
+            <li><strong>Desafío Contrarreloj:</strong> ¡Pon a prueba tu velocidad! Tienes 90 segundos para responder la mayor cantidad de categorías posibles.</li>
+        </ul>
+        <h3>Configuración de Partida</h3>
+        <p>Antes de empezar cada reto (excepto el contrarreloj), puedes elegir la dificultad seleccionando el <strong>número de opciones</strong> (2, 4, 6 u 8) para las respuestas.</p>
+
+        <h2>4. Perfil y Sesión</h2>
+        <p>En la última pestaña de la barra de navegación, podrás:</p>
+        <ul>
+            <li>Ver tu información de usuario.</li>
+            <li><strong>Cerrar Sesión:</strong> Asegúrate de cerrar tu sesión si compartes el equipo con otros usuarios.</li>
+        </ul>
+
+        <div class="note-card">
+            <h3>Consejos para el Aprendizaje</h3>
+            <ul>
+                <li><strong>Usa las Mnemotecnias:</strong> No intentes memorizar números puros; asocia el código a la frase sugerida en la Guía de Estudio.</li>
+                <li><strong>Progresión:</strong> Empieza con el "Reto Categorías" y sube la dificultad (más opciones) antes de pasar al "Reto Código Productos".</li>
+                <li><strong>Sedes:</strong> Practica cambiando de sede si manejas productos de distintas casas comerciales.</li>
+            </ul>
+        </div>
+        <p style="text-align: right; font-style: italic; font-size: 0.9em; margin-top: 3rem;">Desarrollado para mejorar la eficiencia y precisión en el manejo de inventario y ventas.</p>
+    </main>
+
+</body>
+</html>
