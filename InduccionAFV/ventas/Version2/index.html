@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal de Formación y Utilidades AFV</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary: #0070f3;
             --secondary: #009EE3;
             --accent: #E5007D;
             /* Colores de marca */
-            --color-febeca: #009EE3;   /* Azul */
-            --color-sillaca: #E5007D;  /* Magenta */
-            --color-beval: #00A885;    /* Verde */
-            --bg-color: #0d1117;
-            --text-main: #f0f6fc;
-            --text-muted: #8b949e;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --color-febeca: #009EE3;
+            /* Azul */
+            --color-sillaca: #E5007D;
+            /* Magenta */
+            --color-beval: #00A885;
+            /* Verde */
+            --bg-color: #ffffff;
+            --text-main: #111827;
+            --text-muted: #4b5563;
+            --card-bg: #ffffff;
+            --card-border: #e5e7eb;
         }
 
         * {
@@ -29,61 +35,60 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: radial-gradient(circle at top left, #0d1117 0%, #161b22 100%);
+            background-color: var(--bg-color);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 3rem 1.5rem;
+            padding: 2rem 1.5rem;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Abstract glowing background blobs */
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            width: 50vw;
-            height: 50vw;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            opacity: 0.15;
-            animation: float 20s infinite alternate;
-        }
-        body::before {
-            top: -10vw;
-            left: -10vw;
-            background: var(--primary);
-        }
-        body::after {
-            bottom: -10vw;
-            right: -10vw;
-            background: var(--secondary);
-            animation-duration: 25s;
-        }
+        /* Removed abstract glow effects for clean look */
 
         @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(50px, 30px) scale(1.1); }
-            100% { transform: translate(-30px, 50px) scale(0.9); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(50px, 30px) scale(1.1);
+            }
+
+            100% {
+                transform: translate(-30px, 50px) scale(0.9);
+            }
         }
 
         header {
             text-align: center;
-            margin-bottom: 4rem;
-            max-width: 800px;
+            margin-bottom: 3rem;
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            padding-top: 2rem;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
         }
 
         header h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 3.5rem;
+            font-size: 3rem;
             font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, var(--color-febeca), var(--color-sillaca), var(--color-beval));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
             letter-spacing: -1px;
         }
 
@@ -110,17 +115,15 @@
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
         .card:hover {
             transform: translateY(-10px) scale(1.02);
-            border-color: rgba(255,255,255,0.3);
+            border-color: rgba(255, 255, 255, 0.3);
             box-shadow: 0 15px 40px rgba(0, 176, 240, 0.15);
         }
 
@@ -130,7 +133,7 @@
             border-radius: 12px;
             overflow: hidden;
             position: relative;
-            background: #1f242c;
+            background: #f3f4f6;
         }
 
         .card-img-wrapper img {
@@ -155,7 +158,7 @@
             font-family: 'Outfit', sans-serif;
             font-size: 1.5rem;
             font-weight: 600;
-            color: #fff;
+            color: var(--text-main);
         }
 
         .card-description {
@@ -196,7 +199,10 @@
         .btn-primary::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(45deg, var(--secondary), var(--primary));
             z-index: -1;
             transition: opacity 0.3s ease;
@@ -216,17 +222,16 @@
             margin-top: 5rem;
             width: 100%;
             max-width: 1200px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.08) 100%);
+            background: #f9fafb;
             border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 3rem 2rem;
             text-align: center;
-            backdrop-filter: blur(10px);
         }
 
         .evaluations h2 {
             font-family: 'Outfit', sans-serif;
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 2rem;
             font-size: 2rem;
         }
@@ -239,26 +244,35 @@
         }
 
         .eval-btn {
-            background: transparent;
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--card-border);
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         }
 
         .eval-btn:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.4);
+            background: #f3f4f6;
+            border-color: #d1d5db;
             transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            .grid-container { grid-template-columns: 1fr; }
-            .steps-container { flex-direction: column; }
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+
+            .steps-container {
+                flex-direction: column;
+            }
         }
 
         .steps-container {
@@ -270,20 +284,22 @@
             gap: 1.5rem;
             z-index: 10;
         }
+
         .step-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #f9fafb;
+            border: 1px solid var(--card-border);
             padding: 1.5rem;
             border-radius: 15px;
             flex: 1;
-            backdrop-filter: blur(10px);
             text-align: center;
             transition: transform 0.3s ease;
         }
+
         .step-item:hover {
             transform: translateY(-5px);
             background: rgba(255, 255, 255, 0.06);
         }
+
         .step-number {
             display: inline-flex;
             align-items: center;
@@ -298,13 +314,15 @@
             font-size: 1.1rem;
             box-shadow: 0 4px 10px rgba(0, 112, 243, 0.4);
         }
+
         .step-item h4 {
-            color: #fff;
+            color: var(--text-main);
             margin-bottom: 0.5rem;
             font-family: 'Outfit', sans-serif;
             font-size: 1.1rem;
             letter-spacing: 0.5px;
         }
+
         .step-item p {
             color: var(--text-muted);
             font-size: 0.9rem;
@@ -312,43 +330,57 @@
         }
     </style>
 </head>
+
 <body>
 
     <header>
+        <div class="logo-container">
+            <img src="Logotipos_Homologados_Prisma.jpg" alt="Logo Prisma">
+        </div>
         <h1>Plataforma de Formación AFV</h1>
-        <p>Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través de nuestros emuladores y simuladores especializados.</p>
+        <p>Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través
+            de nuestros emuladores y simuladores especializados.</p>
     </header>
 
     <div class="steps-container">
         <div class="step-item">
             <div class="step-number">1</div>
             <h4>Registro</h4>
-            <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfZv8PrDzzlCpq7fsqkBYlAOSkAzsRBmUEDz4A-901r3cpJOg/viewform?usp=header" target="_blank" style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Comienza registrándote</a> en la plataforma inicial.</p>
+            <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSfZv8PrDzzlCpq7fsqkBYlAOSkAzsRBmUEDz4A-901r3cpJOg/viewform?usp=header"
+                    target="_blank" style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Comienza
+                    registrándote</a> en la plataforma inicial.</p>
         </div>
         <div class="step-item">
             <div class="step-number">2</div>
             <h4>Configuración</h4>
-            <p><a href="configuracion_sds.html" style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Ver guía técnica</a> de la plataforma.</p>
+            <p><a href="configuracion_sds.html"
+                    style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Ver guía técnica</a> de la
+                plataforma.</p>
         </div>
         <div class="step-item">
             <div class="step-number">3</div>
             <h4>Simulador</h4>
-            <p><a href="https://ariverabis.github.io/InduccionDinamica/" target="_blank" style="color:var(--color-sillaca);text-decoration:none;font-weight:bold;">Visita el Emulador AFV</a> para interactuar.</p>
+            <p><a href="https://ariverabis.github.io/InduccionDinamica/" target="_blank"
+                    style="color:var(--color-sillaca);text-decoration:none;font-weight:bold;">Visita el Emulador AFV</a>
+                para interactuar.</p>
         </div>
         <div class="step-item">
             <div class="step-number">4</div>
             <h4>Glosario</h4>
-            <p><a href="https://docs.google.com/document/d/1fYR2DhBVhlz-txmk1Bt2ohE31TThmifyHb78w_B8jPE/edit?usp=sharing" target="_blank" style="color:var(--color-beval);text-decoration:none;font-weight:bold;">Estudia el glosario</a> de términos clave.</p>
+            <p><a href="https://docs.google.com/document/d/1fYR2DhBVhlz-txmk1Bt2ohE31TThmifyHb78w_B8jPE/edit?usp=sharing"
+                    target="_blank" style="color:var(--color-beval);text-decoration:none;font-weight:bold;">Estudia el
+                    glosario</a> de términos clave.</p>
         </div>
         <div class="step-item">
             <div class="step-number">5</div>
             <h4>Exámenes</h4>
-            <p><a href="#evaluaciones" style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Presenta tus exámenes</a> de certificación.</p>
+            <p><a href="#evaluaciones" style="color:var(--color-febeca);text-decoration:none;font-weight:bold;">Presenta
+                    tus exámenes</a> de certificación.</p>
         </div>
     </div>
 
     <div class="grid-container">
-        
+
         <!-- Catálogo Febeca (Oculto temporalmente) 
         <article class="card">
             <div class="card-img-wrapper">
@@ -367,11 +399,13 @@
         <!-- Menú Ventas AFV -->
         <article class="card">
             <div class="card-img-wrapper">
-                <img src="AFV.jpeg" alt="Menú de Ventas AFV" onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400'">
+                <img src="AFV.jpeg" alt="Menú de Ventas AFV"
+                    onerror="this.src='https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="card-content">
                 <h3 class="card-title">Menú de Ventas AFV</h3>
-                <p class="card-description">Emulador principal de ventas. Practica la gestión de clientes, creación de cotizaciones y procesamiento de pedidos de manera dinámica.</p>
+                <p class="card-description">Emulador principal de ventas. Practica la gestión de clientes, creación de
+                    cotizaciones y procesamiento de pedidos de manera dinámica.</p>
             </div>
             <div class="card-action">
                 <a href="MenuVentasFH.html" class="btn btn-primary">Abrir Aplicación</a>
@@ -396,11 +430,13 @@
         <!-- Cobranza -->
         <article class="card">
             <div class="card-img-wrapper">
-                <img src="../../recibo/0.jpg" alt="Gestión de Cobranza" onerror="this.src='https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=400'">
+                <img src="../../recibo/0.jpg" alt="Gestión de Cobranza"
+                    onerror="this.src='https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=400'">
             </div>
             <div class="card-content">
                 <h3 class="card-title">Gestión de Cobranza</h3>
-                <p class="card-description">Herramienta para la gestión de cobranza: recibos, depósitos, retenciones y planificación de pagos de clientes.</p>
+                <p class="card-description">Herramienta para la gestión de cobranza: recibos, depósitos, retenciones y
+                    planificación de pagos de clientes.</p>
             </div>
             <div class="card-action">
                 <a href="../../recibo/indexcyc.html" class="btn btn-primary">Abrir Aplicación</a>
@@ -408,30 +444,44 @@
         </article>
 
         <!-- Simulador Codex — Sillaca (Magenta) -->
-        <article class="card" style="box-shadow: 0 10px 30px rgba(229, 0, 125, 0.2); border-color: rgba(229, 0, 125, 0.3);">
+        <article class="card"
+            style="box-shadow: 0 4px 20px rgba(229, 0, 125, 0.1); border-color: rgba(229, 0, 125, 0.2);">
             <div class="card-img-wrapper" style="border-bottom: 3px solid var(--color-sillaca);">
-                <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=400" alt="Simulador Codex">
+                <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&q=80&w=400"
+                    alt="Simulador Codex">
             </div>
             <div class="card-content">
-                <h3 class="card-title" style="color: var(--color-sillaca);">Simulador Codex <span style="font-size:0.75rem; background:rgba(229,0,125,0.15); padding:2px 8px; border-radius:20px; vertical-align:middle;">Sillaca</span></h3>
-                <p class="card-description">Manual y simulador avanzado del sistema Codex para la fuerza de ventas. Aprende todas sus utilidades e integra tus flujos rápidamente.</p>
+                <h3 class="card-title" style="color: var(--color-sillaca);">Simulador Codex <span
+                        style="font-size:0.75rem; background:rgba(229,0,125,0.08); color: var(--color-sillaca); padding:2px 8px; border-radius:20px; vertical-align:middle;">Sillaca</span>
+                </h3>
+                <p class="card-description">Manual y simulador avanzado del sistema Codex para la fuerza de ventas.
+                    Aprende todas sus utilidades e integra tus flujos rápidamente.</p>
             </div>
             <div class="card-action">
-                <a href="manual_codex.html" class="btn btn-primary" style="background: linear-gradient(45deg, var(--color-sillaca), #b5006a); box-shadow: 0 4px 15px rgba(229, 0, 125, 0.4);">Leer Manual Codex</a>
+                <a href="manual_codex.html" class="btn btn-primary"
+                    style="background: var(--color-sillaca); box-shadow: 0 4px 15px rgba(229, 0, 125, 0.2);">Leer Manual
+                    Codex</a>
             </div>
         </article>
 
         <!-- Configuración Técnica — Febeca (Azul) -->
-        <article class="card" style="box-shadow: 0 10px 30px rgba(0, 158, 227, 0.2); border-color: rgba(0, 158, 227, 0.3);">
+        <article class="card"
+            style="box-shadow: 0 4px 20px rgba(0, 158, 227, 0.1); border-color: rgba(0, 158, 227, 0.2);">
             <div class="card-img-wrapper" style="border-bottom: 3px solid var(--color-febeca);">
-                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=400" alt="Configuración Técnica">
+                <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=400"
+                    alt="Configuración Técnica">
             </div>
             <div class="card-content">
-                <h3 class="card-title" style="color: var(--color-febeca);">Configuración General <span style="font-size:0.75rem; background:rgba(0,158,227,0.15); padding:2px 8px; border-radius:20px; vertical-align:middle;">Febeca</span></h3>
-                <p class="card-description">Parámetros de red, enlaces de descarga y configuración completa de las aplicaciones (Sillaca, Beval, Febeca).</p>
+                <h3 class="card-title" style="color: var(--color-febeca);">Configuración General <span
+                        style="font-size:0.75rem; background:rgba(0,158,227,0.08); color: var(--color-febeca); padding:2px 8px; border-radius:20px; vertical-align:middle;">Febeca</span>
+                </h3>
+                <p class="card-description">Parámetros de red, enlaces de descarga y configuración completa de las
+                    aplicaciones (Sillaca, Beval, Febeca).</p>
             </div>
             <div class="card-action">
-                <a href="configuracion_sds.html" class="btn btn-primary" style="background: linear-gradient(45deg, var(--color-febeca), #0070a8); box-shadow: 0 4px 15px rgba(0, 158, 227, 0.4);">Ver Guía Técnica</a>
+                <a href="configuracion_sds.html" class="btn btn-primary"
+                    style="background: var(--color-febeca); box-shadow: 0 4px 15px rgba(0, 158, 227, 0.2);">Ver Guía
+                    Técnica</a>
             </div>
         </article>
 
@@ -439,14 +489,20 @@
 
     <section class="evaluations" id="evaluaciones">
         <h2>Certifica tus Conocimientos</h2>
-        <p style="margin-bottom: 2rem; color: var(--text-muted);">Al finalizar la exploración de los módulos, completa tus evaluaciones para obtener el certificado correspondiente.</p>
+        <p style="margin-bottom: 2rem; color: var(--text-muted);">Al finalizar la exploración de los módulos, completa
+            tus evaluaciones para obtener el certificado correspondiente.</p>
         <div class="eval-links">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZv8PrDzzlCpq7fsqkBYlAOSkAzsRBmUEDz4A-901r3cpJOg/viewform?usp=header" target="_blank" class="eval-btn">1. Registro Inicial</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScjLXWVS10t7L1gtC1OErbksyn6uXHX9G74uBxmCobqO-62ew/viewform?usp=header" target="_blank" class="eval-btn">2. AFV Evaluativo</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-T62I4aMMmt0zcxn5VRaSg8ita_o-XxOa2GK4H4q4qxP8XQ/viewform?usp=header" target="_blank" class="eval-btn">3. Catálogo Digital</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf33_fV9jqCXODZSyS5af_Rpcv8S4_SThAUK6tACcP7c5OagA/viewform?usp=header" target="_blank" class="eval-btn">4. Examen de Glosario</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZv8PrDzzlCpq7fsqkBYlAOSkAzsRBmUEDz4A-901r3cpJOg/viewform?usp=header"
+                target="_blank" class="eval-btn">1. Registro Inicial</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScjLXWVS10t7L1gtC1OErbksyn6uXHX9G74uBxmCobqO-62ew/viewform?usp=header"
+                target="_blank" class="eval-btn">2. AFV Evaluativo</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf-T62I4aMMmt0zcxn5VRaSg8ita_o-XxOa2GK4H4q4qxP8XQ/viewform?usp=header"
+                target="_blank" class="eval-btn">3. Catálogo Digital</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf33_fV9jqCXODZSyS5af_Rpcv8S4_SThAUK6tACcP7c5OagA/viewform?usp=header"
+                target="_blank" class="eval-btn">4. Examen de Glosario</a>
         </div>
     </section>
 
 </body>
+
 </html>
