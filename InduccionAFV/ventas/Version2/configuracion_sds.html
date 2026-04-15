@@ -71,20 +71,31 @@
 
         h2 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             margin-top: 2.5rem;
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--border);
-            color: #111;
+            color: #000;
+            font-weight: 700;
         }
 
         h3 {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-top: 1.5rem;
             margin-bottom: 0.8rem;
-            color: #222;
+            color: #111;
+            font-weight: 700;
+        }
+
+        .subtitle-gray {
+            color: #6b7280;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
         }
 
         p {
@@ -210,8 +221,8 @@
             <img src="Logotipos_Homologados_Prisma.jpg" alt="Logo Prisma">
         </div>
         <a href="index.html" class="btn-back">← Volver al Portal</a>
-        <h1>Manual y Configuración de Acceso</h1>
-        <p>Proceso de configuración técnica e instalación de aplicaciones SDS.</p>
+        <h1 style="font-weight: 800; color: #000;">Manual de Instalación y Configuración</h1>
+        <p class="subtitle-gray">Guía integral para aplicaciones SDS, Catálogo Digital y AFV.</p>
     </header>
 
     <main>
@@ -228,7 +239,59 @@
             </ul>
         </div>
 
-        <h2>Instalación por Casa Comercial</h2>
+        <section class="codex-section" style="margin-bottom: 4rem;">
+            <p class="subtitle-gray" style="margin-top: 0; margin-bottom: 0.5rem;">Próximamente</p>
+            <h2 style="margin-top: 0;">Aplicación Codex y Estructura de Datos</h2>
+            <p>Para un desempeño óptimo en la gestión de ventas, es fundamental comprender la jerarquía de los datos en
+                nuestro sistema. La aplicación <strong>Codex</strong> es la herramienta clave para dominar estos
+                elementos:</p>
+            <div
+                style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Surtido:</strong> Definición del portafolio disponible para el cliente.</li>
+                    <li><strong>Categoría:</strong> Primera segmentación lógica de productos.</li>
+                    <li><strong>Subcategoría:</strong> Clasificación detallada para facilitar la ubicación.</li>
+                    <li><strong>Código:</strong> Identificador único del producto en el inventario.</li>
+                </ul>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://drive.google.com/file/d/1ToxteWIQhMVIe6y37yny1oEOcjjcVlQl/view?usp=drive_link"
+                    target="_blank" class="btn-download"
+                    style="background: #111827; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">📥
+                    Descargar Aplicación Codex (APK)</a>
+            </div>
+        </section>
+
+        <section class="step-config" style="margin-bottom: 4rem;">
+            <h2>(FASE II) Configuración de Aplicaciones</h2>
+            <p class="subtitle-gray">Pasos obligatorios para el primer inicio de sesión</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <!-- Config SDS -->
+                <div
+                    style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 12px; border-top: 4px solid var(--primary);">
+                    <h3 style="margin-top: 0;">1. Configurar SDS</h3>
+                    <ol style="margin-left: 1.2rem; margin-top: 1rem;">
+                        <li>Ingrese la <strong>Dirección IP</strong> del servidor (proporcionada abajo).</li>
+                        <li>Acceda al menú de <strong>Configuración</strong>.</li>
+                        <li>Introduzca su <strong>Nombre de Usuario</strong> asignado.</li>
+                        <li>Ingrese su <strong>Contraseña</strong> personal.</li>
+                    </ol>
+                </div>
+                <!-- Config Catálogo -->
+                <div
+                    style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 12px; border-top: 4px solid var(--primary);">
+                    <h3 style="margin-top: 0;">2. Configurar Catálogo</h3>
+                    <ol style="margin-left: 1.2rem; margin-top: 1rem;">
+                        <li>Ingrese su <strong>Nombre de Usuario</strong>.</li>
+                        <li>Coloque su <strong>Correo Electrónico</strong> registrado.</li>
+                        <li>Verifique la <strong>Contraseña</strong> enviada a su correo para finalizar.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <h2>Descarga e Instalación por Casa Comercial</h2>
         <p>A continuación se detalla la configuración técnica IP específica y los enlaces oficiales a la Google Play
             Store que debe utilizar para instalar las herramientas de su empresa asignada.</p>
 
@@ -292,8 +355,37 @@
             </ul>
         </div>
 
-        <p style="margin-top:2rem;"><em>Quedo a su disposición para cualquier duda o comentario adicional sobre el
-                cronograma de estas sesiones. — Alvaro Rivera, Asesor de Aprendizaje.</em></p>
+        <section class="sync-instructions"
+            style="margin-top: 4rem; padding-top: 3rem; border-top: 2px solid var(--border);">
+            <h2>Uso y Sincronización</h2>
+            <p class="subtitle-gray">Mantenga sus datos actualizados para la venta diaria</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <!-- SDS Sync -->
+                <div>
+                    <h3>(FASE III) Sincronizador SDS</h3>
+                    <ol style="margin-left: 1.2rem;">
+                        <li>Seleccione el icono de la aplicación <strong>SDS</strong> en su equipo.</li>
+                        <li>Pulse el botón <strong>SINCRONIZAR</strong> y espere a que el log indique "Sincronización
+                            finalizada".</li>
+                    </ol>
+                </div>
+                <!-- Catalog Sync -->
+                <div>
+                    <h3>(FASE IV) Actualizar Catálogo</h3>
+                    <ol style="margin-left: 1.2rem;">
+                        <li>Vaya al <strong>Menú</strong> lateral de la app Catálogo.</li>
+                        <li>Seleccione <strong>Mi Cuenta</strong>.</li>
+                        <li>Pulse en <strong>Iniciar Sincronización Manual</strong> para cargar los últimos datos.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <p style="margin-top:4rem; text-align: center; border-top: 1px solid #eee; padding-top: 2rem;">
+            <em>Quedo a su disposición para cualquier duda sobre la configuración de estas herramientas. — Alvaro
+                Rivera, Asesor de Aprendizaje.</em>
+        </p>
     </main>
 
 </body>
