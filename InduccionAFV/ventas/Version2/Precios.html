@@ -6,7 +6,8 @@
     <title>AVF - Consulta de Precios</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
@@ -234,7 +235,7 @@
             <label for="forma-pago" data-tooltip="Seleccione la forma de pago.">Forma Pago:</label>
             <div class="input-group">
                 <select id="forma-pago" onchange="calculatePrice()">
-                    <option value="transferencia-internacional" selected>TRANSFERENCIA INTERNACIONAL</option>
+                    <option value="transferencia-internacional" selected>TRANSFERENCIA INTERNACIONAL 15%</option>
                     <option value="deposito-usd">DEPOSITO USD 13%</option>
                     <option value="deposito-transito-usd">DEPOSITO EN TRANSITO USD 13%</option>
                     <option value="transferencia-ves">TRANSFERENCIA VES 0%</option>
@@ -263,7 +264,7 @@
 <script>
     // Diccionario de descuentos para las formas de pago
     const paymentDiscounts = {
-        "transferencia-internacional": 0,
+        "transferencia-internacional": 15,
         "deposito-usd": 13,
         "deposito-transito-usd": 13,
         "transferencia-ves": 0
@@ -298,6 +299,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // Recibir precio por parámetro si existe
+        const urlParams = new URLSearchParams(window.location.search);
+        const priceParam = urlParams.get('price');
+        if (priceParam) {
+            document.getElementById('precio-articulo').value = priceParam;
+        }
+
         // Ejecutar el cálculo inicial al cargar la página
         calculatePrice();
 

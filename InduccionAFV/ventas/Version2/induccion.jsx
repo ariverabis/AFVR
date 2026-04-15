@@ -131,14 +131,14 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 font-[Arial]">
       <div className="w-[320px] h-[650px] bg-black rounded-[3rem] border-[8px] border-gray-800 shadow-2xl relative overflow-hidden flex flex-col">
 
         {/* PANTALLA 0: INICIO DE SESIÓN (La que ya tenías) */}
         {pantalla === 'inicio' && (
           <div className="flex-1 bg-white mt-8 rounded-t-2xl flex flex-col items-center justify-center p-6">
             <h1 className="text-blue-600 font-black text-4xl mb-2">AFV</h1>
-            <p className="text-gray-400 text-[10px] tracking-widest mb-12">SAMSUNG ENTERPRISE</p>
+            <p className="text-gray-400 text-[12px] tracking-widest mb-12">SAMSUNG ENTERPRISE</p>
             <button
               onClick={() => setPantalla('escritorio')}
               title="Haga clic aquí para ingresar al sistema AFV"
@@ -159,7 +159,7 @@ function App() {
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md mb-1">
                   <img src="/logo sds febeca.jpg" alt="Febeca" className="w-full h-full object-contain rounded-lg" />
                 </div>
-                <span className="text-[9px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Febeca</span>
+                <span className="text-[12px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Febeca</span>
               </div>
 
               {/* ICONO SILLACA */}
@@ -167,7 +167,7 @@ function App() {
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md mb-1">
                   <img src="/logo sds sillaca.jpg" alt="Sillaca" className="w-full h-full object-contain rounded-lg" />
                 </div>
-                <span className="text-[9px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Sillaca</span>
+                <span className="text-[12px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Sillaca</span>
               </div>
 
               {/* ICONO BEVAL */}
@@ -175,7 +175,7 @@ function App() {
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md mb-1">
                   <img src="/logo sds beval.jpg" alt="Beval" className="w-full h-full object-contain rounded-lg" />
                 </div>
-                <span className="text-[9px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Beval</span>
+                <span className="text-[12px] text-white font-medium text-center leading-tight drop-shadow-md">AFV<br />Beval</span>
               </div>
 
               {/* ICONO CATALOGO FEBECA */}
@@ -183,7 +183,7 @@ function App() {
                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center p-1 shadow-md mb-1">
                   <img src="/logocatalogofebeca.png" alt="Catálogo Febeca" className="w-full h-full object-contain rounded-lg" />
                 </div>
-                <span className="text-[9px] text-white font-medium text-center leading-tight drop-shadow-md">Catálogo<br />Febeca</span>
+                <span className="text-[12px] text-white font-medium text-center leading-tight drop-shadow-md">Catálogo<br />Febeca</span>
               </div>
             </div>
           </div>
@@ -193,19 +193,19 @@ function App() {
         {pantalla === 'config' && (
           <div className="flex-1 bg-white mt-8 rounded-t-2xl flex flex-col">
             <div className="bg-[#009bba] p-3 flex items-center justify-between text-white shadow-md">
-              <span className="font-bold text-[11px] uppercase tracking-wider">000 - Sin Título</span>
+              <span className="font-bold text-[12px] uppercase tracking-wider">000 - Sin Título</span>
               <span className="text-xl leading-none">⋮</span>
             </div>
 
             <div className="p-5 flex-1 space-y-5">
               <div className="border-b-2 border-[#009bba] pb-1">
-                <label className="text-[10px] font-bold text-[#009bba]">Nombre del Vendedor</label>
-                <p className="text-xs font-semibold text-gray-700 mt-1">Alberto Gonzalez</p>
+                <label className="text-[12px] font-bold text-[#009bba]">Nombre del Vendedor</label>
+                <p className="text-[12px] font-semibold text-gray-700 mt-1">Alberto Gonzalez</p>
               </div>
 
               <div className="border-b-2 border-gray-300 pb-1 relative">
-                <label className="text-[10px] font-bold text-gray-500">Zona de Venta</label>
-                <select className="w-full bg-transparent text-xs font-semibold text-gray-800 outline-none appearance-none mt-1">
+                <label className="text-[12px] font-bold text-gray-500">Zona de Venta</label>
+                <select className="w-full bg-transparent text-[12px] font-semibold text-gray-800 outline-none appearance-none mt-1">
                   <option>Z072 - ZONA 72</option>
                 </select>
                 <div className="absolute right-0 bottom-2 pointer-events-none border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-500"></div>
@@ -213,19 +213,19 @@ function App() {
 
               <div className="flex justify-end gap-4 pt-2">
                 <div>
-                  <p className="text-[9px] font-bold text-[#009bba] mb-1">Fecha:</p>
-                  <p className="text-[10px] font-semibold text-gray-600">22-02-2026</p>
+                  <p className="text-[12px] font-bold text-[#009bba] mb-1">Fecha:</p>
+                  <p className="text-[12px] font-semibold text-gray-600">22-02-2026</p>
                 </div>
                 <div>
-                  <p className="text-[9px] font-bold text-[#009bba] mb-1">Hora:</p>
-                  <p className="text-[10px] font-semibold text-gray-600">08:30 AM</p>
+                  <p className="text-[12px] font-bold text-[#009bba] mb-1">Hora:</p>
+                  <p className="text-[12px] font-semibold text-gray-600">08:30 AM</p>
                 </div>
               </div>
             </div>
 
             <div className="p-4 flex gap-4 bg-white border-t border-gray-100">
-              <button onClick={() => setPantalla('escritorio')} title="Regresar a la pantalla principal o salir de la configuración" className="flex-1 bg-[#ccc] py-2.5 rounded text-[11px] font-bold text-gray-700 shadow-sm active:bg-gray-400">SALIR</button>
-              <button onClick={() => setPantalla('menu')} title="Guardar configuración de zona y vendedor y continuar" className="flex-1 bg-[#ccc] py-2.5 rounded text-[11px] font-bold text-gray-700 shadow-sm active:bg-gray-400">SIGUIENTE</button>
+              <button onClick={() => setPantalla('escritorio')} title="Regresar a la pantalla principal o salir de la configuración" className="flex-1 bg-[#ccc] py-2.5 rounded text-[12px] font-bold text-gray-700 shadow-sm active:bg-gray-400">SALIR</button>
+              <button onClick={() => setPantalla('menu')} title="Guardar configuración de zona y vendedor y continuar" className="flex-1 bg-[#ccc] py-2.5 rounded text-[12px] font-bold text-gray-700 shadow-sm active:bg-gray-400">SIGUIENTE</button>
             </div>
           </div>
         )}
@@ -236,7 +236,7 @@ function App() {
             <div className="bg-[#009bba] p-3 flex items-center justify-between text-white shadow-md">
               <div className="flex items-center gap-2">
                 <button onClick={() => setPantalla('config')} className="text-lg leading-none">←</button>
-                <span className="font-bold text-[11px] uppercase tracking-wider">073 - Ventas menu</span>
+                <span className="font-bold text-[12px] uppercase tracking-wider">073 - Ventas menu</span>
               </div>
               <span onClick={() => setMostrarSubmenu(!mostrarSubmenu)} className="text-xl leading-none cursor-pointer">⋮</span>
             </div>
@@ -245,7 +245,7 @@ function App() {
             {mostrarSubmenu && (
               <div className="absolute right-2 top-12 bg-white shadow-2xl rounded border border-gray-200 z-50 w-48 overflow-hidden">
                 {['Ventas', 'Cobranza'].map(item => (
-                  <button key={item} className="w-full text-left px-4 py-3 text-[13px] font-semibold text-gray-700 hover:bg-gray-100">
+                  <button key={item} className="w-full text-left px-4 py-3 text-[12px] font-semibold text-gray-700 hover:bg-gray-100">
                     {item}
                   </button>
                 ))}
@@ -264,7 +264,7 @@ function App() {
                   <button
                     onClick={!opcion.disabled ? opcion.action : undefined}
                     title={opcion.disabled ? 'Opción no disponible por ahora' : `Ir a la sección de ${opcion.label}`}
-                    className={`flex-1 bg-[#ccc] py-3.5 rounded text-[11px] font-bold text-gray-800 shadow-sm transition-all ${opcion.disabled ? 'opacity-50 cursor-not-allowed' : 'active:bg-gray-400'}`}
+                    className={`flex-1 bg-[#ccc] py-3.5 rounded text-[12px] font-bold text-gray-800 shadow-sm transition-all ${opcion.disabled ? 'opacity-50 cursor-not-allowed' : 'active:bg-gray-400'}`}
                   >
                     {opcion.label}
                   </button>
@@ -272,7 +272,7 @@ function App() {
                     <button
                       onClick={opcion.demoFn}
                       title="Ejecutar simulación automática (Ghost Mouse)"
-                      className="bg-red-600 text-white font-bold text-[10px] px-2 rounded shadow-sm hover:bg-red-500 active:bg-red-700 transition-colors flex items-center justify-center shrink-0 w-10"
+                      className="bg-red-600 text-white font-bold text-[12px] px-2 rounded shadow-sm hover:bg-red-500 active:bg-red-700 transition-colors flex items-center justify-center shrink-0 w-10"
                     >
                       Run
                     </button>
@@ -290,9 +290,9 @@ function App() {
             <div className="bg-[#00b0f0] p-2.5 flex items-center justify-between text-black border-b border-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-[8px] font-bold text-gray-800">AFV</span>
+                  <span className="text-[12px] font-bold text-gray-800">AFV</span>
                 </div>
-                <span className="text-[13px] font-normal text-black font-sans">118 - Pedidos del Catálogo</span>
+                <span className="text-[12px] font-normal text-black font-[Arial]">118 - Pedidos del Catálogo</span>
               </div>
               <span className="text-xl leading-none text-gray-700">⋮</span>
             </div>
@@ -303,7 +303,7 @@ function App() {
               {/* Barra de Cliente */}
               <div className="flex items-center justify-between mb-2">
                 <div className="bg-[#d3d3d3] py-2 px-2 flex-1 mr-2 border border-gray-300">
-                  <span className="text-[13px] text-gray-800 font-sans">FM IMPORT PARTS, C.A. - 2535</span>
+                  <span className="text-[12px] text-gray-800 font-[Arial]">FM IMPORT PARTS, C.A. - 2535</span>
                 </div>
                 <button onClick={() => setPantalla('menu')} className="w-7 h-7 bg-[#b3b3b3] rounded-full flex items-center justify-center text-white font-bold leading-none border-[3px] border-[#999999] shadow-sm flex-shrink-0">
                   ←
@@ -313,7 +313,7 @@ function App() {
               {/* Tabla de Pedidos */}
               <div className="flex-1 border border-gray-500 flex flex-col overflow-hidden bg-white mb-2">
                 {/* Encabezado de la Tabla */}
-                <div className="grid grid-cols-3 bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-sans outline outline-1 outline-gray-400">
+                <div className="grid grid-cols-3 bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-[Arial] outline outline-1 outline-gray-400">
                   <div className="border-r border-gray-400 border-opacity-30">Cliente</div>
                   <div className="border-r border-gray-400 border-opacity-30 pl-2">Pedido</div>
                   <div className="pl-2">Fecha</div>
@@ -323,7 +323,7 @@ function App() {
                 <div className="flex-1 overflow-y-auto font-sans">
 
                   {/* Fila Seleccionada (Celeste) */}
-                  <div className="grid grid-cols-3 bg-[#00b0f0] text-black font-bold text-[13px] px-2 py-1.5 border-b border-gray-200">
+                  <div className="grid grid-cols-3 bg-[#00b0f0] text-black font-bold text-[12px] px-2 py-1.5 border-b border-gray-200">
                     <div>2535249</div>
                     <div className="pl-2">1000059</div>
                     <div className="pl-2 relative -left-1">06-09-20</div>
@@ -337,7 +337,7 @@ function App() {
                     ['0182000', '1000015', '04-09-20'],
                     ['0182000', '1000014', '04-09-20']
                   ].map((row, i) => (
-                    <div key={i} className="grid grid-cols-3 bg-white text-black font-bold text-[13px] px-2 py-1.5 border-b border-gray-200">
+                    <div key={i} className="grid grid-cols-3 bg-white text-black font-bold text-[12px] px-2 py-1.5 border-b border-gray-200">
                       <div>{row[0]}</div>
                       <div className="pl-2">{row[1]}</div>
                       <div className="pl-2 relative -left-1">{row[2]}</div>
@@ -351,13 +351,13 @@ function App() {
                 <button title="Descartar este pedido del catálogo y eliminar la cotización" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[13px] font-sans flex-1 shadow-sm active:bg-[#d4d4d4]">
                   Descartar
                 </button>
-                <button onClick={() => setPantalla('detalles_pedido')} title="Ver el detalle de los artículos y continuar con este pedido" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[13px] font-sans flex-1 shadow-sm active:bg-[#d4d4d4]">
+                <button onClick={() => setPantalla('detalles_pedido')} title="Ver el detalle de los artículos y continuar with this pedido" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[12px] font-[Arial] flex-1 shadow-sm active:bg-[#d4d4d4]">
                   Ver Detalles
                 </button>
               </div>
 
               {/* Pie de página pequeño */}
-              <div className="text-[7.5px] text-gray-500 font-sans mt-1">
+              <div className="text-[12px] text-gray-500 font-[Arial] mt-1">
                 © Copyright Wholesale World Information Systems LTD, 2014
               </div>
             </div>
@@ -371,9 +371,9 @@ function App() {
             <div className="bg-[#00b0f0] p-2.5 flex items-center justify-between text-black border-b border-gray-400">
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
-                  <span className="text-[8px] font-bold text-gray-800">AFV</span>
+                  <span className="text-[12px] font-bold text-gray-800">AFV</span>
                 </div>
-                <span className="text-[13px] font-normal text-black font-sans">119 - Detalle Pedido Catálogo</span>
+                <span className="text-[12px] font-normal text-black font-[Arial]">119 - Detalle Pedido Catálogo</span>
               </div>
             </div>
 
@@ -383,7 +383,7 @@ function App() {
               {/* Barra de Cliente (Igual que 118) */}
               <div className="flex items-center justify-between mb-2">
                 <div className="bg-[#d3d3d3] py-2 px-2 flex-1 mr-2 border border-gray-300 overflow-hidden whitespace-nowrap text-ellipsis">
-                  <span className="text-[13px] text-gray-800 font-sans block truncate">2535249 - FM IMPORT PARTS, </span>
+                  <span className="text-[12px] text-gray-800 font-[Arial] block truncate">2535249 - FM IMPORT PARTS, </span>
                 </div>
                 <button onClick={() => setPantalla('pedidos_catalogo')} title="Regresar a la lista de pedidos del catálogo" className="w-7 h-7 bg-[#b3b3b3] rounded-full flex items-center justify-center text-white font-bold leading-none border-[3px] border-[#999999] shadow-sm flex-shrink-0">
                   ←
@@ -392,7 +392,7 @@ function App() {
 
               {/* Sub-banner texto */}
               <div className="mb-2">
-                <p className="text-[10px] text-gray-700 font-sans leading-tight">
+                <p className="text-[12px] text-gray-700 font-[Arial] leading-tight">
                   0113020 - EXTENSION PROFESIONAL ST<br />
                   2X16AWG, 5 TOMAS NEGRO 10MTS. ARRIGO
                 </p>
@@ -401,7 +401,7 @@ function App() {
               {/* Tabla de Productos */}
               <div className="flex-1 border border-gray-500 flex flex-col overflow-hidden bg-white mb-2">
                 {/* Encabezado de la Tabla */}
-                <div className="flex bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-sans outline outline-1 outline-gray-400">
+                <div className="flex bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-[Arial] outline outline-1 outline-gray-400">
                   <div className="flex-1 border-r border-gray-400 border-opacity-30">Producto</div>
                   <div className="w-12 pl-2 text-center">Can</div>
                 </div>
@@ -410,7 +410,7 @@ function App() {
                 <div className="flex-1 overflow-y-auto font-sans">
 
                   {/* Fila Seleccionada (Celeste) */}
-                  <div className="flex bg-[#00b0f0] text-black font-bold text-[10px] px-2 py-2 border-b border-gray-200">
+                  <div className="flex bg-[#00b0f0] text-black font-bold text-[12px] px-2 py-2 border-b border-gray-200">
                     <div className="flex-1 truncate pr-2">EXTENSION PROFESIONAL ST 2</div>
                     <div className="w-12 text-center">1.0</div>
                   </div>
@@ -423,7 +423,7 @@ function App() {
                     ['TEIPE ELECTRICO TEMFLEX 16', '10.0'],
                     ['BOMBILLO LED COLMENA 25 UI', '25.0']
                   ].map((row, i) => (
-                    <div key={i} className="flex bg-white text-black font-bold text-[10px] px-2 py-2 border-b border-gray-200">
+                    <div key={i} className="flex bg-white text-black font-bold text-[12px] px-2 py-2 border-b border-gray-200">
                       <div className="flex-1 truncate pr-2">{row[0]}</div>
                       <div className="w-12 text-center">{row[1]}</div>
                     </div>
@@ -433,13 +433,13 @@ function App() {
 
               {/* Botón Inferior */}
               <div className="flex justify-center mb-1 mt-1">
-                <button onClick={() => setPantalla('promociones_asociativas')} title="Convertir este pedido en una cotización y aplicar promociones posibles" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-6 text-[13px] font-sans shadow-sm active:bg-[#d4d4d4]">
+                <button onClick={() => setPantalla('promociones_asociativas')} title="Convertir este pedido en una cotización y aplicar promociones posibles" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-6 text-[12px] font-[Arial] shadow-sm active:bg-[#d4d4d4]">
                   Crear Cotización
                 </button>
               </div>
 
               {/* Pie de página pequeño */}
-              <div className="text-[7.5px] text-gray-500 font-sans mt-1">
+              <div className="text-[12px] text-gray-500 font-[Arial] mt-1">
                 © Copyright Wholesale World Information Systems LTD, 2014
               </div>
             </div>
@@ -454,24 +454,24 @@ function App() {
                 <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
                   <span className="text-[8px] font-bold text-gray-800">AFV</span>
                 </div>
-                <span className="text-[13px] font-normal text-black font-sans">107 - Promociones Asociativas</span>
+                <span className="text-[12px] font-normal text-black font-[Arial]">107 - Promociones Asociativas</span>
               </div>
             </div>
 
             {/* Contenido principal atenuado por el modal */}
             <div className="flex-1 flex flex-col relative">
               <div className="p-3">
-                <p className="text-[14px] font-bold text-black font-sans mb-1">ARRIGO 36pzas 7% NACIONAL</p>
-                <p className="text-[14px] font-bold text-black font-sans mb-2">Promociones Asociativas</p>
+                <p className="text-[12px] font-bold text-black font-[Arial] mb-1">ARRIGO 36pzas 7% NACIONAL</p>
+                <p className="text-[12px] font-bold text-black font-[Arial] mb-2">Promociones Asociativas</p>
 
                 <div className="border border-gray-400">
-                  <div className="flex bg-[#808080] text-[#cccccc] font-bold text-[13px] p-2 border-b border-gray-500">
+                  <div className="flex bg-[#808080] text-[#cccccc] font-bold text-[12px] p-2 border-b border-gray-500">
                     <div className="flex-1 text-center">Marca</div>
                     <div className="flex-1 text-center">Cant. P.</div>
                   </div>
-                  <div className="flex bg-[#00b0f0] text-black font-bold text-[13px] p-2 border-b border-gray-400">
-                    <div className="flex-1 text-center font-sans tracking-wide">ARRIGO 36P</div>
-                    <div className="flex-1 text-center font-sans tracking-wide">36,00</div>
+                  <div className="flex bg-[#00b0f0] text-black font-bold text-[12px] p-2 border-b border-gray-400">
+                    <div className="flex-1 text-center font-[Arial] tracking-wide">ARRIGO 36P</div>
+                    <div className="flex-1 text-center font-[Arial] tracking-wide">36,00</div>
                   </div>
                 </div>
               </div>
@@ -480,11 +480,11 @@ function App() {
               <div className="absolute bottom-0 left-0 right-0 p-3 bg-gray-500 border-t border-gray-600">
                 <div className="flex items-end justify-between">
                   <div className="flex items-center border-b border-gray-600 pb-0.5 flex-1 mr-4">
-                    <span className="text-[11px] font-bold text-black mr-2">Descuento (%):</span>
-                    <span className="text-[14px] text-gray-800 flex-1">7</span>
+                    <span className="text-[12px] font-bold text-black mr-2">Descuento (%):</span>
+                    <span className="text-[12px] text-gray-800 flex-1">7</span>
                     <div className="w-0 h-0 border-l-[5px] border-l-transparent border-t-[5px] border-t-gray-800 border-r-[5px] border-r-transparent ml-1 mb-1"></div>
                   </div>
-                  <button onClick={() => setPantalla('escritorio')} title="Otorgar el descuento promocional indicado" className="bg-[#808080] text-black px-4 py-1.5 text-[13px] font-sans border border-gray-600 shadow-sm active:bg-gray-400">
+                  <button onClick={() => setPantalla('escritorio')} title="Otorgar el descuento promocional indicado" className="bg-[#808080] text-black px-4 py-1.5 text-[12px] font-[Arial] border border-gray-600 shadow-sm active:bg-gray-400">
                     Otorgar
                   </button>
                 </div>
@@ -498,10 +498,10 @@ function App() {
                     <div className="opacity-60 text-[#00b0f0] text-2xl leading-none">
                       ☁
                     </div>
-                    <span className="text-[16px] text-[#00b0f0] font-sans">Confirmación</span>
+                    <span className="text-[12px] text-[#00b0f0] font-[Arial]">Confirmación</span>
                   </div>
                   <div className="bg-[#f9f9f9] p-4 border-b border-gray-300">
-                    <p className="text-[14px] text-gray-800 font-sans">
+                    <p className="text-[12px] text-gray-800 font-[Arial]">
                       ¿Desea otorgar 7 porciento de descuento?
                     </p>
                   </div>
@@ -509,7 +509,7 @@ function App() {
                     <button onClick={() => setMostrarModalCierra1(true)} title="Cancelar el descuento y cerrar esta promoción" className="flex-1 py-3 text-[14px] text-gray-800 font-sans border-r border-gray-300 active:bg-gray-200">
                       No
                     </button>
-                    <button onClick={() => setPantalla('finalizar_pedido')} title="Aceptar el descuento y avanzar al cierre del pedido" className="flex-1 py-3 text-[14px] text-gray-800 font-sans active:bg-gray-200">
+                    <button onClick={() => setPantalla('finalizar_pedido')} title="Aceptar el descuento y avanzar al cierre del pedido" className="flex-1 py-3 text-[12px] text-gray-800 font-[Arial] active:bg-gray-200">
                       Si
                     </button>
                   </div>
@@ -529,7 +529,7 @@ function App() {
                 <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
                   <span className="text-[8px] font-bold text-gray-800">AFV</span>
                 </div>
-                <span className="text-[13px] font-normal text-black font-sans">016 - Finalizar Pedido</span>
+                <span className="text-[12px] font-normal text-black font-[Arial]">016 - Finalizar Pedido</span>
               </div>
             </div>
 
@@ -537,22 +537,22 @@ function App() {
             <div className="flex-1 overflow-y-auto p-2">
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans">Pedido:</span>
-                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px]">62115</div>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Pedido:</span>
+                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px]">62115</div>
                 <button onClick={() => setPantalla('promociones_asociativas')} title="Regresar a Promociones Asociativas" className="ml-2 w-7 h-7 bg-[#b3b3b3] rounded-full flex items-center justify-center text-white font-bold leading-none border-[3px] border-[#8a8a8a] shadow-sm flex-shrink-0">
                   ←
                 </button>
               </div>
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans">Fecha:</span>
-                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px] mr-9">14-09-2024</div>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Fecha:</span>
+                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px] mr-9">14-09-2024</div>
               </div>
 
               <div className="flex items-center mb-2 border-b border-gray-400 pb-1 relative">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans shrink-0">Forma Pago:</span>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial] shrink-0">Forma Pago:</span>
                 <div
-                  className="flex-1 flex justify-between items-center bg-transparent border-0 font-sans text-[12px] text-black cursor-pointer mr-9"
+                  className="flex-1 flex justify-between items-center bg-transparent border-0 font-[Arial] text-[12px] text-black cursor-pointer mr-9"
                   onClick={() => setMostrarFormaPagoCombo(true)}
                   title="Pulse para elegir la forma de pago"
                 >
@@ -562,43 +562,43 @@ function App() {
               </div>
 
               <div className="flex items-center mb-2 border-b border-gray-400 pb-1 relative">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans shrink-0">Condición:</span>
-                <div className="flex-1 flex justify-between items-center text-gray-500 font-sans text-[12px] mr-9">
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial] shrink-0">Condición:</span>
+                <div className="flex-1 flex justify-between items-center text-gray-500 font-[Arial] text-[12px] mr-9">
                   <span className="truncate">0% DE DESCUENTO A 30..</span>
                   <div className="w-0 h-0 border-l-[6px] border-l-transparent border-b-[6px] border-b-gray-400 border-r-[6px] border-r-transparent mr-1"></div>
                 </div>
               </div>
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans">Flete ($):</span>
-                <div className="bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px] w-[100px]">0,00</div>
-                <div className="bg-[#b3b3b3] ml-1 text-black text-right pr-1 py-0.5 font-sans text-[13px] flex-1 border-b border-gray-400 flex items-end justify-end relative">
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Flete ($):</span>
+                <div className="bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px] w-[100px]">0,00</div>
+                <div className="bg-[#b3b3b3] ml-1 text-black text-right pr-1 py-0.5 font-[Arial] text-[12px] flex-1 border-b border-gray-400 flex items-end justify-end relative">
                   0
                   <div className="w-0 h-0 border-l-[6px] border-l-transparent border-b-[6px] border-b-gray-600 border-r-[6px] border-r-transparent ml-1 mb-0.5"></div>
-                  <span className="text-[11px] ml-1">(%)</span>
+                  <span className="text-[12px] ml-1">(%)</span>
                 </div>
               </div>
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans">Subtotal ($):</span>
-                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px]">75,96</div>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Subtotal ($):</span>
+                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px]">75,96</div>
               </div>
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans shrink-0">IVA Ret. 12% :</span>
-                <div className="bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px] flex-1">9,12</div>
-                <button title="Opciones adicionales de retención de impuestos" className="bg-[#cccccc] text-black px-2 py-0.5 ml-1 font-sans text-[12px] shadow-sm active:bg-[#bbbbbb]">Opc.</button>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial] shrink-0">IVA Ret. 12% :</span>
+                <div className="bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px] flex-1">9,12</div>
+                <button title="Opciones adicionales de retención de impuestos" className="bg-[#cccccc] text-black px-2 py-0.5 ml-1 font-[Arial] text-[12px] shadow-sm active:bg-[#bbbbbb]">Opc.</button>
               </div>
 
               <div className="flex items-center mb-2">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans shrink-0">IVA Rest. 4% :</span>
-                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px]">3,04</div>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial] shrink-0">IVA Rest. 4% :</span>
+                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px]">3,04</div>
               </div>
 
               <div className="flex items-center mb-3">
-                <span className="w-[85px] text-[11px] text-gray-700 font-sans">Total ($):</span>
-                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-sans text-[13px]">88,11</div>
-                <button onClick={() => setMostrarModalCierra1(true)} title="Iniciar proceso de guardado y cierre para este documento" className="bg-[#cccccc] text-black px-3 py-0.5 ml-1 font-sans text-[13px] font-bold shadow-sm border border-[#a6a6a6] active:bg-[#bbbbbb]">Fin</button>
+                <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Total ($):</span>
+                <div className="flex-1 bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px]">88,11</div>
+                <button onClick={() => setMostrarModalCierra1(true)} title="Iniciar proceso de guardado y cierre para este documento" className="bg-[#cccccc] text-black px-3 py-0.5 ml-1 font-[Arial] text-[12px] font-bold shadow-sm border border-[#a6a6a6] active:bg-[#bbbbbb]">Fin</button>
               </div>
 
               <div className="border border-gray-50 bg-white mb-4">
@@ -613,7 +613,7 @@ function App() {
                 <span className="text-[12px] font-bold text-black font-sans">Observaciones:</span>
                 <button onClick={() => setMostrarModalNegociacion(true)} title="Haga clic para agregar una observación o negociación especial al documento" className="w-8 h-8 bg-[#cccccc] flex items-center justify-center text-black text-lg border border-[#a6a6a6] shadow-sm pb-1 active:bg-[#bbbbbb]">+</button>
               </div>
-              <p className="text-[12px] text-black font-sans">Descuento autorizado la gerencia 2%</p>
+              <p className="text-[12px] text-black font-[Arial]">Descuento autorizado la gerencia 2%</p>
             </div>
 
             {/* Modal Combo Forma Pago */}
@@ -621,9 +621,9 @@ function App() {
               <div className="absolute inset-0 bg-black bg-opacity-30 z-20 flex items-center justify-center">
                 <div className="bg-[#f0f0f0] w-[85%] border-t-2 border-[#00b0f0] shadow-2xl">
                   <div className="border-b border-gray-300 p-3">
-                    <p className="text-[#333] text-[14px] font-sans">SELECCIONE FORMA DE PAGO</p>
+                    <p className="text-[#333] text-[12px] font-[Arial]">SELECCIONE FORMA DE PAGO</p>
                   </div>
-                  <ul className="text-[13px] font-sans text-black">
+                  <ul className="text-[12px] font-[Arial] text-black">
                     {['TRANSFERENCIA VES 0%', 'DEPOSITO USD 10%', 'TRANSFERENCIA USD 10%'].map(opcion => (
                       <li
                         key={opcion}
@@ -646,24 +646,24 @@ function App() {
               <div className="absolute inset-0 bg-black bg-opacity-60 z-30 flex items-center justify-center p-4">
                 <div className="bg-white w-full border-t-[3px] border-[#00b0f0] shadow-2xl">
                   <div className="flex justify-between items-center p-3 border-b border-gray-300 bg-white">
-                    <span className="text-[14px] text-gray-800 font-sans">022 - Observaciones del Pedido</span>
+                    <span className="text-[12px] text-gray-800 font-[Arial]">022 - Observaciones del Pedido</span>
                     <button onClick={() => setMostrarModalNegociacion(false)} title="Cerrar ventana de observaciones sin guardar" className="w-6 h-6 bg-gray-400 rounded-full text-white flex items-center justify-center font-bold text-xs border-2 border-white shadow-sm leading-none">
                       X
                     </button>
                   </div>
                   <div className="p-4 bg-white">
-                    <p className="text-[14px] font-bold text-black font-sans mb-3">NEGOCIACION ESPECIAL</p>
+                    <p className="text-[12px] font-bold text-black font-[Arial] mb-3">NEGOCIACION ESPECIAL</p>
                     <div className="flex gap-2">
                       <div className="flex-1 border-b border-gray-400 pb-1 relative">
-                        <span className="text-[12px] text-gray-700 font-sans">NEGOCIACION ESPECI..</span>
+                        <span className="text-[12px] text-gray-700 font-[Arial]">NEGOCIACION ESPECI..</span>
                         <div className="absolute right-0 bottom-1 w-0 h-0 border-l-[6px] border-l-transparent border-b-[6px] border-b-gray-600 border-r-[6px] border-r-transparent"></div>
                       </div>
-                      <button onClick={() => setMostrarModalNegociacion(false)} title="Guardar la negociación especial" className="bg-[#d9d9d9] px-3 py-1 text-black font-sans text-[12px]">OK</button>
-                      <button onClick={() => setMostrarModalNegociacion(false)} title="Cerrar sin guardar" className="bg-[#d9d9d9] px-3 py-1 text-black font-sans text-[12px]">X</button>
+                      <button onClick={() => setMostrarModalNegociacion(false)} title="Guardar la negociación especial" className="bg-[#d9d9d9] px-3 py-1 text-black font-[Arial] text-[12px]">OK</button>
+                      <button onClick={() => setMostrarModalNegociacion(false)} title="Cerrar sin guardar" className="bg-[#d9d9d9] px-3 py-1 text-black font-[Arial] text-[12px]">X</button>
                     </div>
                   </div>
                   <div className="p-1 px-[3px] pb-5 bg-white">
-                    <div className="bg-[#00b0f0] p-2 text-black font-bold font-sans text-[13px] border border-[#00b0f0] outline outline-1 outline-inset outline-white">
+                    <div className="bg-[#00b0f0] p-2 text-black font-bold font-[Arial] text-[12px] border border-[#00b0f0] outline outline-1 outline-inset outline-white">
                       NEGOCIACION ESPECIAL
                     </div>
                   </div>
@@ -677,19 +677,19 @@ function App() {
                 <div className="bg-[#f0f0f0] w-full rounded shadow-2xl overflow-hidden">
                   <div className="border-b-2 border-[#00b0f0] p-3 flex items-center gap-2 bg-[#f0f0f0]">
                     <div className="opacity-60 text-[#00b0f0] text-2xl leading-none">⚠️</div>
-                    <span className="text-[16px] text-[#00b0f0] font-sans">Confirmación</span>
+                    <span className="text-[12px] text-[#00b0f0] font-[Arial]">Confirmación</span>
                   </div>
                   <div className="bg-[#f9f9f9] p-4 border-b border-gray-300">
-                    <p className="text-[14px] text-gray-800 font-sans leading-snug">
+                    <p className="text-[12px] text-gray-800 font-[Arial] leading-snug">
                       El monto de su pedido es 88,11 $ con un descuento de 0% en el monto del flete.<br />
                       ¿Desea añadir más articulos al pedido?
                     </p>
                   </div>
                   <div className="flex bg-[#f9f9f9]">
-                    <button onClick={() => { setMostrarModalCierra1(false); setMostrarModalCierra2(true); }} title="No agregar más artículos y continuar al cierre" className="flex-1 py-3 text-[14px] text-gray-800 font-sans border-r border-gray-300 active:bg-gray-200">
+                    <button onClick={() => { setMostrarModalCierra1(false); setMostrarModalCierra2(true); }} title="No agregar más artículos y continuar al cierre" className="flex-1 py-3 text-[12px] text-gray-800 font-[Arial] border-r border-gray-300 active:bg-gray-200">
                       No
                     </button>
-                    <button onClick={() => { setMostrarModalCierra1(false); setPantalla('detalles_pedido'); }} title="Regresar al detalle matemático del pedido para añadir artículos" className="flex-1 py-3 text-[14px] text-gray-800 font-sans active:bg-gray-200">
+                    <button onClick={() => { setMostrarModalCierra1(false); setPantalla('detalles_pedido'); }} title="Regresar al detalle matemático del pedido para añadir artículos" className="flex-1 py-3 text-[12px] text-gray-800 font-[Arial] active:bg-gray-200">
                       Si
                     </button>
                   </div>
@@ -703,18 +703,18 @@ function App() {
                 <div className="bg-[#f0f0f0] w-full rounded shadow-2xl overflow-hidden">
                   <div className="border-b-2 border-[#00b0f0] p-3 flex items-center gap-2 bg-[#f0f0f0]">
                     <div className="opacity-60 text-[#00b0f0] text-2xl leading-none">⚠️</div>
-                    <span className="text-[16px] text-[#00b0f0] font-sans">Confirmación</span>
+                    <span className="text-[12px] text-[#00b0f0] font-[Arial]">Confirmación</span>
                   </div>
                   <div className="bg-[#f9f9f9] p-4 border-b border-gray-300">
-                    <p className="text-[14px] text-gray-800 font-sans leading-snug">
+                    <p className="text-[12px] text-gray-800 font-[Arial] leading-snug">
                       ¿Desea guardar los Datos y Cerrar el Pedido?
                     </p>
                   </div>
                   <div className="flex bg-[#f9f9f9]">
-                    <button onClick={() => setMostrarModalCierra2(false)} title="Cancelar y volver a la pantalla anterior" className="flex-1 py-3 text-[14px] text-gray-800 font-sans border-r border-gray-300 active:bg-gray-200">
+                    <button onClick={() => setMostrarModalCierra2(false)} title="Cancelar y volver a la pantalla anterior" className="flex-1 py-3 text-[12px] text-gray-800 font-[Arial] border-r border-gray-300 active:bg-gray-200">
                       No
                     </button>
-                    <button onClick={() => { setMostrarModalCierra2(false); setPantalla('consulta_pedidos'); }} title="Confirmar, guardar todos los datos y cerrar exitosamente este pedido" className="flex-1 py-3 text-[14px] text-gray-800 font-sans active:bg-gray-200">
+                    <button onClick={() => { setMostrarModalCierra2(false); setPantalla('consulta_pedidos'); }} title="Confirmar, guardar todos los datos y cerrar exitosamente este pedido" className="flex-1 py-3 text-[12px] text-gray-800 font-[Arial] active:bg-gray-200">
                       Si
                     </button>
                   </div>
@@ -734,7 +734,7 @@ function App() {
                 <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-sm">
                   <span className="text-[8px] font-bold text-gray-800">AFV</span>
                 </div>
-                <span className="text-[13px] font-normal text-black font-sans">023 - Consulta de Pedidos</span>
+                <span className="text-[12px] font-normal text-black font-[Arial]">023 - Consulta de Pedidos</span>
               </div>
             </div>
 
@@ -743,7 +743,7 @@ function App() {
               {/* Barra de Cliente */}
               <div className="flex items-center justify-between mb-2">
                 <div className="bg-[#d3d3d3] py-2 px-2 flex-1 mr-2 border border-gray-300 text-ellipsis overflow-hidden">
-                  <span className="text-[13px] text-gray-800 font-sans whitespace-nowrap">FM IMPORT PARTS, C.A. - 2535</span>
+                  <span className="text-[12px] text-gray-800 font-[Arial] whitespace-nowrap">FM IMPORT PARTS, C.A. - 2535</span>
                 </div>
                 <button onClick={() => setPantalla('menu')} title="Regresar al menú principal" className="w-7 h-7 bg-[#b3b3b3] rounded-full flex items-center justify-center text-white font-bold leading-none border-[3px] border-[#999999] shadow-sm flex-shrink-0">
                   ←
@@ -752,13 +752,13 @@ function App() {
 
               {/* Tabla de Pedidos Cerrados */}
               <div className="flex-1 border border-gray-500 flex flex-col overflow-hidden bg-white mb-2">
-                <div className="flex bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-sans outline outline-1 outline-gray-400">
+                <div className="flex bg-[#a6a6a6] text-white font-bold text-[12px] p-2 font-[Arial] outline outline-1 outline-gray-400">
                   <div className="w-6 border-r border-gray-400 border-opacity-30 text-center">S</div>
                   <div className="flex-1 border-r border-gray-400 border-opacity-30 pl-2">Pedido Origen</div>
                   <div className="flex-1 pl-2 text-right pr-2">Pedido</div>
                 </div>
                 <div className="flex-1 overflow-y-auto font-sans">
-                  <div className="flex bg-[#00b0f0] text-black font-bold text-[13px] px-2 py-1.5 border-b border-gray-200 items-center">
+                  <div className="flex bg-[#00b0f0] text-black font-bold text-[12px] px-2 py-1.5 border-b border-gray-200 items-center">
                     <div className="w-6 text-center">A</div>
                     <div className="flex-1 pl-2">62115</div>
                     <div className="flex-1 text-right pr-2">62115</div>
@@ -768,19 +768,19 @@ function App() {
 
               {/* Botones Inferiores Compartidos */}
               <div className="flex justify-center gap-2 mb-1 mt-1">
-                <button title="Anular el pedido seleccionado" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[13px] font-sans shadow-sm active:bg-[#d4d4d4]">
+                <button title="Anular el pedido seleccionado" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[12px] font-[Arial] shadow-sm active:bg-[#d4d4d4]">
                   Anular
                 </button>
-                <button onClick={() => setPantalla('escritorio')} title="Volver al escritorio y crear un nuevo pedido" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[13px] font-sans shadow-sm active:bg-[#d4d4d4]">
+                <button onClick={() => setPantalla('escritorio')} title="Volver al escritorio y crear un nuevo pedido" className="bg-[#e6e6e6] text-[#333] border border-[#a6a6a6] py-1.5 px-3 text-[12px] font-[Arial] shadow-sm active:bg-[#d4d4d4]">
                   Nuevo
                 </button>
-                <button title="Enviar por correo electrónico el resumen del pedido al cliente" className="bg-[#e6e6e6] text-gray-500 border border-[#a6a6a6] py-1.5 px-3 text-[10px] font-sans shadow-sm">
+                <button title="Enviar por correo electrónico el resumen del pedido al cliente" className="bg-[#e6e6e6] text-gray-500 border border-[#a6a6a6] py-1.5 px-3 text-[12px] font-[Arial] shadow-sm">
                   Enviar Email
                 </button>
               </div>
 
               {/* Pie de página pequeño */}
-              <div className="text-[7.5px] text-gray-500 font-sans mt-1">
+              <div className="text-[12px] text-gray-500 font-[Arial] mt-1">
                 © Copyright Wholesale World Information Systems LTD, 2014
               </div>
             </div>
