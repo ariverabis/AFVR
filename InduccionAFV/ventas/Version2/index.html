@@ -9,6 +9,7 @@
     <style>
         :root {
             --primary: #0070f3;
+            --primary-shadow: rgba(0, 112, 243, 0.4);
             --secondary: #009EE3;
             --accent: #E5007D;
             /* Colores de marca */
@@ -192,7 +193,7 @@
         .btn-primary {
             background: var(--primary);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 112, 243, 0.4);
+            box-shadow: 0 4px 15px var(--primary-shadow);
         }
 
         .btn-primary::before {
@@ -214,7 +215,7 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 112, 243, 0.6);
+            box-shadow: 0 6px 20px var(--primary-shadow);
         }
 
         .evaluations {
@@ -311,7 +312,7 @@
             font-weight: bold;
             margin-bottom: 1rem;
             font-size: 1.1rem;
-            box-shadow: 0 4px 10px rgba(0, 112, 243, 0.4);
+            box-shadow: 0 4px 10px var(--primary-shadow);
         }
 
         .step-item h4 {
@@ -379,19 +380,108 @@
         
         .error-msg { color: #dc2626; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
 
+        /* Company Selector Styles */
+        #mainPortal {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        #companySelector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            width: 100%;
+            z-index: 2000;
+        }
+
+        .company-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 3rem;
+            padding: 0 1rem;
+        }
+
+        .company-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+
+        .company-card img {
+            width: 100%;
+            max-width: 150px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+        }
+
+        .company-card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="Logotipos_Homologados_Prisma.jpg" alt="Logo Prisma">
+    <div id="companySelector">
+        <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 800; color: #111827; margin-bottom: 1rem; text-align: center;">Bienvenido al Portal AFV</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem; text-align: center;">Por favor, selecciona tu casa comercial para ingresar.</p>
+        
+        <div class="company-grid">
+            <div class="company-card" onclick="selectCompany('Febeca', '../../imagenes/Logotipos_Homologados_Febeca.jpg')">
+                <img src="../../imagenes/Logotipos_Homologados_Febeca.jpg" alt="Febeca">
+                <h3>Febeca</h3>
+            </div>
+            <div class="company-card" onclick="selectCompany('Cofersa', '../../imagenes/Logotipos_Homologados_Cofersa.jpg')">
+                <img src="../../imagenes/Logotipos_Homologados_Cofersa.jpg" alt="Cofersa">
+                <h3>Cofersa</h3>
+            </div>
+            <div class="company-card" onclick="selectCompany('Mundial de Partes', '../../imagenes/Logotipos_Homologados_Mundipartes.jpg')">
+                <img src="../../imagenes/Logotipos_Homologados_Mundipartes.jpg" alt="Mundiales de Partes">
+                <h3>Mundial de Partes</h3>
+            </div>
+            <div class="company-card" onclick="selectCompany('Beval', '../../imagenes/Logotipos_Homologados_Beval.jpg')">
+                <img src="../../imagenes/Logotipos_Homologados_Beval.jpg" alt="Beval">
+                <h3>Beval</h3>
+            </div>
         </div>
-        <h1>Plataforma de Formación AFV</h1>
-        <p>Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través
-            de nuestros emuladores y simuladores especializados.</p>
-    </header>
+    </div>
+
+    <div id="mainPortal">
+        <header>
+            <button onclick="changeCompany()" style="position: absolute; top: 0; left: 0; background: none; border: 1px solid #e5e7eb; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; transition: background 0.3s;">← Cambiar Casa</button>
+            <div class="logo-container">
+                <img id="headerLogo" src="Logotipos_Homologados_Prisma.jpg" alt="Logo Empresa">
+            </div>
+            <h1>Plataforma de Formación AFV</h1>
+            <h2 id="companyNameDisplay" style="color: var(--primary); font-family: 'Outfit', sans-serif; margin-bottom: 1rem; font-size: 1.5rem; font-weight: 600;"></h2>
+            <p>Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través
+                de nuestros emuladores y simuladores especializados.</p>
+        </header>
 
     <div class="steps-container">
         <div class="step-item">
@@ -525,18 +615,16 @@
         </article>
 
         <!-- Manuales de Bolsillo -->
-        <article class="card">
+        <article class="card" id="card-manuales">
             <div class="card-img-wrapper">
                 <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80&w=400"
                     alt="Manuales de Bolsillo">
             </div>
             <div class="card-content">
-                <h3 class="card-title">Manuales de Bolsillo</h3>
-                <p class="card-description">Guías rápidas para cada casa comercial. Información esencial y resumida para el trabajo de campo diario.</p>
-                <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
-                    <a href="https://drive.google.com/file/d/1tAo0yganpvMeke_-nnLyXDzOyi6nqD7m/view?usp=drive_link" target="_blank" class="btn" style="background: var(--color-febeca); color: white; box-shadow: 0 4px 10px rgba(0, 158, 227, 0.2);">Manual Febeca</a>
-                    <a href="https://drive.google.com/file/d/1aqVBiSmbEgJQLchGVUbGREdfO9RqxLh3/view?usp=drive_link" target="_blank" class="btn" style="background: var(--color-beval); color: white; box-shadow: 0 4px 10px rgba(0, 168, 133, 0.2);">Manual Beval</a>
-                    <a href="https://drive.google.com/file/d/1x_vu253jDQt_ffk-I-HUzSUohKRekkcr/view?usp=drive_link" target="_blank" class="btn" style="background: var(--color-sillaca); color: white; box-shadow: 0 4px 10px rgba(229, 0, 125, 0.2);">Manual Sillaca</a>
+                <h3 class="card-title">Manual de Bolsillo</h3>
+                <p class="card-description">Guía rápida de tu casa comercial. Información esencial y resumida para el trabajo de campo diario.</p>
+                <div style="margin-top: 0.5rem;">
+                    <a id="btn-manual" href="#" target="_blank" class="btn btn-primary">Descargar Manual</a>
                 </div>
             </div>
         </article>
@@ -560,28 +648,16 @@
         </article>
 
         <!-- Escenarios de Ventas (Role Play) -->
-        <article class="card" id="escenarios">
+        <article class="card" id="card-escenarios">
             <div class="card-img-wrapper">
                 <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=400"
                     alt="Escenarios de Ventas Role Play">
             </div>
             <div class="card-content">
-                <h3 class="card-title">Escenarios de Ventas (Role Play)</h3>
-                <p class="card-description">Domina situaciones reales de negociación. Accede a los ejercicios de role
-                    play diseñados para cada casa comercial:</p>
-                <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
-                    <a href="https://drive.google.com/file/d/1uksY-240gWs2UVVLQGQ_b9Km-QdL4i6b/view?usp=drive_link"
-                        target="_blank" class="btn"
-                        style="background: var(--color-beval); color: white; padding: 0.6rem; font-size: 0.9rem;">Escenario
-                        BEVAL</a>
-                    <a href="https://drive.google.com/file/d/1uSRtt0xtMxRyvcMWONYxKr4fY8Oaba3U/view?usp=drive_link"
-                        target="_blank" class="btn"
-                        style="background: var(--color-sillaca); color: white; padding: 0.6rem; font-size: 0.9rem;">Escenario
-                        SILLACA</a>
-                    <a href="https://drive.google.com/file/d/1bmXEwn5RYCtweAnkaElork_ORQKS--Ai/view?usp=drive_link"
-                        target="_blank" class="btn"
-                        style="background: var(--color-febeca); color: white; padding: 0.6rem; font-size: 0.9rem;">Escenario
-                        FEBECA</a>
+                <h3 class="card-title">Escenario de Ventas (Role Play)</h3>
+                <p class="card-description">Domina situaciones reales de negociación. Accede a los ejercicios de role play diseñados para tu casa comercial.</p>
+                <div style="margin-top: 0.5rem;">
+                    <a id="btn-escenario" href="#" target="_blank" class="btn btn-primary">Abrir Escenario</a>
                 </div>
             </div>
         </article>
@@ -617,6 +693,8 @@
                 target="_blank" class="eval-btn">4. Examen de Glosario</a>
         </div>
     </section>
+
+    </div>
 
     <!-- Authentication Modal -->
     <div id="authModal" class="modal-overlay">
@@ -675,6 +753,93 @@
                 errorMsg.style.display = 'block';
             }
         }
+
+        // --- Company Selection Logic ---
+        const brandColors = {
+            'Febeca': { 
+                primary: '#009EE3', secondary: '#007BB5', shadow: 'rgba(0, 158, 227, 0.4)',
+                manualLink: 'https://drive.google.com/file/d/1tAo0yganpvMeke_-nnLyXDzOyi6nqD7m/view?usp=drive_link',
+                escenarioLink: 'https://drive.google.com/file/d/1bmXEwn5RYCtweAnkaElork_ORQKS--Ai/view?usp=drive_link'
+            },
+            'Beval': { 
+                primary: '#8CC63F', secondary: '#7CB342', shadow: 'rgba(140, 198, 63, 0.4)',
+                manualLink: 'https://drive.google.com/file/d/1aqVBiSmbEgJQLchGVUbGREdfO9RqxLh3/view?usp=drive_link',
+                escenarioLink: 'https://drive.google.com/file/d/1uksY-240gWs2UVVLQGQ_b9Km-QdL4i6b/view?usp=drive_link'
+            },
+            'Sillaca': { 
+                primary: '#E5007D', secondary: '#B80064', shadow: 'rgba(229, 0, 125, 0.4)',
+                manualLink: 'https://drive.google.com/file/d/1x_vu253jDQt_ffk-I-HUzSUohKRekkcr/view?usp=drive_link',
+                escenarioLink: 'https://drive.google.com/file/d/1uSRtt0xtMxRyvcMWONYxKr4fY8Oaba3U/view?usp=drive_link'
+            },
+            'Cofersa': { 
+                primary: '#009EE3', secondary: '#007BB5', shadow: 'rgba(0, 158, 227, 0.4)',
+                manualLink: null, escenarioLink: null
+            },
+            'Mundial de Partes': { 
+                primary: '#8CC63F', secondary: '#7CB342', shadow: 'rgba(140, 198, 63, 0.4)',
+                manualLink: null, escenarioLink: null
+            }
+        };
+
+        function selectCompany(companyName, logoUrl) {
+            localStorage.setItem('selectedCompany', companyName);
+            localStorage.setItem('selectedLogo', logoUrl);
+            applyCompanySelection(companyName, logoUrl);
+        }
+
+        function applyCompanySelection(companyName, logoUrl) {
+            document.getElementById('companySelector').style.display = 'none';
+            document.getElementById('mainPortal').style.display = 'flex';
+            document.getElementById('headerLogo').src = logoUrl;
+            document.getElementById('companyNameDisplay').innerText = companyName;
+
+            const config = brandColors[companyName];
+            if (config) {
+                document.documentElement.style.setProperty('--primary', config.primary);
+                document.documentElement.style.setProperty('--secondary', config.secondary);
+                document.documentElement.style.setProperty('--primary-shadow', config.shadow);
+
+                // Update Manual Card
+                const cardManuales = document.getElementById('card-manuales');
+                const btnManual = document.getElementById('btn-manual');
+                if (config.manualLink) {
+                    cardManuales.style.display = 'flex';
+                    btnManual.href = config.manualLink;
+                } else {
+                    cardManuales.style.display = 'none';
+                }
+
+                // Update Escenarios Card
+                const cardEscenarios = document.getElementById('card-escenarios');
+                const btnEscenario = document.getElementById('btn-escenario');
+                if (config.escenarioLink) {
+                    cardEscenarios.style.display = 'flex';
+                    btnEscenario.href = config.escenarioLink;
+                } else {
+                    cardEscenarios.style.display = 'none';
+                }
+            }
+        }
+
+        function changeCompany() {
+            localStorage.removeItem('selectedCompany');
+            localStorage.removeItem('selectedLogo');
+            document.documentElement.style.setProperty('--primary', '#0070f3');
+            document.documentElement.style.setProperty('--secondary', '#009EE3');
+            document.documentElement.style.setProperty('--primary-shadow', 'rgba(0, 112, 243, 0.4)');
+            
+            document.getElementById('mainPortal').style.display = 'none';
+            document.getElementById('companySelector').style.display = 'flex';
+        }
+
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedCompany = localStorage.getItem('selectedCompany');
+            const savedLogo = localStorage.getItem('selectedLogo');
+            if (savedCompany && savedLogo) {
+                applyCompanySelection(savedCompany, savedLogo);
+            }
+        });
     </script>
 </body>
 
