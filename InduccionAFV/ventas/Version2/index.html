@@ -442,6 +442,44 @@
             color: var(--text-main);
             text-align: center;
         }
+
+        .company-card-actions {
+            margin-top: 1rem;
+            width: 100%;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .btn-website {
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-decoration: none;
+            padding: 0.4rem 0.8rem;
+            border: 1px solid var(--primary);
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-website:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .header-website-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s;
+        }
+
+        .header-website-link:hover {
+            border-bottom-color: var(--primary);
+        }
     </style>
 </head>
 
@@ -455,18 +493,37 @@
             <div class="company-card" onclick="selectCompany('Febeca', '../../imagenes/Logotipos_Homologados_Febeca.jpg')">
                 <img src="../../imagenes/Logotipos_Homologados_Febeca.jpg" alt="Febeca">
                 <h3>Febeca</h3>
+                <div class="company-card-actions">
+                    <a href="https://febeca.com/" target="_blank" class="btn-website" onclick="event.stopPropagation()">Visitar Sitio Web</a>
+                </div>
             </div>
             <div class="company-card" onclick="selectCompany('Cofersa', '../../imagenes/Logotipos_Homologados_Cofersa.jpg')">
                 <img src="../../imagenes/Logotipos_Homologados_Cofersa.jpg" alt="Cofersa">
                 <h3>Cofersa</h3>
+                <div class="company-card-actions">
+                    <a href="https://www.cofersa.cr/" target="_blank" class="btn-website" onclick="event.stopPropagation()">Visitar Sitio Web</a>
+                </div>
             </div>
             <div class="company-card" onclick="selectCompany('Mundial de Partes', '../../imagenes/Logotipos_Homologados_Mundipartes.jpg')">
                 <img src="../../imagenes/Logotipos_Homologados_Mundipartes.jpg" alt="Mundiales de Partes">
                 <h3>Mundial de Partes</h3>
+                <div class="company-card-actions">
+                    <a href="https://mundipartes.com/" target="_blank" class="btn-website" onclick="event.stopPropagation()">Visitar Sitio Web</a>
+                </div>
             </div>
             <div class="company-card" onclick="selectCompany('Beval', '../../imagenes/Logotipos_Homologados_Beval.jpg')">
                 <img src="../../imagenes/Logotipos_Homologados_Beval.jpg" alt="Beval">
                 <h3>Beval</h3>
+                <div class="company-card-actions">
+                    <a href="https://beval.com.ve/" target="_blank" class="btn-website" onclick="event.stopPropagation()">Visitar Sitio Web</a>
+                </div>
+            </div>
+            <div class="company-card" onclick="selectCompany('Sillaca', '../../imagenes/Logotipos_Homologados_Sillaca.jpg')">
+                <img src="../../imagenes/Logotipos_Homologados_Sillaca.jpg" alt="Sillaca">
+                <h3>Sillaca</h3>
+                <div class="company-card-actions">
+                    <a href="https://sillaca.com.ve/" target="_blank" class="btn-website" onclick="event.stopPropagation()">Visitar Sitio Web</a>
+                </div>
             </div>
         </div>
     </div>
@@ -478,8 +535,9 @@
                 <img id="headerLogo" src="Logotipos_Homologados_Prisma.jpg" alt="Logo Empresa">
             </div>
             <h1>Plataforma de Formación AFV</h1>
-            <h2 id="companyNameDisplay" style="color: var(--primary); font-family: 'Outfit', sans-serif; margin-bottom: 1rem; font-size: 1.5rem; font-weight: 600;"></h2>
-            <p>Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través
+            <h2 id="companyNameDisplay" style="color: var(--primary); font-family: 'Outfit', sans-serif; margin-bottom: 0.2rem; font-size: 1.5rem; font-weight: 600;"></h2>
+            <a id="companyWebsiteDisplay" href="#" target="_blank" class="header-website-link"></a>
+            <p style="margin-top: 1rem;">Centro de utilidades interactivo. Aprende, practica y domina todas las herramientas del sistema AFV a través
                 de nuestros emuladores y simuladores especializados.</p>
         </header>
 
@@ -759,25 +817,30 @@
             'Febeca': { 
                 primary: '#009EE3', secondary: '#007BB5', shadow: 'rgba(0, 158, 227, 0.4)',
                 manualLink: 'https://drive.google.com/file/d/1tAo0yganpvMeke_-nnLyXDzOyi6nqD7m/view?usp=drive_link',
-                escenarioLink: 'https://drive.google.com/file/d/1bmXEwn5RYCtweAnkaElork_ORQKS--Ai/view?usp=drive_link'
+                escenarioLink: 'https://drive.google.com/file/d/1bmXEwn5RYCtweAnkaElork_ORQKS--Ai/view?usp=drive_link',
+                websiteURL: 'https://febeca.com/'
             },
             'Beval': { 
                 primary: '#8CC63F', secondary: '#7CB342', shadow: 'rgba(140, 198, 63, 0.4)',
                 manualLink: 'https://drive.google.com/file/d/1aqVBiSmbEgJQLchGVUbGREdfO9RqxLh3/view?usp=drive_link',
-                escenarioLink: 'https://drive.google.com/file/d/1uksY-240gWs2UVVLQGQ_b9Km-QdL4i6b/view?usp=drive_link'
+                escenarioLink: 'https://drive.google.com/file/d/1uksY-240gWs2UVVLQGQ_b9Km-QdL4i6b/view?usp=drive_link',
+                websiteURL: 'https://beval.com.ve/'
             },
             'Sillaca': { 
                 primary: '#E5007D', secondary: '#B80064', shadow: 'rgba(229, 0, 125, 0.4)',
                 manualLink: 'https://drive.google.com/file/d/1x_vu253jDQt_ffk-I-HUzSUohKRekkcr/view?usp=drive_link',
-                escenarioLink: 'https://drive.google.com/file/d/1uSRtt0xtMxRyvcMWONYxKr4fY8Oaba3U/view?usp=drive_link'
+                escenarioLink: 'https://drive.google.com/file/d/1uSRtt0xtMxRyvcMWONYxKr4fY8Oaba3U/view?usp=drive_link',
+                websiteURL: 'https://sillaca.com.ve/'
             },
             'Cofersa': { 
                 primary: '#009EE3', secondary: '#007BB5', shadow: 'rgba(0, 158, 227, 0.4)',
-                manualLink: null, escenarioLink: null
+                manualLink: null, escenarioLink: null,
+                websiteURL: 'https://www.cofersa.cr/'
             },
             'Mundial de Partes': { 
                 primary: '#8CC63F', secondary: '#7CB342', shadow: 'rgba(140, 198, 63, 0.4)',
-                manualLink: null, escenarioLink: null
+                manualLink: null, escenarioLink: null,
+                websiteURL: 'https://mundipartes.com/'
             }
         };
 
@@ -795,6 +858,16 @@
 
             const config = brandColors[companyName];
             if (config) {
+                // Update website link in header
+                const webDisplay = document.getElementById('companyWebsiteDisplay');
+                if (config.websiteURL) {
+                    webDisplay.href = config.websiteURL;
+                    webDisplay.innerText = "Visitar Sitio Web Oficial";
+                    webDisplay.style.display = 'inline-block';
+                } else {
+                    webDisplay.style.display = 'none';
+                }
+
                 document.documentElement.style.setProperty('--primary', config.primary);
                 document.documentElement.style.setProperty('--secondary', config.secondary);
                 document.documentElement.style.setProperty('--primary-shadow', config.shadow);
