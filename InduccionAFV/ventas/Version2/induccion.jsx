@@ -393,8 +393,8 @@ function App() {
               {/* Sub-banner texto */}
               <div className="mb-2">
                 <p className="text-[12px] text-gray-700 font-[Arial] leading-tight">
-                  0113020 - EXTENSION PROFESIONAL ST<br />
-                  2X16AWG, 5 TOMAS NEGRO 10MTS. ARRIGO
+                  28-06-038 - SILICON GRIS 00003PERF<br />
+                  (GENERICO) PERFECT ALTA TEMPERATURA (343 °C) 85 g.
                 </p>
               </div>
 
@@ -411,17 +411,17 @@ function App() {
 
                   {/* Fila Seleccionada (Celeste) */}
                   <div className="flex bg-[#00b0f0] text-black font-bold text-[12px] px-2 py-2 border-b border-gray-200">
-                    <div className="flex-1 truncate pr-2">EXTENSION PROFESIONAL ST 2</div>
+                    <div className="flex-1 truncate pr-2">SILICON GRIS 00003PERF PERFECT ALTA</div>
                     <div className="w-12 text-center">1.0</div>
                   </div>
 
                   {/* Filas Normales (Blancas) */}
                   {[
-                    ['CINTA DE EMBALAJE TRANSPA', '6.0'],
-                    ['CINTA DE EMBALAJE MARRON', '6.0'],
-                    ['SPECTRAL BLANCO 1 GAL. QUI', '1.0'],
-                    ['TEIPE ELECTRICO TEMFLEX 16', '10.0'],
-                    ['BOMBILLO LED COLMENA 25 UI', '25.0']
+                    ['TRABARROSCAS AZUL DE MEDIAN', '6.0'],
+                    ['DESENGRASANTE DE MANO PARA ', '6.0'],
+                    ['BENDIX ZEN 0050 CHRYSLER 10D', '1.0'],
+                    ['PEGA EPOXICO 5 MINUTOS 84201 ', '10.0'],
+                    ['Alternador Plus Line Peugeot', '25.0']
                   ].map((row, i) => (
                     <div key={i} className="flex bg-white text-black font-bold text-[12px] px-2 py-2 border-b border-gray-200">
                       <div className="flex-1 truncate pr-2">{row[0]}</div>
@@ -572,7 +572,7 @@ function App() {
               <div className="flex items-center mb-2">
                 <span className="w-[85px] text-[12px] text-gray-700 font-[Arial]">Flete ($):</span>
                 <div className="bg-[#999999] text-black text-right pr-2 py-0.5 font-[Arial] text-[12px] w-[100px]">0,00</div>
-                <div className="bg-[#b3b3b3] ml-1 text-black text-right pr-1 py-0.5 font-[Arial] text-[12px] flex-1 border-b border-gray-400 flex items-end justify-end relative">
+                <div classsName="bg-[#b3b3b3] ml-1 text-black text-right pr-1 py-0.5 font-[Arial] text-[12px] flex-1 border-b border-gray-400 flex items-end justify-end relative">
                   0
                   <div className="w-0 h-0 border-l-[6px] border-l-transparent border-b-[6px] border-b-gray-600 border-r-[6px] border-r-transparent ml-1 mb-0.5"></div>
                   <span className="text-[12px] ml-1">(%)</span>
