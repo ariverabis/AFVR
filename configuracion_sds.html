@@ -1,0 +1,487 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración de Integración SDS AFV</title>
+
+    <style>
+        :root {
+            --primary: #374151;
+            --primary-dark: #1f2937;
+            --secondary: #f9fafb;
+            --bg: #ffffff;
+            --text-main: #111827;
+            --text-light: #4b5563;
+            --border: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            background-color: var(--secondary);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .header-bar {
+            background: #ffffff;
+            color: var(--text-main);
+            padding: 3rem 4rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 2rem;
+            right: 4rem;
+            width: 140px;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+        }
+
+        .header-bar h1 {
+            font-family: Arial, sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        main {
+            max-width: 900px;
+            margin: -2rem auto 3rem auto;
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        h2 {
+            font-family: Arial, sans-serif;
+            font-size: 1.8rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            color: #000;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-family: Arial, sans-serif;
+            font-size: 1.3rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: #111;
+            font-weight: 700;
+        }
+
+        .subtitle-gray {
+            color: #6b7280;
+            font-weight: 700;
+            font-family: Arial, sans-serif;
+            font-size: 1.1rem;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+            color: var(--text-light);
+        }
+
+        ul {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            line-height: 1.7;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .config-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1.5rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .house-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #eef2f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--primary-dark);
+            font-size: 1.05em;
+            font-weight: bold;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+            background: #ffffff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background: #f3f4f6;
+            color: var(--text-main);
+            border-color: #d1d5db;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .intro-text {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 3rem;
+            border: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            main {
+                margin-top: 0;
+                border-radius: 0;
+                padding: 2rem;
+            }
+
+            .header-bar {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-bar">
+        <div class="logo-container">
+            <img src="img/Logotipos_Homologados_Prisma.jpg" alt="Logo Prisma">
+        </div>
+        <a href="index.html" class="btn-back">← Volver al Portal</a>
+        <h1 style="font-weight: 800; color: #000;">Manual de Instalación y Configuración</h1>
+        <p class="subtitle-gray">Guía integral para aplicaciones SDS, Catálogo Digital, Codex y AFV.</p>
+    </header>
+
+    <main>
+        <div class="intro-text">
+            <h3>Objetivos del Primer Entrenamiento</h3>
+            <p>El motivo principal de esta etapa es que nuestros colaboradores logren un dominio integral de las
+                herramientas operativas tecnológicas y del portafolio de productos. Al finalizar, debe estar capacitado
+                para:</p>
+            <ul>
+                <li><strong>Dominio de la plataforma:</strong> Comprender el proceso de instalación técnica y adquirir
+                    destreza para el uso de la app.</li>
+                <li><strong>Conocimiento del Inventario:</strong> Identificar el surtido específico de cada empresa y
+                    dominar la estructura del catálogo (categorías y subcategorías).</li>
+            </ul>
+        </div>
+
+        <section class="codex-section" style="margin-bottom: 4rem;">
+            <p class="subtitle-gray" style="margin-top: 0; margin-bottom: 0.5rem;">Excelente</p>
+            <h2 style="margin-top: 0;">Aplicación Codex y Estructura de Datos</h2>
+            <p>Para un desempeño óptimo en la gestión de ventas, es fundamental comprender la jerarquía de los códigos
+                en
+                nuestro sistema. La aplicación <strong>Codex</strong> es la herramienta clave para dominar estos
+                elementos:</p>
+            <div
+                style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                <ul style="margin-bottom: 0;">
+                    <li><strong>Surtido:</strong> Definición del portafolio disponible para el cliente.</li>
+                    <li><strong>Categoría:</strong> Primera segmentación lógica de productos.</li>
+                    <li><strong>Subcategoría:</strong> Clasificación detallada para facilitar la ubicación.</li>
+                    <li><strong>Código:</strong> Identificador único del producto en el inventario.</li>
+                </ul>
+            </div>
+            <div style="text-align: center;">
+                <a href="https://drive.google.com/file/d/1ToxteWIQhMVIe6y37yny1oEOcjjcVlQl/view?usp=drive_link"
+                    target="_blank" class="btn-download"
+                    style="background: #111827; padding: 1rem 2rem; border-radius: 50px; font-size: 1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">📥
+                    Descargar Aplicación Codex (APK)</a>
+            </div>
+        </section>
+
+        <section class="step-config" style="margin-bottom: 4rem;">
+            <h2>(FASE II) Configuración de Aplicaciones</h2>
+            <p class="subtitle-gray">Pasos obligatorios para el primer inicio de sesión</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <!-- Config SDS -->
+                <div
+                    style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 12px; border-top: 4px solid var(--primary);">
+                    <h3 style="margin-top: 0;">1. Configurar SDS</h3>
+                    <ol style="margin-left: 1.2rem; margin-top: 1rem;">
+                        <li>Ingrese la <strong>Dirección IP</strong> del servidor (proporcionada abajo).</li>
+                        <li>Acceda al menú de <strong>Configuración</strong>.</li>
+                        <li>Introduzca su <strong>Nombre de Usuario</strong> asignado.</li>
+                        <li>Ingrese su <strong>Contraseña</strong> personal.</li>
+                    </ol>
+                </div>
+                <!-- Config Catálogo -->
+                <div
+                    style="background: #fdfdfd; border: 1px solid #eee; padding: 1.5rem; border-radius: 12px; border-top: 4px solid var(--primary);">
+                    <h3 style="margin-top: 0;">2. Configurar Catálogo</h3>
+                    <ol style="margin-left: 1.2rem; margin-top: 1rem;">
+                        <li>Ingrese su <strong>Nombre de Usuario</strong>.</li>
+                        <li>Coloque su <strong>Correo Electrónico</strong> registrado.</li>
+                        <li>Verifique la <strong>Contraseña</strong> enviada a su correo para finalizar.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <h2 id="title-descarga">Descarga e Instalación por Casa Comercial</h2>
+        <p>A continuación se detalla la configuración técnica IP específica y los enlaces oficiales a la Google Play
+            Store que debe utilizar para instalar las herramientas de su empresa asignada.</p>
+
+        <!-- SILLACA -->
+        <div class="config-card" id="card-Sillaca" style="border-left-color: #E5007D;">
+            <span class="house-badge" style="background:#E5007D;">Casa Sillaca</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Haga clic en los enlaces oficiales para descargar desde la Google Play Store:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.sillaca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #E5007D;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.sillaca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #E5007D;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.sillaca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #E5007D;">📲 Descargar Catálogo</a>
+                <a href="https://sillaca.com.ve/" target="_blank" class="btn-download" style="background: #374151;">🌐
+                    Visitar Web</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <em>[Ingrese el IP proporcionado por el administrador]</em></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <!-- BEVAL -->
+        <div class="config-card" id="card-Beval" style="border-left-color: #8CC63F;">
+            <span class="house-badge" style="background:#8CC63F;">Casa Beval</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Instale las aplicaciones correspondientes a Beval desde sus enlaces formales aprobados:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.beval&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.beval&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.beval&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar Catálogo</a>
+                <a href="https://beval.com.ve/" target="_blank" class="btn-download" style="background: #374151;">🌐
+                    Visitar Web</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <em>[Ingrese el IP proporcionado por el administrador]</em></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <!-- FEBECA -->
+        <div class="config-card" id="card-Febeca" style="border-left-color: #009EE3;">
+            <span class="house-badge" style="background:#009EE3;">Casa Febeca</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Siga los mismos métodos para la descarga de SDS, AFV y Catálogo de Febeca:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar SDS</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar Catálogo</a>
+                <a href="https://febeca.com/" target="_blank" class="btn-download" style="background: #374151;">🌐
+                    Visitar Web</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <em>[Ingrese el IP proporcionado por el administrador]</em></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese el usuario proporcionado por el administrador]</em></li>
+            </ul>
+        </div>
+
+        <!-- COFERSA -->
+        <div class="config-card" id="card-Cofersa" style="border-left-color: #009EE3;">
+            <span class="house-badge" style="background:#009EE3;">Casa Cofersa</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Descargue las aplicaciones vinculadas con la información técnica compartida con Febeca:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar SDS (Versión
+                    Feb/Cof)</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #009EE3;">📲 Descargar Catálogo</a>
+                <a href="https://www.cofersa.cr/" target="_blank" class="btn-download" style="background: #374151;">🌐
+                    Visitar Web</a>
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <em>[Ingrese el IP proporcionado por el administrador]</em></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese su usuario de Cofersa asignado]</em></li>
+            </ul>
+        </div>
+
+        <!-- MUNDIAL DE PARTES -->
+        <div class="config-card" id="card-Mundial de Partes" style="border-left-color: #8CC63F;">
+            <span class="house-badge" style="background:#8CC63F;">Mundial de Partes</span>
+            <h3>Guía de Instalación y Acceso</h3>
+            <p>Descargue las aplicaciones vinculadas con la información técnica compartida con Febeca:</p>
+            <div style="margin: 1rem 0; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartdatasynchronizer.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar SDS (Versión
+                    Feb/Mun)</a>
+                <a href="https://play.google.com/store/apps/details?id=com.febeca.tm.jafv.afvparaandroid.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar AFV</a>
+                <a href="https://play.google.com/store/apps/details?id=com.smartbuilders.smartsales.ecommerce.febeca&hl=es_VE"
+                    target="_blank" class="btn-download" style="background: #8CC63F;">📲 Descargar Catálogo</a>
+                <a href="https://mundipartes.com/" target="_blank" class="btn-download" style="background: #374151;">🌐
+                    Visitar Web</a>
+
+            </div>
+            <p><strong>⚙️ Configuración IP de la App SDS:</strong></p>
+            <ul>
+                <li><strong>Dirección IP:</strong> <em>[Ingrese el IP proporcionado por el administrador]</em></li>
+                <li><strong>Usuario:</strong> <em>[Ingrese su usuario de Mundial asignado]</em></li>
+            </ul>
+        </div>
+
+        <section class="sync-instructions"
+            style="margin-top: 4rem; padding-top: 3rem; border-top: 2px solid var(--border);">
+            <h2>Uso y Sincronización</h2>
+            <p class="subtitle-gray">Mantenga sus datos actualizados para la venta diaria</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                <!-- SDS Sync -->
+                <div>
+                    <h3>(FASE III) Sincronizador SDS</h3>
+                    <ol style="margin-left: 1.2rem;">
+                        <li>Seleccione el icono de la aplicación <strong>SDS</strong> en su equipo.</li>
+                        <li>Pulse el botón <strong>SINCRONIZAR</strong> y espere a que el log indique "Sincronización
+                            finalizada".</li>
+                    </ol>
+                </div>
+                <!-- Catalog Sync -->
+                <div>
+                    <h3>(FASE IV) Actualizar Catálogo</h3>
+                    <ol style="margin-left: 1.2rem;">
+                        <li>Vaya al <strong>Menú</strong> lateral de la app Catálogo.</li>
+                        <li>Seleccione <strong>Mi Cuenta</strong>.</li>
+                        <li>Pulse en <strong>Iniciar Sincronización Manual</strong> para cargar los últimos datos.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <p style="margin-top:4rem; text-align: center; border-top: 1px solid #eee; padding-top: 2rem;">
+            <em>Quedo a su disposición para cualquier duda sobre la configuración de estas herramientas. — Alvaro
+                Rivera, Asesor de Aprendizaje.</em>
+        </p>
+        </p>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedCompany = localStorage.getItem('selectedCompany');
+            const selectedLogo = localStorage.getItem('selectedLogo');
+
+            if (selectedCompany) {
+                // Update Logo
+                if (selectedLogo) {
+                    const headerLogo = document.querySelector('.logo-container img');
+                    if (headerLogo) headerLogo.src = selectedLogo;
+                }
+
+                // Hide all and show specific card
+                const allCards = document.querySelectorAll('.config-card');
+                allCards.forEach(card => card.style.display = 'none');
+
+                const activeCard = document.getElementById('card-' + selectedCompany);
+                if (activeCard) {
+                    activeCard.style.display = 'block';
+                    const h2Title = document.getElementById('title-descarga');
+                    if (h2Title) h2Title.innerText = "Descarga e Instalación - " + selectedCompany;
+                } else {
+                    allCards.forEach(card => card.style.display = 'block'); // Fallback
+                }
+
+                // Apply correct primary color logic to the page border matching company branding
+                const brandColors = {
+                    'Febeca': '#009EE3',
+                    'Beval': '#8CC63F',
+                    'Sillaca': '#E5007D',
+                    'Cofersa': '#009EE3',
+                    'Mundial de Partes': '#8CC63F'
+                };
+                const color = brandColors[selectedCompany];
+                if (color) {
+                    document.documentElement.style.setProperty('--primary', color);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+Modelo de correo bienvenida sillaca
+Estimados colaboradores,
+Reciban un cordial saludo.
+El motivo de este correo es compartirles los primeros puntos clave del entrenamiento que recibirán durante sus primeros días en la organización. El objetivo principal de esta etapa es que logren un dominio integral de nuestras herramientas y del portafolio de productos.
+Al finalizar esta primera fase, esperamos que cada uno de ustedes haya alcanzado los siguientes objetivos:
+Dominio de la plataforma tecnológica:
+Comprender a detalle el proceso de instalación y configuración técnica de la herramienta.
+Adquirir la destreza necesaria para su uso operativo cotidiano.
+Conocimiento especializado del inventario:
+Identificar el surtido específico correspondiente a cada una de las empresas del grupo.
+Dominar la estructura del catálogo mediante el reconocimiento preciso de las categorías y subcategorías que definen nuestro portafolio de artículos.
+Este conocimiento es fundamental para garantizar la eficiencia en nuestras operaciones y asegurar una integración exitosa a sus funciones.
+Guía de Instalación: Casa SILLACA Instrucciones: Haga clic en cada enlace para descargar las aplicaciones oficiales.
+Aplicación Enlace Directo de Descarga
+SDS Descargar SDS Sillaca
+AFV Descargar AFV Sillaca
+Catálogo Digital Descargar Catálogo Sillaca ⚙️ Configuración de Acceso (App SDS) Al abrir SDS, configure los siguientes parámetros:
+Dirección IP: http://52.2.135.87:8089
+Quedo a su disposición para cualquier duda o comentario adicional sobre el cronograma de estas sesiones.
+Modelo de correo bienvenida beval
+Reciban un cordial saludo.
+
+El motivo de este correo es compartirles los primeros puntos clave del entrenamiento que recibirán durante sus primeros días en la organización. El objetivo principal de esta etapa es que logren un dominio integral de nuestras herramientas y del portafolio de productos.
+
+Al finalizar esta primera fase, esperamos que cada uno de ustedes haya alcanzado los siguientes objetivos:
+
+Dominio de la plataforma tecnológica:
+
+Comprender a detalle el proceso de instalación y configuración técnica de la herramienta.
+
+Adquirir la destreza necesaria para su uso operativo cotidiano.
+
+Conocimiento especializado del inventario:
+
+Identificar el surtido específico correspondiente a cada una de las empresas del grupo.
+
+Dominar la estructura del catálogo mediante el reconocimiento preciso de las categorías y subcategorías que definen nuestro portafolio de artículos.
+
+Este conocimiento es fundamental para garantizar la eficiencia en nuestras operaciones y asegurar una integración exitosa a sus funciones.
+
+Quedo a su disposición para cualquier duda o comentario adicional sobre el cronograma de estas sesiones.
+
+Guía de Instalación: Casa BEVAL
+Instrucciones: Haga clic en cada enlace para descargar las aplicaciones oficiales.
+
+Aplicación	Enlace Directo de Descarga
+1. SDS	Descargar SDS Beval
+2. AFV	Descargar AFV Beval
+3. Catálogo Digital	Descargar Catálogo Beval
+⚙️ Configuración de Acceso (App SDS)
+Al abrir SDS, configure los siguientes parámetros:
+
+Dirección IP: http://34.239.223.37:8089
+
+Usuario: [Ingrese su usuario asignado]
+
+Atentamente,
+
+Alvaro Rivera
+
+Asesor de Aprendizaje
+
+modelo febeca
+Asunto: Detalles y objetivos del programa de capacitación inicial
+
+Estimados colaboradores,
+
+Reciban un cordial saludo.
+
+El motivo de este correo es compartirles los primeros puntos clave del entrenamiento que recibirán durante sus primeros días en la organización. El objetivo principal de esta etapa es que logren un dominio integral de nuestras herramientas y del portafolio de productos.
+
+Al finalizar esta primera fase, esperamos que cada uno de ustedes haya alcanzado los siguientes objetivos:
+
+Dominio de la plataforma tecnológica:
+
+Comprender a detalle el proceso de instalación y configuración técnica de la herramienta.
+
+Adquirir la destreza necesaria para su uso operativo cotidiano.
+
+Conocimiento especializado del inventario:
+
+Identificar el surtido específico correspondiente a cada una de las empresas del grupo.
+
+Dominar la estructura del catálogo mediante el reconocimiento preciso de las categorías y subcategorías que definen nuestro portafolio de artículos.
+
+Este conocimiento es fundamental para garantizar la eficiencia en nuestras operaciones y asegurar una integración exitosa a sus funciones.
+
+Quedo a su disposición para cualquier duda o comentario adicional sobre el cronograma de estas sesiones.
+
+1. Guía de Instalación: Casa FEBECA
+Instrucciones: Haga clic en cada enlace para descargar las aplicaciones oficiales.
+
+Aplicación	Enlace Directo de Descarga
+1. SDS	Descargar SDS Febeca
+2. AFV	Descargar AFV Febeca
+3. Catálogo Digital	Descargar Catálogo Febeca
+⚙️ Configuración de Acceso (App SDS)
+Al abrir SDS, configure los siguientes parámetros:
+
+Dirección IP: http://44.214.201.82:8089
+
+Usuario: [Ingrese su usuario asignado]
+
+Atentamente,
+
+Alvaro Rivera
+
+Asesor de Aprendizaje
